@@ -1,0 +1,2 @@
+export const CLOSE_LIGHTBOX = "CLOSE_LIGHTBOX";
+export const OPEN_LIGHTBOX = "OPEN_LIGHTBOX";
