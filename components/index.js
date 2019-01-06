@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View, StyleSheet } from "react-native";
+import Draggable from './draggable/index.js';
 import { connect } from 'react-redux';
 
 
@@ -8,16 +9,25 @@ const mapStateToProps = state => {
 };
 
 class Index1 extends React.Component {
-    render() {
-      return (
-        <View style={styles.container}>
-            <Text>Root Game Component</Text>
-        </View>
-      );
-    }
-  }
-  
-export default Index = connect(mapStateToProps)(Index1);
+	constructor() {
+		super();
+		this.state = {};
+	}
+
+	render() {
+		return (
+			<View>
+				<Draggable/>
+				<Draggable/>
+				<Draggable/>
+				<Draggable/>
+				<Draggable/>
+				<Draggable/>
+				<Draggable/>
+			</View>
+		);
+	}
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -28,3 +38,4 @@ const styles = StyleSheet.create({
     },
   });
   
+export default Index = connect(mapStateToProps)(Index1);
