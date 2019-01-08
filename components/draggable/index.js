@@ -13,12 +13,15 @@ const mapStateToProps = state => {
 };
 
 class Draggable1 extends React.Component {
-	constructor() {
+	constructor(){
 		super();
 		this.state = {
-			pan: new Animated.ValueXY()
+			showDraggable: true,
+			dropAreaValues: null,
+			pan: new Animated.ValueXY(),
+			opacity: new Animated.Value(1)
 		};
-	}
+  	}
 
 	componentWillMount() {
 		// Add a listener for the delta value change
@@ -32,17 +35,41 @@ class Draggable1 extends React.Component {
 			onPanResponderMove: Animated.event([
 				null, { dx: this.state.pan.x, dy: this.state.pan.y }
 			]),
+			onPanResponderGrant: (e, gesture) => {
+				this.state.pan.setOffset({
+					x: this._val.x,
+					y: this._val.y
+				})
+				this.state.pan.setValue({ x:0, y:0})
+			},
 			onPanResponderRelease: (e, gesture) => {
 				Animated.spring(this.state.pan, {
 					toValue: { x: 0, y: 0 },
 					friction: 5
 				}).start();
+			},
+			onPanResponderRelease: (e, gesture) => {
+				if (this.isDropArea(gesture)) {
+					Animated.timing(this.state.opacity, {
+						toValue: 0,
+						duration: 1000
+					}).start(() =>
+					this.setState({
+						showDraggable: false
+					})
+					);
+				} else {
+					Animated.spring(this.state.pan, {
+						toValue: { x: 0, y: 0 },
+						friction: 10
+					}).start();
+				}
 			}
         });
-        
-        // adjusting delta value
-        this.state.pan.setValue({ x:0, y:0})
+	}
 
+	isDropArea(gesture) {
+		return gesture.moveY < 200;
 	}
 
 	render() {

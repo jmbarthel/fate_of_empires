@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from "react-native";
-import Draggable from './draggable/index.js';
+import Droppable from './droppable/index.js';
 import { connect } from 'react-redux';
 
 
@@ -17,13 +17,7 @@ class Index1 extends React.Component {
 	render() {
 		return (
 			<View>
-				<Draggable/>
-				<Draggable/>
-				<Draggable/>
-				<Draggable/>
-				<Draggable/>
-				<Draggable/>
-				<Draggable/>
+				<Droppable/>
 			</View>
 		);
 	}
