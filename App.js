@@ -6,7 +6,7 @@ import store from './state/store.js';
 
 export default class App extends React.Component {
 	// componentDidMount() {
-		// Expo.ScreenOrientation.allowAsync(Expo.ScreenOrientation.Orientation.LANDSCAPE_RIGHT);
+	// 	Expo.ScreenOrientation.allowAsync(Expo.ScreenOrientation.Orientation.LANDSCAPE_RIGHT);
 	// }
 
 	render() {

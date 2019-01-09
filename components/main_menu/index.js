@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from "react-native";
-import Droppable from './utils/droppable/index.js';
+import Droppable from './droppable/index.js';
 import { connect } from 'react-redux';
-
 
 const mapStateToProps = state => {
     return { ...state };
@@ -20,7 +19,8 @@ class Index1 extends React.Component {
 				{/* menu to choose: 
 					-- new game 
 					-- rules/instructions
-					-- options
+					-- 
+				
 				*/}
 				<Droppable/>
 			</View>
