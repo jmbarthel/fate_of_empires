@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from "react-native";
-import Droppable from './utils/droppable/index.js';
+import MainMenu from './main_menu/index.js';
 import { connect } from 'react-redux';
 
 
@@ -11,30 +11,31 @@ const mapStateToProps = state => {
 class Index1 extends React.Component {
 	constructor() {
 		super();
-		this.state = {};
+		this.state = {
+			inGame: false,
+		};
+	}
+
+	startGame(){
+		this.setState({inGame: true});
 	}
 
 	render() {
 		return (
 			<View>
-				{/* menu to choose: 
-					-- new game 
-					-- rules/instructions
-					-- options
-				*/}
-				<Droppable/>
+				<MainMenu inGame={this.state.inGame} startGame={this.startGame.bind(this)}/>
 			</View>
 		);
 	}
 }
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
+// const styles = StyleSheet.create({
+// 	container: {
+// 		flex: 1,
+// 		backgroundColor: '#ccc',
+// 		alignItems: 'center',
+// 		justifyContent: 'center',
+// 	},
+// });
   
 export default Index = connect(mapStateToProps)(Index1);
