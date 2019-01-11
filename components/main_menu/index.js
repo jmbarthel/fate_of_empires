@@ -59,8 +59,7 @@ const styles = StyleSheet.create({
 		color: '#ffffff',
 		textAlign: 'center',
 		fontSize: 20,
-		height: 100,
-		width: 100,
+		height: 50
 	}
 });
   
