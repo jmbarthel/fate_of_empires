@@ -19,10 +19,19 @@ class MainMenu1 extends React.Component {
 		};
 	}
 
+	goBack(){
+		this.setState({
+			newGame: false, 
+			rules: false, 
+			options: false,
+		})
+
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
-				{this.state.newGame ? <NewGame/> 
+				{this.state.newGame ? <NewGame goBack={this.goBack.bind(this)}/> 
 				: this.state.rules ? <Rules/> 
 				: this.state.options ? <Options/> 
 				: 

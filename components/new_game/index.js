@@ -18,6 +18,7 @@ class NewGame1 extends React.Component {
 		return (
 			<View>
 				<Text>NewGame</Text>
+                <Text onPress={this.props.goBack}>Go back</Text>
 			</View>
 		);
 	}
