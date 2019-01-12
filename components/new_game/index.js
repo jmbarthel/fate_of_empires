@@ -19,10 +19,14 @@ class NewGame1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<OpponentArea/>
-				<OpponentArea/>
-				<OpponentArea/>
+				<View style={styles.opponents}>
+					<OpponentArea/>
+					<OpponentArea/>
+					<OpponentArea/>
+				</View>
+
 				<SharedArea/>
+
 				<Text onPress={this.props.goBack}>Go back</Text>
 			</View>
 		);
@@ -33,8 +37,10 @@ const styles = StyleSheet.create({
     container: {
 			width: '100%',
 			alignItems: 'center'
-
 		},
-  });
+	opponents: {
+		flexDirection: 'row',
+	}
+});
   
 export default NewGame = connect(mapStateToProps)(NewGame1);

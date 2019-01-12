@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fde',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: '90%',
-		width: '90%'
+		height: '50%',
+		width: '50%'
     },
-  });
+});
   
 export default SharedArea = connect(mapStateToProps)(SharedArea1);

@@ -15,8 +15,8 @@ class OpponentArea1 extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.container}>
-				<Text>OpponentArea</Text>
+			<View>
+				<Text style={styles.container}>OpponentArea</Text>
 			</View>
 		);
 	}
@@ -24,11 +24,10 @@ class OpponentArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fde',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '10%',
-        width: '10%'
+		backgroundColor: '#ade',
+		margin: 10,
+        // alignItems: 'center',
+		// justifyContent: 'center',
     },
 });
   

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, StatusBar } from "react-native";
 import NewGame from '../new_game/index.js';
 import Rules from '../rules/index.js';
 import Options from '../options/index.js';
@@ -13,7 +13,7 @@ class MainMenu1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			newGame: false, 
+			newGame: true, 
 			rules: false, 
 			options: false,
 		};
@@ -31,6 +31,7 @@ class MainMenu1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
+			 	<StatusBar hidden={true} />
 				{
 				  this.state.newGame ? <NewGame goBack={this.goBack.bind(this)}/> 
 				: this.state.rules   ? <Rules/> 
