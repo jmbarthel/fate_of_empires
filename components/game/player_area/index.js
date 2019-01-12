@@ -7,7 +7,7 @@ const mapStateToProps = state => {
     return { ...state };
 };
 
-class SharedArea1 extends React.Component {
+class PlayerArea1 extends React.Component {
 	constructor() {
 		super();
 		this.state = {};
@@ -16,7 +16,7 @@ class SharedArea1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Text>SharedArea</Text>
+				<Text>PlayerArea</Text>
 			</View>
 		);
 	}
@@ -24,12 +24,12 @@ class SharedArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-		backgroundColor: '#fde',
-		alignItems: 'center',
-		justifyContent: 'center',
-		height: '90%',
-		width: '90%'
+        backgroundColor: '#fde',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '10%',
+        width: '10%'
     },
-  });
+});
   
-export default SharedArea = connect(mapStateToProps)(SharedArea1);
+export default PlayerArea = connect(mapStateToProps)(PlayerArea1);
