@@ -68,11 +68,11 @@ class Draggable1 extends React.Component {
         });
 	}
 
-	isDropArea(gesture) {
+	isDropArea(gesture){
 		return gesture.moveY < 200;
 	}
 
-	render() {
+	render(){
 		const panStyle = {
 		transform: this.state.pan.getTranslateTransform()
 		}

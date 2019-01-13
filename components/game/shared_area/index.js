@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fde',
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: '50%',
-		width: '50%'
+		// height: '50%',
+		// width: '50%'
     },
 });
   

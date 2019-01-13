@@ -24,8 +24,7 @@ class MainMenu1 extends React.Component {
 			newGame: false, 
 			rules: false, 
 			options: false,
-		})
-
+		});
 	}
 
 	render() {
@@ -33,14 +32,14 @@ class MainMenu1 extends React.Component {
 			<View style={styles.container}>
 			 	<StatusBar hidden={true} />
 				{
-				  this.state.newGame ? <NewGame goBack={this.goBack.bind(this)}/> 
+				  this.state.newGame ? <NewGame goBack={this.goBack.bind(this)} num_of_enemies={5}/> 
 				: this.state.rules   ? <Rules/> 
 				: this.state.options ? <Options/> 
 				: 
 				<View>
 					<Text onPress={() => this.setState({newGame: true})} style={styles.text}>New Game</Text>
-					<Text onPress={() => this.setState({rules: true})}style={styles.text}>Rules</Text>
-					<Text onPress={() => this.setState({options: true})}style={styles.text}>Options</Text>
+					<Text onPress={() => this.setState({rules: true})} style={styles.text}>Rules</Text>
+					<Text onPress={() => this.setState({options: true})} style={styles.text}>Options</Text>
 				</View>
 				}
 			</View>

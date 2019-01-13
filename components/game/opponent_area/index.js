@@ -8,15 +8,16 @@ const mapStateToProps = state => {
 };
 
 class OpponentArea1 extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {};
 	}
 
 	render() {
 		return (
-			<View>
-				<Text style={styles.container}>OpponentArea</Text>
+			<View style={styles.container}>
+				<Text>OpponentArea</Text>
+				{this.props.expanded ? <View style={styles.expanded}><Text>Expanded</Text></View> : null}
 			</View>
 		);
 	}
@@ -24,11 +25,13 @@ class OpponentArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-		backgroundColor: '#ade',
+		backgroundColor: '#f0f',
 		margin: 10,
-        // alignItems: 'center',
-		// justifyContent: 'center',
-    },
+	},
+	expanded: {
+		height: 150, 
+		width: 150
+	},
 });
   
 export default OpponentArea = connect(mapStateToProps)(OpponentArea1);
