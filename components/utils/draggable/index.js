@@ -1,18 +1,11 @@
 import React from 'react';
 import {
   StyleSheet,
-  View,
-  Text,
   PanResponder,
-  Animated
+  Animated,
 } from "react-native";
-import { connect } from 'react-redux';
 
-const mapStateToProps = state => {
-    return { ...state };
-};
-
-class Draggable1 extends React.Component {
+export default class Draggable1 extends React.Component {
 	constructor(){
 		super();
 		this.state = {
@@ -95,5 +88,3 @@ let styles = StyleSheet.create({
 		borderRadius: CIRCLE_RADIUS
     }
 });
-  
-export default Draggable = connect(mapStateToProps)(Draggable1);

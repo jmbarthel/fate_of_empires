@@ -13,7 +13,7 @@ class MainMenu1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			newGame: true, 
+			newGame: false, 
 			rules: false, 
 			options: false,
 		};
@@ -33,8 +33,8 @@ class MainMenu1 extends React.Component {
 			 	<StatusBar hidden={true} />
 				{
 				  this.state.newGame ? <NewGame goBack={this.goBack.bind(this)} num_of_enemies={5}/> 
-				: this.state.rules   ? <Rules/> 
-				: this.state.options ? <Options/> 
+				: this.state.rules   ? <Rules goBack={this.goBack.bind(this)} num_of_enemies={5}/> 
+				: this.state.options ? <Options goBack={this.goBack.bind(this)} num_of_enemies={5}/> 
 				: 
 				<View>
 					<Text onPress={() => this.setState({newGame: true})} style={styles.text}>New Game</Text>

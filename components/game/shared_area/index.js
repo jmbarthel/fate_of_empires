@@ -17,6 +17,7 @@ class SharedArea1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Text>SharedArea</Text>
+				<Text>This is where the board is held, and items that are available for purchase can be viewed. </Text>
 			</View>
 		);
 	}
@@ -27,8 +28,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fde',
 		alignItems: 'center',
 		justifyContent: 'center',
-		// height: '50%',
-		// width: '50%'
+		width: '50%'
     },
 });
   

@@ -17,6 +17,7 @@ class PlayerArea1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Text>PlayerArea</Text>
+				<Text>This is where your natural, ancient, and modern wonders will display, along with your capital.</Text>
 			</View>
 		);
 	}
@@ -24,11 +25,10 @@ class PlayerArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#fde',
+        backgroundColor: '#ade',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '10%',
-        width: '10%'
+        width: '50%'
     },
 });
   
