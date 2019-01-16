@@ -1,15 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Text } from "react-native";
 import { connect } from 'react-redux';
-import Capital from '../capital/index.js';
-import Hand from '../hand/index.js';
 
 
 const mapStateToProps = state => {
     return { ...state };
 };
 
-class PlayerArea1 extends React.Component {
+class Hand1 extends React.Component {
 	constructor() {
 		super();
 		this.state = {};
@@ -18,8 +16,8 @@ class PlayerArea1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Hand/>
-				<Capital/>
+				<Text>Hand</Text>
+				<Text>This is your hand</Text>
 			</View>
 		);
 	}
@@ -34,4 +32,4 @@ const styles = StyleSheet.create({
     },
 });
   
-export default PlayerArea = connect(mapStateToProps)(PlayerArea1);
+export default Hand = connect(mapStateToProps)(Hand1);
