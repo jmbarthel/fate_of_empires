@@ -1,14 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Text } from "react-native";
 import { connect } from 'react-redux';
-import Deck from '../deck/index.js';
 
 
 const mapStateToProps = state => {
     return { ...state };
 };
 
-class Hand1 extends React.Component {
+class Deck1 extends React.Component {
 	constructor() {
 		super();
 		this.state = {};
@@ -17,10 +16,7 @@ class Hand1 extends React.Component {
 	render() {
 		return (
 			<View style={[this.props.style, styles.container]}>
-                <View style={{height: '100%', width: '16%'}}>
-                    <Deck name='deck'/>
-                    <Deck name='discard'/>
-                </View>
+				<Text>{this.props.name}</Text>
 			</View>
 		);
 	}
@@ -28,12 +24,14 @@ class Hand1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#a7e',
+        backgroundColor: '#0e4',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100%',
-        alignItems: 'flex-start',
+        borderWidth: 1,
+        margin: 1,
+        height: '50%',
+        transform: [{ rotate: '-5deg'}]
     },
 });
   
-export default Hand = connect(mapStateToProps)(Hand1);
+export default Deck = connect(mapStateToProps)(Deck1);

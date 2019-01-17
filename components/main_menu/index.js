@@ -13,7 +13,7 @@ class MainMenu1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			newGame: false, 
+			newGame: true, 
 			rules: false, 
 			options: false,
 		};

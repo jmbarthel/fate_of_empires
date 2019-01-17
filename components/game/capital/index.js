@@ -15,7 +15,7 @@ class Capital1 extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.container}>
+			<View style={[this.props.style, styles.container]}>
 				<Text>Capital
                 
                 </Text>
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ade',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '50%'
+        height: '100%'
     },
 });
   

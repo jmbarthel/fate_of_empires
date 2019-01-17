@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import SharedArea from '../game/shared_area/index.js';
+import WonderArea from '../game/wonder_area/index.js';
 import PlayerArea from '../game/player_area/index.js';
 import Opponent from '../game/opponent/index.js';
 import { Ionicons } from '@expo/vector-icons';
@@ -135,14 +136,13 @@ class NewGame1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				
-				<View style={[styles.areasContainer, {height: '75%'}]}>
+				<View style={[styles.areasContainer, {height: '70%'}]}>
 					<SharedArea/>
-					<PlayerArea/>
+					<WonderArea/>
 				</View>
 
-				<View style={[styles.areasContainer, {height: '25%', alignItems: 'center'}]}>
-					<Text>Hand area: </Text>
-					<Text>This is where your hand is displayed, as well as your discard pile and deck.</Text>
+				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
+					<PlayerArea/>
 				</View>
 
 				<Ionicons style={styles.goBack} name="md-arrow-back" size={32} color="black" onPress={this.props.goBack}/>
