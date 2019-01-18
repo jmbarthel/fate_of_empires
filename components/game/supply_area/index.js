@@ -7,7 +7,7 @@ const mapStateToProps = state => {
     return { ...state };
 };
 
-class SharedArea1 extends React.Component {
+class SupplyArea1 extends React.Component {
 	constructor() {
 		super();
 		this.state = {};
@@ -27,9 +27,6 @@ class SharedArea1 extends React.Component {
 					<View style={styles.resource}/>
 					<View style={styles.resource}/>
 					<View style={styles.resource}/>
-				</View>
-
-				<View style={styles.resourceContainer}>
 					<View style={styles.resource}/>
 					<View style={styles.resource}/>
 					<View style={styles.resource}/>
@@ -37,7 +34,7 @@ class SharedArea1 extends React.Component {
 				</View>
 
 
-				{/* <Text>SharedArea</Text> */}
+				{/* <Text>SupplyArea</Text> */}
 				{/* <Text>This is where the board is held, and items that are available for purchase can be viewed. </Text> */}
 			</View>
 		);
@@ -49,14 +46,16 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fde',
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: '50%'
+		width: '50%',
+		justifyContent: 'flex-start'
 	},
 	resourceContainer: {
 		flexDirection: 'row', 
 		height: '30%', 
 		width: '100%', 
 		margin: 2,
-		justifyContent: 'center'
+		justifyContent: 'center',
+		flexWrap: 'wrap'
 	},
 	resource: {
 		borderRadius: 5, 
@@ -68,4 +67,4 @@ const styles = StyleSheet.create({
 	}
 });
   
-export default SharedArea = connect(mapStateToProps)(SharedArea1);
+export default SupplyArea = connect(mapStateToProps)(SupplyArea1);

@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
-import SharedArea from '../game/shared_area/index.js';
+import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';
 import PlayerArea from '../game/player_area/index.js';
 import Opponent from '../game/opponent/index.js';
 import { Ionicons } from '@expo/vector-icons';
+import Game from './game.js';
 
 const mapStateToProps = state => {
     return { ...state };
@@ -17,7 +18,12 @@ class NewGame1 extends React.Component {
 
 		let enemyArr = {};
 
-		for(let i = 1; i <= props.num_of_enemies; i++){
+		let num_of_players = props.num_of_players;
+
+		// SET ENEMIES
+		let num_of_enemies = props.num_of_players - 1;
+
+		for(let i = 1; i <= num_of_enemies; i++){
 			enemyArr[i] = {
 				id: i, 
 				expanded: false,
@@ -25,10 +31,124 @@ class NewGame1 extends React.Component {
 			}
 		}
 
+		// SET THE DECK
+		let ancient_wonders = 27, 
+			modern_wonders = 23,
+			natural_wonders = 20,
+			peasant = 35, 
+			bankers = 10, 
+			scientist = 10, 
+			artist = 10, 
+			soldier = 5, 
+			humanitarian_aid = 5, 
+			infantry = 5, 
+			navy = 5, 
+			centralized_government = 5, 
+			regions = 5;
+
+		const setup = {
+			'2': {
+				ancient: 13, 
+				modern: 9, 
+				peasants: 10
+			}, 
+			'3': {
+				ancient: 7, 
+				modern: 3, 
+				peasants: 9
+			}, 
+			'4': {
+				ancient: 0, 
+				modern: 0, 
+				peasants: 8
+			}, 
+			'5': {
+				ancient: 0, 
+				modern: 0, 
+				peasants: 7
+			}, 
+		}
+
+		// SET THE WONDER SUPPLY
+		let wonderSupplyArr = [];
+
+		wonderSupplyArr.push({id: 'last_turn'});
+
+		for(let i = 0; i < (modern_wonders - setup[num_of_players].modern); i++){
+			wonderSupplyArr.push({
+				id: Math.floor(Math.random() * 1000),
+				type: 'modern_wonder'
+			});
+		}
+
+		wonderSupplyArr.push({
+			id: 'age_of_enlightenment'
+		});
+
+		for(let i = 0; i < (ancient_wonders - setup[num_of_players].ancient); i++){
+			wonderSupplyArr.push({
+				id: Math.floor(Math.random() * 1000),
+				type: 'ancient_wonder'
+			});
+		}
+
 		this.state = {
-			enemies: enemyArr, 
 			dim: false,
+
+			enemies: enemyArr, 
+
+			wondersRevealed: [],
+			wonderSupply: wonderSupplyArr,
+
+			supplyRevealed: [],
+			supplySupply: [],
+
+			bankers: 10, 
+			artists: 10, 
+			scientists: 10,
+
+			players_to_wonders: {
+				'2': 4, 
+				'3': 5, 
+				'4': 6, 
+				'5': 6
+			}
 		};
+
+		/*
+			Each player is an object as such: 
+			{
+				id: num, 
+				expanded: false, 
+				name: string, 
+				region: id, 
+				trait: id
+
+				hand: array of cards in hand, 
+				deck: array of cards in their deck,
+				discard: array of cards in their discard pile, 
+				played_cards: array of cards they have played this turn to be discarded at end,
+
+				centralized_government: boolean
+
+				natural_wonders: array of natural wonders built,
+				ancient_wonders: array of ancient wonders built,
+				modern_wonders: array of modern wonders built, 
+
+				resources: {
+					gold: num, 
+					science: num, 
+					influence: num,
+				},
+
+				capital: array of cards on the capital
+
+			}
+
+
+
+		*/
+		console.log(this.state.wonderSupply);
 	}
 
 	closeAllEnemies(){
@@ -137,7 +257,7 @@ class NewGame1 extends React.Component {
 			<View style={styles.container}>
 				
 				<View style={[styles.areasContainer, {height: '70%'}]}>
-					<SharedArea/>
+					<SupplyArea/>
 					<WonderArea/>
 				</View>
 
@@ -180,7 +300,6 @@ class NewGame1 extends React.Component {
 									</TouchableOpacity>
 								</View>);
 						}
-						
 					})}
 				</View>
 			
