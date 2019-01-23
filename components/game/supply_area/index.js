@@ -32,10 +32,6 @@ class SupplyArea1 extends React.Component {
 					<View style={styles.resource}/>
 					<View style={styles.resource}/>
 				</View>
-
-
-				{/* <Text>SupplyArea</Text> */}
-				{/* <Text>This is where the board is held, and items that are available for purchase can be viewed. </Text> */}
 			</View>
 		);
 	}

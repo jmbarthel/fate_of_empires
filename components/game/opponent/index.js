@@ -29,7 +29,6 @@ class Opponent1 extends React.Component {
 		Animated.spring(this.moveAnimation, {
 			toValue: { x: 0, y: 0 },
 			friction: 10,
-			// useNativeDriver: true,
 		}).start();
 	}
 
@@ -107,16 +106,18 @@ class Opponent1 extends React.Component {
 		}
 
 		if(this.props.expanded){
-			return (<Animated.View 
-				{...this.panResponder.panHandlers}
-				style={[panStyle, this.moveAnimation.getLayout(), style]}
-			>
-				<Text>{this.props.enemy.name}</Text>
-				<View style={[styles.expanded, styles.enemyBoard]}>
-					<Text>Expanded</Text>
-					<Text style={styles.number}>{this.props.enemy.id}</Text>
-				</View> 
-			</Animated.View>);
+			return (
+				<Animated.View 
+					{...this.panResponder.panHandlers}
+					style={[panStyle, this.moveAnimation.getLayout(), style]}
+				>
+					<Text>{this.props.enemy.name}</Text>
+					<View style={[styles.expanded, styles.enemyBoard]}>
+						<Text>Expanded</Text>
+						<Text style={styles.number}>{this.props.enemy.id}</Text>
+					</View> 
+				</Animated.View>
+			);
 		} else{
 			return (
 				<View style={style}>

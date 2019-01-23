@@ -47,9 +47,9 @@ export default class Draggable1 extends React.Component {
 						toValue: 0,
 						duration: 1000
 					}).start(() =>
-					this.setState({
-						showDraggable: false
-					})
+						this.setState({
+							showDraggable: false
+						})
 					);
 				} else {
 					Animated.spring(this.state.pan, {
@@ -67,8 +67,9 @@ export default class Draggable1 extends React.Component {
 
 	render(){
 		const panStyle = {
-		transform: this.state.pan.getTranslateTransform()
+			transform: this.state.pan.getTranslateTransform()
 		}
+		
 		return (
 			<Animated.View
 				{...this.panResponder.panHandlers}

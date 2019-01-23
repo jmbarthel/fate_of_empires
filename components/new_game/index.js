@@ -31,7 +31,7 @@ class NewGame1 extends React.Component {
 			}
 		}
 
-		// SET THE DECK
+		// DECK NUMBERS
 		let ancient_wonders = 27, 
 			modern_wonders = 23,
 			natural_wonders = 20,
@@ -96,6 +96,8 @@ class NewGame1 extends React.Component {
 			dim: false,
 
 			enemies: enemyArr, 
+			num_of_enemies: num_of_enemies,
+			num_of_players: num_of_players,
 
 			wondersRevealed: [],
 			wonderSupply: wonderSupplyArr,
@@ -148,10 +150,11 @@ class NewGame1 extends React.Component {
 
 
 		*/
-		console.log(this.state.wonderSupply);
+		// console.log(this.state.wonderSupply);
 	}
 
 	closeAllEnemies(){
+		console.log('closing all enemies');
 		this.setState(prevState => {
 			let enemies = prevState.enemies;
 			return {
@@ -169,6 +172,7 @@ class NewGame1 extends React.Component {
 	}
 
 	expandEnemy(enemyId, event){
+		console.log('expanding enemy');
 		if(event){
 			event.preventDefault();
 		}
@@ -195,7 +199,7 @@ class NewGame1 extends React.Component {
 	goToNextEnemy(direction, id){
 		if(direction === -1){
 			// swipe left - go right in the list
-			if(id === this.props.num_of_enemies){
+			if(id === this.state.num_of_enemies){
 				// if we are already at the last - go to the first
 				this.setState((prevState) => {
 					let enemies = prevState.enemies;
@@ -228,8 +232,8 @@ class NewGame1 extends React.Component {
 				this.setState((prevState) => {
 					let enemies = prevState.enemies;
 					enemies[id].expanded = false;
-					enemies[this.props.num_of_enemies].expanded = true;
-					enemies[this.props.num_of_enemies].animateEntry = -1;
+					enemies[this.state.num_of_enemies].expanded = true;
+					enemies[this.state.num_of_enemies].animateEntry = -1;
 
 					return {
 						...prevState, 
@@ -258,7 +262,12 @@ class NewGame1 extends React.Component {
 				
 				<View style={[styles.areasContainer, {height: '70%'}]}>
 					<SupplyArea/>
-					<WonderArea/>
+					<WonderArea 
+						players_to_wonders={this.state.players_to_wonders}
+						wondersRevealed={this.state.wondersRevealed}
+						wonderSupply={this.state.wonderSupply}
+						num_of_players={this.state.num_of_players}
+					/>
 				</View>
 
 				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
@@ -269,7 +278,7 @@ class NewGame1 extends React.Component {
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
 
-				<View style={[styles.opponentContainer]}>
+				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp] : styles.opponentContainer}>
 					{Object.keys(this.state.enemies).map(enemyId => {
 						let enemy = this.state.enemies[enemyId],
 							func = !enemy.expanded ? this.expandEnemy.bind(this, enemy.id) : ()=>null,
@@ -280,7 +289,7 @@ class NewGame1 extends React.Component {
 								<View style={style} key={enemy.id}>
 									<Opponent 
 										expanded={enemy.expanded} 
-										num_of_enemies={this.props.num_of_enemies}
+										num_of_enemies={this.state.num_of_enemies}
 										dim={this.state.dim}
 										enemy={enemy}
 										goToNextEnemy={this.goToNextEnemy.bind(this)}
@@ -292,7 +301,7 @@ class NewGame1 extends React.Component {
 									<TouchableOpacity onPress={func}>
 										<Opponent 
 											expanded={enemy.expanded} 
-											num_of_enemies={this.props.num_of_enemies}
+											num_of_enemies={this.state.num_of_enemies}
 											dim={this.state.dim}
 											enemy={enemy}
 											goToNextEnemy={this.goToNextEnemy.bind(this)}
@@ -322,10 +331,12 @@ const styles = StyleSheet.create({
 	opponentContainer:{
 		position: 'absolute',
 		flexDirection: 'row',
-		height: '85%',
 		width: '80%',
 		top: 0,
 		justifyContent: 'center'
+	},
+	opponentContainerExp: {
+		height: '85%',
 	},
 	goBack: {
 		position: 'absolute', 
