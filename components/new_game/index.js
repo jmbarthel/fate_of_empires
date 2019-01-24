@@ -92,8 +92,52 @@ class NewGame1 extends React.Component {
 			});
 		}
 
+		// SET THE PLAYER DECK
+		let playerDeck = [], playerHand=[];
+
+		for(let i =0; i < 10; i++){
+			if(i < 5){
+				playerHand.push({
+					id: i, 
+					expanded: false,
+					name: 'peasant'
+				})
+			} else{
+				playerDeck.push({
+					id: i, 
+					expanded: false,
+					name: 'peasant'
+				});
+			}
+		}
+
 		this.state = {
 			dim: false,
+
+			player: {
+				id: 0, 
+				name: 'Player', 
+				region: null, 
+				trait: null,
+
+				hand: playerHand, 
+				deck: playerDeck,
+				discard: [], 
+				played_cards: [],
+
+				centralized_government: 0,
+
+				natural_wonders: [],
+				ancient_wonders: [],
+				modern_wonders: [], 
+
+				resources: {
+					gold: 0, 
+					science: 0, 
+					influence: 0,
+				},
+				capital: []
+			},
 
 			enemies: enemyArr, 
 			num_of_enemies: num_of_enemies,
@@ -271,7 +315,7 @@ class NewGame1 extends React.Component {
 				</View>
 
 				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
-					<PlayerArea/>
+					<PlayerArea player={this.state.player}/>
 				</View>
 
 				<Ionicons style={styles.goBack} name="md-arrow-back" size={32} color="black" onPress={this.props.goBack}/>

@@ -22,17 +22,15 @@ class WonderArea1 extends React.Component {
         let x = [];
 
         for(let i=0; i<this.props.players_to_wonders[this.props.num_of_players]; i++){
-            // if(i===0){
-            //     x.push(
-            //         <View key={this.props.num_of_players*2} style={styles.wonderSupply}>
-            //             <Text>{this.props.wonderSupply.length}</Text>
-            //         </View>
-            //     )
-            // }
+            if(i===0){
+                x.push(
+                    <View key={this.props.num_of_players*2} style={styles.wonderSupply}>
+                        <Text>{this.props.wonderSupply.length}</Text>
+                    </View>
+                )
+            }
             x.push(
-                // <View key={i}>
-                    <Wonder key={i} k={i} style={styles.wonderCard}/>
-                // </View>
+                <Wonder key={i} k={i} style={styles.wonderCard}/>
             );
         }
 
@@ -80,6 +78,8 @@ const styles = StyleSheet.create({
         height: '50%',
         borderWidth: 2, 
         borderColor: '#000',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
   

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, Text } from "react-native";
 import { connect } from 'react-redux';
-import Capital from '../capital/index.js';
-import Hand from '../hand/index.js';
+import Capital from './capital.js';
+import Hand from './hand.js';
 import YourWonders from '../your_wonders/index.js';
 
 
@@ -14,12 +14,47 @@ class PlayerArea1 extends React.Component {
 	constructor() {
 		super();
 		this.state = {};
+		/**
+		 * 
+		 * /* this.props.player
+			Each player is an object as such: 
+			{
+				id: num, 
+				expanded: false, 
+				name: string, 
+				region: id, 
+				trait: id
+
+				hand: array of cards in hand, 
+				deck: array of cards in their deck,
+				discard: array of cards in their discard pile, 
+				played_cards: array of cards they have played this turn to be discarded at end,
+
+				centralized_government: boolean
+
+				natural_wonders: array of natural wonders built,
+				ancient_wonders: array of ancient wonders built,
+				modern_wonders: array of modern wonders built, 
+
+				resources: {
+					gold: num, 
+					science: num, 
+					influence: num,
+				},
+
+				capital: array of cards on the capital
+
+			}
+
+
+
+		*/
 	}
 
 	render() {
 		return (
 			<View style={styles.container}>
-				<Hand style={styles.hand}/>
+				<Hand style={styles.hand} hand={this.props.player.hand}/>
 				<Capital style={styles.capital}/>
 				<YourWonders style={styles.wonders}/>
 			</View>

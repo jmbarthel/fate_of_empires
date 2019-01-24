@@ -7,12 +7,11 @@ import { connect } from 'react-redux';
 //     return { ...state };
 // };
 
-export default class Wonder extends React.Component {
-	constructor() {
-        super();
+export default class Card extends React.Component {
+	constructor(props) {
+        super(props);
         this.state = {
             pan: new Animated.ValueXY(),
-			opacity: new Animated.Value(1)
         }
     }
 
@@ -20,7 +19,9 @@ export default class Wonder extends React.Component {
 		// Add a listener for the delta value change
 		this._val = { x:0, y:0 }
 
-		this.state.pan.addListener((value) => this._val = value);
+		this.state.pan.addListener((value) => {
+            this._val = value
+        });
 		
 		// Initialize PanResponder with move handling
 		this.panResponder = PanResponder.create({
@@ -29,17 +30,20 @@ export default class Wonder extends React.Component {
                 this.state.pan.setOffset({
                     x: this._val.x,
 					y: this._val.y
-				})
+                })
 				this.state.pan.setValue({ x:0, y:0})
 			},
             onPanResponderMove: Animated.event([
-                null, { dx: this.state.pan.x, dy: this.state.pan.y }
+                null, { 
+                    dx: this.state.pan.x, 
+                    dy: this.state.pan.y
+                }
             ]),
 			onPanResponderRelease: (e, gesture) => {
                 this.state.pan.flattenOffset();
 				Animated.spring(this.state.pan, {
 					toValue: { x: 0, y: 0 },
-					friction: 5
+					friction: 15
 				}).start();
 			},
         });
@@ -49,14 +53,15 @@ export default class Wonder extends React.Component {
         const panStyle = {
 			transform: this.state.pan.getTranslateTransform()
         }
-        
+        panStyle.transform.push({ rotate: -this.props.angle+'deg'})
+
         // Calculate the transform property and set it as a value for our style which we add below to the Animated.View component
         // let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
 
 		return (
                 <Animated.View 
                     {...this.panResponder.panHandlers}
-                    style={[panStyle, this.props.style]}
+                    style={[panStyle, styles.card]}
                 >
                     
                 </Animated.View>
@@ -65,6 +70,11 @@ export default class Wonder extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    card: {
+        width: '100%', 
+        height: '100%', 
+        backgroundColor: '#f03'
+    }
 });
   
-// export default Wonder = connect(mapStateToProps)(Wonder1);
+// export default Card = connect(mapStateToProps)(Card1);
