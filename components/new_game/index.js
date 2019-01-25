@@ -240,6 +240,19 @@ class NewGame1 extends React.Component {
 		}
 	}
 
+	toggleDim(force){
+		if(force !== undefined){
+
+		}
+		this.setState(prevState => {
+			if(force !== undefined){
+				return { ...prevState, dim: force }
+			} else{
+				return { ...prevState, dim: !prevState.dim }
+			}
+		})
+	}
+
 	goToNextEnemy(direction, id){
 		if(direction === -1){
 			// swipe left - go right in the list
@@ -303,6 +316,7 @@ class NewGame1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
+
 				
 				<View style={[styles.areasContainer, {height: '70%'}]}>
 					<SupplyArea/>
@@ -315,12 +329,11 @@ class NewGame1 extends React.Component {
 				</View>
 
 				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
-					<PlayerArea player={this.state.player}/>
+					<PlayerArea player={this.state.player} toggleDim={this.toggleDim.bind(this)}/>
 				</View>
 
-				<Ionicons style={styles.goBack} name="md-arrow-back" size={32} color="black" onPress={this.props.goBack}/>
-
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
+				<Ionicons style={styles.goBack} name="md-arrow-back" size={32} color="black" onPress={this.props.goBack}/>
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp] : styles.opponentContainer}>
 					{Object.keys(this.state.enemies).map(enemyId => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import Capital from './capital.js';
 import Hand from './hand.js';
@@ -53,8 +53,8 @@ class PlayerArea1 extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.container}>
-				<Hand style={styles.hand} hand={this.props.player.hand}/>
+			<View style={[styles.container]}>
+				<Hand style={styles.hand} hand={this.props.player.hand} toggleDim={this.props.toggleDim}/>
 				<Capital style={styles.capital}/>
 				<YourWonders style={styles.wonders}/>
 			</View>
@@ -80,6 +80,13 @@ const styles = StyleSheet.create({
 	},
 	wonders: {
 		width: '20%'
+	},
+	overlay: {
+		position: 'absolute',
+		backgroundColor: '#000',
+		width: '100%', 
+		height: '100%',
+		opacity: 0.7
 	}
 });
   

@@ -11,6 +11,8 @@ export default class Card extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
+            enlarged: false,
+            dim: false,
             pan: new Animated.ValueXY(),
         }
     }
@@ -40,41 +42,81 @@ export default class Card extends React.Component {
                 }
             ]),
 			onPanResponderRelease: (e, gesture) => {
-                this.state.pan.flattenOffset();
-				Animated.spring(this.state.pan, {
-					toValue: { x: 0, y: 0 },
-					friction: 15
-				}).start();
+                console.log(gesture);
+                if(gesture.dy < -125){
+                    this.setState({enlarged: true, dim: true});
+                    this.props.toggleDim(true);
+                } else{
+                    this.state.pan.flattenOffset();
+                    Animated.spring(this.state.pan, {
+                        toValue: { x: 0, y: 0 },
+                        friction: 15
+                    }).start();
+                }
 			},
         });
-	}
+    }
+    
+    shrinkCard(){
+        this.setState({ dim: false })
+    }
 
 	render() {
         const panStyle = {
 			transform: this.state.pan.getTranslateTransform()
         }
-        panStyle.transform.push({ rotate: -this.props.angle+'deg'})
 
         // Calculate the transform property and set it as a value for our style which we add below to the Animated.View component
         // let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
+        if(this.state.enlarged){
+            return (
+                <View>
 
-		return (
+                    {/* {this.state.dim ? <TouchableWithoutFeedback onPress={this.shrinkCard.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null} */}
+
+                    <View style={styles.enlargedCard}>
+                        <Text>Card</Text>
+                    </View>
+                    
+
+                </View>
+            );
+        } else{
+            return (
                 <Animated.View 
                     {...this.panResponder.panHandlers}
                     style={[panStyle, styles.card]}
                 >
                     
                 </Animated.View>
-		);
+            );
+        }
 	}
 }
 
 const styles = StyleSheet.create({
     card: {
-        width: '100%', 
-        height: '100%', 
-        backgroundColor: '#f03'
-    }
+        backgroundColor: "#075",
+        height: 70,
+        width: 50,
+        borderColor: '#fff', 
+        borderWidth: 2,
+    },
+    enlargedCard: {
+        backgroundColor: "#fff",
+        height: 250,
+        width: 250,
+        position: 'absolute',
+        zIndex: 5,
+        opacity: 1,
+    },
+    overlay: {
+		position: 'absolute',
+		backgroundColor: '#000',
+		width: '100%', 
+		height: '100%',
+		opacity: 0.7
+	}
 });
   
 // export default Card = connect(mapStateToProps)(Card1);

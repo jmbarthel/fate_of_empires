@@ -36,7 +36,7 @@ class Hand1 extends React.Component {
             }
 
             hand.push(
-                <Card key={i} angle={degrees} style={styles.card}/>
+                <Card key={i} angle={degrees} toggleDim={this.props.toggleDim}/>
             )
         }
 
@@ -68,11 +68,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     card: {
-        backgroundColor: "#075",
-        height: 70,
-        width: 50,
-        borderColor: '#fff', 
-        borderWidth: 2,
+        
     },
     cardArea: {
         flexDirection: 'row', 
