@@ -11,9 +11,9 @@ const mapStateToProps = state => {
 };
 
 class PlayerArea1 extends React.Component {
-	constructor() {
-		super();
-		this.state = {};
+	constructor(props) {
+		super(props);
+		this.state = {dim: true};
 		/**
 		 * 
 		 * /* this.props.player
@@ -45,15 +45,12 @@ class PlayerArea1 extends React.Component {
 				capital: array of cards on the capital
 
 			}
-
-
-
 		*/
 	}
 
 	render() {
 		return (
-			<View style={[styles.container]}>
+			<View style={styles.container}>
 				<Hand style={styles.hand} hand={this.props.player.hand} toggleDim={this.props.toggleDim}/>
 				<Capital style={styles.capital}/>
 				<YourWonders style={styles.wonders}/>
@@ -64,7 +61,6 @@ class PlayerArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#abc',
         alignItems: 'center',
         justifyContent: 'center',
 		width: '50%',
@@ -81,13 +77,6 @@ const styles = StyleSheet.create({
 	wonders: {
 		width: '20%'
 	},
-	overlay: {
-		position: 'absolute',
-		backgroundColor: '#000',
-		width: '100%', 
-		height: '100%',
-		opacity: 0.7
-	}
 });
   
 export default PlayerArea = connect(mapStateToProps)(PlayerArea1);

@@ -25,7 +25,6 @@ class WonderArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#def',
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%'

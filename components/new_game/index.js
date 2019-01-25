@@ -333,7 +333,7 @@ class NewGame1 extends React.Component {
 				</View>
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
-				<Ionicons style={styles.goBack} name="md-arrow-back" size={32} color="black" onPress={this.props.goBack}/>
+				<Ionicons style={styles.goBack} name="md-settings" size={32} color="black" onPress={this.props.goBack}/>
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp] : styles.opponentContainer}>
 					{Object.keys(this.state.enemies).map(enemyId => {
@@ -381,6 +381,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		flexDirection: 'column',
+		backgroundColor: '#075'
 	},
 	areasContainer:{
 		flexDirection: 'row',
@@ -388,12 +389,13 @@ const styles = StyleSheet.create({
 	opponentContainer:{
 		position: 'absolute',
 		flexDirection: 'row',
-		width: '80%',
+		width: '100%',
 		top: 0,
-		justifyContent: 'center'
+		justifyContent: 'flex-end'
 	},
 	opponentContainerExp: {
 		height: '85%',
+		width: '80%',
 	},
 	goBack: {
 		position: 'absolute', 
@@ -402,7 +404,6 @@ const styles = StyleSheet.create({
 	},
 	overlay: {
 		position: 'absolute',
-		backgroundColor: '#000',
 		width: '100%', 
 		height: '100%',
 		opacity: 0.7

@@ -46,7 +46,7 @@ class Hand1 extends React.Component {
 	render() {
 		return (
 			<View style={[this.props.style, styles.container]}>
-                <View style={{height: '100%', width: '16%'}}>
+                <View style={{height: '100%', width: '16%', left: 4}}>
                     <Deck name='deck'/>
                     <Deck name='discard'/>
                 </View>
@@ -60,21 +60,16 @@ class Hand1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#a7e',
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%',
         alignItems: 'flex-start',
         flexDirection: 'row'
     },
-    card: {
-        
-    },
     cardArea: {
         flexDirection: 'row', 
         width: '84%', 
         height: '100%', 
-        backgroundColor: '#044', 
         justifyContent: 'center',
         paddingTop: '3%'
     }

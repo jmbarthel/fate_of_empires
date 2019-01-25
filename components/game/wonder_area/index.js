@@ -22,16 +22,17 @@ class WonderArea1 extends React.Component {
         let x = [];
 
         for(let i=0; i<this.props.players_to_wonders[this.props.num_of_players]; i++){
-            if(i===0){
+            x.push(
+                <Wonder key={i} k={i}/>
+            );
+
+            if(i===this.props.players_to_wonders[this.props.num_of_players]-1){
                 x.push(
                     <View key={this.props.num_of_players*2} style={styles.wonderSupply}>
                         <Text>{this.props.wonderSupply.length}</Text>
                     </View>
                 )
             }
-            x.push(
-                <Wonder key={i} k={i} style={styles.wonderCard}/>
-            );
         }
 
         return x;
@@ -50,13 +51,12 @@ class WonderArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-		backgroundColor: '#f0e',
 		alignItems: 'center',
 		justifyContent: 'center',
-		width: '50%'
+        width: '50%',
+        marginTop: 40,
     },
     revealedWonderArea: {
-        backgroundColor: '#075',
         width: '90%', 
         height: '80%',
         margin: 2,
@@ -64,22 +64,17 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-end'
     },
-    wonderCard: {
-        width: 60, 
-        height: 80,
-        borderWidth: 2, 
-        margin: 2,
-        borderColor: '#000',
-        backgroundColor: '#fff',
-        zIndex: 10,
-    },
     wonderSupply: {
-        width: '30%',
+        width: '20%',
         height: '50%',
-        borderWidth: 2, 
-        borderColor: '#000',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#fff',
+        margin: 3,
+
+        borderRadius: 5,
+        borderColor: '#000',
+        borderWidth: 2, 
     }
 });
   

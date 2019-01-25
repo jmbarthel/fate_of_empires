@@ -94,7 +94,7 @@ class Opponent1 extends React.Component {
 		} else if(this.props.dim){
 			style = [styles.container, {backgroundColor: '#abc', width: 0, height: 0}]
 		} else{
-			style = styles.container
+			style = [styles.container, {borderRadius: 5, padding: 4}]
 		}
 
 		if(this.props.dim && !this.props.expanded){
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     container: {
 		backgroundColor: '#0aa',
 		margin: 10,
-		alignItems: 'center', 
+		alignItems: 'center',
 	},
 	expanded: {
 		height: '100%', 

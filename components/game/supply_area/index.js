@@ -39,7 +39,6 @@ class SupplyArea1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-		backgroundColor: '#fde',
 		alignItems: 'center',
 		justifyContent: 'center',
 		width: '50%',
@@ -60,6 +59,7 @@ const styles = StyleSheet.create({
 		width: '20%',
 		height: '100%',
 		margin: 3,
+		backgroundColor: '#555'
 	}
 });
   

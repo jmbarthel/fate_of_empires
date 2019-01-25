@@ -27,7 +27,6 @@ class Capital1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#ade',
         alignItems: 'center',
         justifyContent: 'center',
         height: '100%'

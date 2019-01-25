@@ -27,10 +27,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#0e4',
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
+		borderWidth: 1,
+		borderRadius: 5,
         margin: 1,
         height: '50%',
-        transform: [{ rotate: '-5deg'}]
+		transform: [{ rotate: '-5deg'}],
+		top: -10
     },
 });
   

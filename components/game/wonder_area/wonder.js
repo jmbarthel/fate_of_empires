@@ -56,7 +56,7 @@ export default class Wonder extends React.Component {
 		return (
                 <Animated.View 
                     {...this.panResponder.panHandlers}
-                    style={[panStyle, this.props.style]}
+                    style={[panStyle, this.props.style, styles.wonder]}
                 >
                     
                 </Animated.View>
@@ -65,6 +65,15 @@ export default class Wonder extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    wonder: {
+        borderRadius: 5, 
+		borderColor: '#000',
+		borderWidth: 1,
+		width: '20%',
+		height: '50%',
+        margin: 3,
+        backgroundColor: '#555'
+    }
 });
   
 // export default Wonder = connect(mapStateToProps)(Wonder1);
