@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import Capital from './capital.js';
 import Hand from './hand.js';
-import YourWonders from '../your_wonders/index.js';
+import YourWonders from './your_wonders.js';
 
 
 const mapStateToProps = state => {
