@@ -16,6 +16,13 @@ export default class Card extends React.Component {
         }
     }
 
+    englarge(){
+        let coordinates = [];
+
+        
+
+    }
+
     componentWillMount() {
 		// Add a listener for the delta value change
 		this._val = { x:0, y:0 }
@@ -60,6 +67,7 @@ export default class Card extends React.Component {
 			transform: this.state.pan.getTranslateTransform()
         }
 
+        panStyle.transform.push({rotate: this.props.angle+"deg"})
         // Calculate the transform property and set it as a value for our style which we add below to the Animated.View component
         // let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
 
