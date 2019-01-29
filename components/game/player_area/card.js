@@ -11,7 +11,7 @@ export default class Card extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
-            enlarged: false,
+            expanded: false,
             pan: new Animated.ValueXY(),
         }
     }
@@ -19,7 +19,7 @@ export default class Card extends React.Component {
     englarge(){
         let coordinates = [];
 
-        
+
 
     }
 
@@ -49,10 +49,10 @@ export default class Card extends React.Component {
             ]),
 			onPanResponderRelease: (e, gesture) => {
                 if(gesture.dy < -150){
-                    this.setState({enlarged: true});
+                    this.setState({expanded: true});
                 } else{
                     this.state.pan.flattenOffset();
-                    this.setState({enlarged: false})
+                    this.setState({expanded: false})
                     Animated.spring(this.state.pan, {
                         toValue: { x: 0, y: 0 },
                         friction: 15
@@ -74,8 +74,25 @@ export default class Card extends React.Component {
 		return (
                 <Animated.View 
                     {...this.panResponder.panHandlers}
-                    style={[panStyle, styles.card, this.state.enlarged ? styles.expandedCard : null]}
+                    style={[panStyle, styles.card, this.state.expanded ? styles.expandedCard : null]}
                 >
+                {this.state.expanded ? 
+                    <View>
+                    <View style={{justifyContent: 'center', alignItems: 'center', height: '50%'}}>
+                        <Text>Artwork</Text>
+                    </View>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '45%'}}>
+                        <View style={{width: '50%'}}>
+                            <Text>Option 1</Text>
+                        </View>
+                        <View style={{borderWidth: 1, borderRightColor: '#000', borderLeftColor: '#000', height: '100%', width: '0%'}}>
+                        </View>
+                        <View style={{width: '45%'}}>
+                            <Text>Option 2</Text>
+                        </View>
+                    </View>
+                    </View> 
+                    : null}
                     
                 </Animated.View>
 		);

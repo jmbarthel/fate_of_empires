@@ -16,7 +16,7 @@ class Hand1 extends React.Component {
 	}
 
     enlarge(){
-        
+
     }
 
     renderHand(){
@@ -24,9 +24,6 @@ class Hand1 extends React.Component {
         
         for(let i = 0; i < this.props.hand.length; i++){
             let degrees = ((45/(this.props.hand.length-i))-20),
-            rotation = {
-                transform: [{ rotate: degrees+'deg'}]
-            },
             position = {
                 top: 0
             };
