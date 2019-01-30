@@ -113,6 +113,7 @@ class NewGame1 extends React.Component {
 
 		this.state = {
 			dim: false,
+			expandedSupplyCard: false, 
 
 			player: {
 				id: 0, 
@@ -198,7 +199,6 @@ class NewGame1 extends React.Component {
 	}
 
 	closeAllEnemies(){
-		console.log('closing all enemies');
 		this.setState(prevState => {
 			let enemies = prevState.enemies;
 			return {
@@ -210,13 +210,12 @@ class NewGame1 extends React.Component {
 					a[i] = enemy;
 					return a;
 				},{}), 
-				dim: false
+				dim: false,
 			}
 		});
 	}
 
 	expandEnemy(enemyId, event){
-		console.log('expanding enemy');
 		if(event){
 			event.preventDefault();
 		}
@@ -226,7 +225,7 @@ class NewGame1 extends React.Component {
 				let enemies = prevState.enemies, 
 					expanded = prevState.enemies[enemyId].expanded;
 	
-				Object.keys(enemies).map(id=>{ enemies[id].expanded = false; })
+				Object.keys(enemies).map(id => { enemies[id].expanded = false; })
 	
 				enemies[enemyId].expanded = !expanded;
 	
@@ -241,9 +240,6 @@ class NewGame1 extends React.Component {
 	}
 
 	toggleDim(force){
-		if(force !== undefined){
-
-		}
 		this.setState(prevState => {
 			if(force !== undefined){
 				return { ...prevState, dim: force }
@@ -313,13 +309,17 @@ class NewGame1 extends React.Component {
 		}
 	}
 
+	expandSupplyCard(){
+		alert('hi');
+		
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
 
-				
 				<View style={[styles.areasContainer, {height: '70%'}]}>
-					<SupplyArea/>
+					<SupplyArea expandSupplyCard={this.expandSupplyCard.bind(this)}/>
 					<WonderArea 
 						players_to_wonders={this.state.players_to_wonders}
 						wondersRevealed={this.state.wondersRevealed}
@@ -335,7 +335,13 @@ class NewGame1 extends React.Component {
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
 				<Ionicons style={styles.goBack} name="md-settings" size={32} color="black" onPress={this.props.goBack}/>
 
-				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp] : styles.opponentContainer}>
+				{/* {this.state.expandedSupplyCard ? 
+						<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
+							<Text>Expanded</Text>
+						</View> 
+					: null} */}
+
+				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {width: '85%', right: null}] : styles.opponentContainer}>
 					{Object.keys(this.state.enemies).map(enemyId => {
 						let enemy = this.state.enemies[enemyId],
 							func = !enemy.expanded ? this.expandEnemy.bind(this, enemy.id) : ()=>null,
@@ -386,12 +392,13 @@ const styles = StyleSheet.create({
 	areasContainer:{
 		flexDirection: 'row',
 	},
-	opponentContainer:{
+	opponentContainer: {
 		position: 'absolute',
 		flexDirection: 'row',
-		width: '100%',
+		width: '50%',
 		top: 0,
-		justifyContent: 'flex-end'
+		right: 0,
+		justifyContent: 'flex-end',
 	},
 	opponentContainerExp: {
 		height: '85%',

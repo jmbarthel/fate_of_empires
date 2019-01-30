@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from "react-native";
 import { connect } from 'react-redux';
+import SupplyCard from './supply_card.js';
 
 
 const mapStateToProps = state => {
@@ -8,8 +9,8 @@ const mapStateToProps = state => {
 };
 
 class SupplyArea1 extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {};
 	}
 
@@ -17,20 +18,20 @@ class SupplyArea1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.resourceContainer}>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
 				</View>
 
 				<View style={styles.resourceContainer}>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
-					<View style={styles.resource}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
 				</View>
 			</View>
 		);
@@ -52,15 +53,6 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		flexWrap: 'wrap'
 	},
-	resource: {
-		borderRadius: 5, 
-		borderColor: '#000',
-		borderWidth: 1,
-		width: '20%',
-		height: '100%',
-		margin: 3,
-		backgroundColor: '#555'
-	}
 });
   
 export default SupplyArea = connect(mapStateToProps)(SupplyArea1);

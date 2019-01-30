@@ -63,9 +63,7 @@ export default class Card extends React.Component {
 	}
 
 	render() {
-        const panStyle = {
-			transform: this.state.pan.getTranslateTransform()
-        }
+        const panStyle = { transform: this.state.pan.getTranslateTransform() }
 
         panStyle.transform.push({rotate: this.props.angle+"deg"})
         // Calculate the transform property and set it as a value for our style which we add below to the Animated.View component
