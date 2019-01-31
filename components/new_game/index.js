@@ -27,13 +27,14 @@ class NewGame1 extends React.Component {
 			enemyArr[i] = {
 				id: i, 
 				expanded: false,
-				name: 'enemy '+i
+				name: 'enemy '+i,
+				deck: []
 			}
 		}
 
 		// DECK NUMBERS
-		let ancient_wonders = 27, 
-			modern_wonders = 23,
+		let ancientWondersCount = 27, 
+			modernWondersCount = 23,
 			natural_wonders = 20,
 			peasant = 35, 
 			bankers = 10, 
@@ -46,7 +47,7 @@ class NewGame1 extends React.Component {
 			centralized_government = 5, 
 			regions = 5;
 
-		const setup = {
+		const setupWonders = {
 			'2': {
 				ancient: 13, 
 				modern: 9, 
@@ -69,12 +70,35 @@ class NewGame1 extends React.Component {
 			}, 
 		}
 
+		const setUpDraws = {
+			'1': {
+				draw: 5, 
+				capital: []
+			},
+			'2': {
+				draw: 5, 
+				capital: 'soldier'
+			},
+			'3': {
+				draw: 6, 
+				capital: []
+			},
+			'4': {
+				draw: 6, 
+				capital: 'soldier'
+			},
+			'5': {
+				draw: 7, 
+				capital: []
+			}
+		}
+
 		// SET THE WONDER SUPPLY
 		let wonderSupplyArr = [];
 
 		wonderSupplyArr.push({id: 'last_turn'});
 
-		for(let i = 0; i < (modern_wonders - setup[num_of_players].modern); i++){
+		for(let i = 0; i < (modernWondersCount - setupWonders[num_of_players].modern); i++){
 			wonderSupplyArr.push({
 				id: Math.floor(Math.random() * 1000),
 				type: 'modern_wonder'
@@ -85,30 +109,37 @@ class NewGame1 extends React.Component {
 			id: 'age_of_enlightenment'
 		});
 
-		for(let i = 0; i < (ancient_wonders - setup[num_of_players].ancient); i++){
+		for(let i = 0; i < (ancientWondersCount - setupWonders[num_of_players].ancient); i++){
 			wonderSupplyArr.push({
 				id: Math.floor(Math.random() * 1000),
 				type: 'ancient_wonder'
 			});
 		}
 
-		// SET THE PLAYER DECK
+		// SET THE PLAYERS DECKS
 		let playerDeck = [], playerHand=[];
 
-		for(let i =0; i < 10; i++){
-			if(i < 5){
-				playerHand.push({
-					id: i, 
-					expanded: false,
-					name: 'peasant'
-				})
-			} else{
-				playerDeck.push({
-					id: i, 
+		for(let i = 0; i < Object.keys(enemyArr).length; i++){
+			for(let j = 0; j < setupWonders[num_of_players].peasants; j++){
+				enemyArr[Object.keys(enemyArr)[i]].deck.push({
+					id: j, 
 					expanded: false,
 					name: 'peasant'
 				});
 			}
+			enemyArr[Object.keys(enemyArr)[i]].deck.push({
+				id: j++,
+				expanded: false, 
+				name: 'humanitarian_aid',
+			});
+		}
+
+		for(let i = 0; i < setupWonders[num_of_players].peasants; i++){
+			playerDeck.push({
+				id: i, 
+				expanded: false,
+				name: 'peasant'
+			});
 		}
 
 		this.state = {
@@ -310,8 +341,11 @@ class NewGame1 extends React.Component {
 	}
 
 	expandSupplyCard(){
-		alert('hi');
-		
+		this.setState({expandedSupplyCard: true});
+	}
+
+	unExpandSupplyCard(){
+		this.setState({expandedSupplyCard: false});
 	}
 
 	render() {
@@ -319,7 +353,10 @@ class NewGame1 extends React.Component {
 			<View style={styles.container}>
 
 				<View style={[styles.areasContainer, {height: '70%'}]}>
-					<SupplyArea expandSupplyCard={this.expandSupplyCard.bind(this)}/>
+					<SupplyArea 
+						expandSupplyCard={this.expandSupplyCard.bind(this)}
+						unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
+					/>
 					<WonderArea 
 						players_to_wonders={this.state.players_to_wonders}
 						wondersRevealed={this.state.wondersRevealed}
@@ -329,17 +366,20 @@ class NewGame1 extends React.Component {
 				</View>
 
 				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
-					<PlayerArea player={this.state.player} toggleDim={this.toggleDim.bind(this)}/>
+					<PlayerArea 
+						player={this.state.player} 
+						toggleDim={this.toggleDim.bind(this)}
+					/>
 				</View>
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
 				<Ionicons style={styles.goBack} name="md-settings" size={32} color="black" onPress={this.props.goBack}/>
 
-				{/* {this.state.expandedSupplyCard ? 
+				{this.state.expandedSupplyCard ? 
 						<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
-							<Text>Expanded</Text>
+							<Text onPress={this.unExpandSupplyCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
 						</View> 
-					: null} */}
+					: null}
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {width: '85%', right: null}] : styles.opponentContainer}>
 					{Object.keys(this.state.enemies).map(enemyId => {
