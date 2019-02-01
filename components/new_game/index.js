@@ -28,7 +28,9 @@ class NewGame1 extends React.Component {
 				id: i, 
 				expanded: false,
 				name: 'enemy '+i,
-				deck: []
+				deck: [],
+				hand: [],
+				activePlayer: false,
 			}
 		}
 
@@ -43,7 +45,6 @@ class NewGame1 extends React.Component {
 			soldier = 5, 
 			humanitarian_aid = 5, 
 			infantry = 5, 
-			navy = 5, 
 			centralized_government = 5, 
 			regions = 5;
 
@@ -68,29 +69,6 @@ class NewGame1 extends React.Component {
 				modern: 0, 
 				peasants: 7
 			}, 
-		}
-
-		const setUpDraws = {
-			'1': {
-				draw: 5, 
-				capital: []
-			},
-			'2': {
-				draw: 5, 
-				capital: 'soldier'
-			},
-			'3': {
-				draw: 6, 
-				capital: []
-			},
-			'4': {
-				draw: 6, 
-				capital: 'soldier'
-			},
-			'5': {
-				draw: 7, 
-				capital: []
-			}
 		}
 
 		// SET THE WONDER SUPPLY
@@ -119,6 +97,7 @@ class NewGame1 extends React.Component {
 		// SET THE PLAYERS DECKS
 		let playerDeck = [], playerHand=[];
 
+		// setting enemy decks
 		for(let i = 0; i < Object.keys(enemyArr).length; i++){
 			for(let j = 0; j < setupWonders[num_of_players].peasants; j++){
 				enemyArr[Object.keys(enemyArr)[i]].deck.push({
@@ -127,13 +106,15 @@ class NewGame1 extends React.Component {
 					name: 'peasant'
 				});
 			}
+			// Adding humanitarian aid
 			enemyArr[Object.keys(enemyArr)[i]].deck.push({
-				id: j++,
+				id: Math.floor(Math.random()*10),
 				expanded: false, 
 				name: 'humanitarian_aid',
 			});
 		}
 
+		// Setting player deck
 		for(let i = 0; i < setupWonders[num_of_players].peasants; i++){
 			playerDeck.push({
 				id: i, 
@@ -141,6 +122,50 @@ class NewGame1 extends React.Component {
 				name: 'peasant'
 			});
 		}
+
+		// Adding humanitarian aid
+		playerDeck.push({
+			id: Math.floor(Math.random()*10),
+			expanded: false, 
+			name: 'humanitarian_aid',
+		})
+
+		//SETUP PLAYER HANDS
+		const setUpDraws = {
+			'1': {
+				draw: 5, 
+				capital: []
+			},
+			'2': {
+				draw: 5, 
+				capital: 'soldier'
+			},
+			'3': {
+				draw: 6, 
+				capital: []
+			},
+			'4': {
+				draw: 6, 
+				capital: 'soldier'
+			},
+			'5': {
+				draw: 7, 
+				capital: []
+			}
+		}
+
+		for(let i = 0; i < setUpDraws['1'].draw; i++){
+			playerHand.push(playerDeck.pop());
+		}
+
+		let idx = 2;
+
+		Object.keys(enemyArr).forEach(enemyId => {
+			for(let i = 0; i < setUpDraws[idx].draw; i++){
+				enemyArr[enemyId].hand.push(enemyArr[enemyId].deck.pop());
+			}
+			idx++;
+		})
 
 		this.state = {
 			dim: false,
@@ -151,6 +176,8 @@ class NewGame1 extends React.Component {
 				name: 'Player', 
 				region: null, 
 				trait: null,
+
+				activePlayer: true,
 
 				hand: playerHand, 
 				deck: playerDeck,
@@ -167,9 +194,17 @@ class NewGame1 extends React.Component {
 					gold: 0, 
 					science: 0, 
 					influence: 0,
+					toward: {
+						people: 0, 
+						science: 0, 
+						influence: 0, 
+						anyWonder: 0, 
+					}
 				},
 				capital: []
 			},
+
+			activeTurn: 1,
 
 			enemies: enemyArr, 
 			num_of_enemies: num_of_enemies,
@@ -222,11 +257,7 @@ class NewGame1 extends React.Component {
 				capital: array of cards on the capital
 
 			}
-
-
-
 		*/
-		// console.log(this.state.wonderSupply);
 	}
 
 	closeAllEnemies(){
