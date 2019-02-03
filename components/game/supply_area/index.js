@@ -3,6 +3,10 @@ import { View, StyleSheet, Text } from "react-native";
 import { connect } from 'react-redux';
 import SupplyCard from './supply_card.js';
 
+// Cards
+import Banker from '../cards/Banker.js';
+import Scientist from '../cards/Scientist.js';
+import Artist from '../cards/Artist.js';
 
 const mapStateToProps = state => {
     return { ...state };
@@ -18,9 +22,9 @@ class SupplyArea1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.resourceContainer}>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} card={true} renderCard={() => {return (<Banker/>)}}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} card={true} renderCard={() => {return (<Artist/>)}}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} card={true} renderCard={() => {return (<Scientist/>)}}/>
 				</View>
 
 				<View style={styles.resourceContainer}>
@@ -53,6 +57,15 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		flexWrap: 'wrap'
 	},
+	card: {
+		borderRadius: 5, 
+		borderColor: '#000',
+		borderWidth: 1,
+		width: '20%',
+		height: '100%',
+		margin: 3,
+		backgroundColor: '#555'
+	}
 });
   
 export default SupplyArea = connect(mapStateToProps)(SupplyArea1);

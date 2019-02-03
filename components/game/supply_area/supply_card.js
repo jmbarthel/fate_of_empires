@@ -10,19 +10,45 @@ const mapStateToProps = state => {
 class SupplyCard1 extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			expanded: false
+		};
     }
     
     onPress(){
-        this.props.expandSupplyCard();
-    }
+		console.log('pressed');
+		if(this.props.card){
+			this.setState({expanded: true})
+		} else{
+			this.props.expandSupplyCard(this.props.renderCard.bind(this));
+		}
+	}
+	
+	closeCard(){
+		this.setState({expanded: false})
+	}
 
 	render() {
 		return (
 			<View style={styles.container}>
                 <TouchableWithoutFeedback onPress={this.onPress.bind(this)}>
-                    <Text style={{width: '100%', height: '100%'}} >Card</Text>
+					{
+						this.props.card 
+
+						? this.props.renderCard()
+
+						: <Text style={{width: '100%', height: '100%'}}>Card</Text>
+					}
                 </TouchableWithoutFeedback>
+
+				{
+					this.props.expand 
+
+					? this.props.renderCard()
+
+					: null
+				}
+
 			</View>
 		);
 	}

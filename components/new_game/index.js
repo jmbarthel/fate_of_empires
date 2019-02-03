@@ -6,7 +6,9 @@ import WonderArea from '../game/wonder_area/index.js';
 import PlayerArea from '../game/player_area/index.js';
 import Opponent from '../game/opponent/index.js';
 import { Ionicons } from '@expo/vector-icons';
-import Game from './game.js';
+// Cards
+import Peasant from '../game/cards/Peasant.js';
+import HumanitarianAid from '../game/cards/HumanitarianAid.js';
 
 const mapStateToProps = state => {
     return { ...state };
@@ -101,33 +103,29 @@ class NewGame1 extends React.Component {
 		for(let i = 0; i < Object.keys(enemyArr).length; i++){
 			for(let j = 0; j < setupWonders[num_of_players].peasants; j++){
 				enemyArr[Object.keys(enemyArr)[i]].deck.push({
-					id: j, 
-					expanded: false,
-					name: 'peasant'
+					real: true,
+					render: () => {return (<Peasant/>)}
 				});
 			}
 			// Adding humanitarian aid
 			enemyArr[Object.keys(enemyArr)[i]].deck.push({
-				id: Math.floor(Math.random()*10),
-				expanded: false, 
-				name: 'humanitarian_aid',
+				real: true,
+				render: () => {return (<HumanitarianAid/>)}
 			});
 		}
 
 		// Setting player deck
 		for(let i = 0; i < setupWonders[num_of_players].peasants; i++){
 			playerDeck.push({
-				id: i, 
-				expanded: false,
-				name: 'peasant'
+				real: true,
+				render: () => {return (<Peasant/>)}
 			});
 		}
 
 		// Adding humanitarian aid
 		playerDeck.push({
-			id: Math.floor(Math.random()*10),
-			expanded: false, 
-			name: 'humanitarian_aid',
+			real: true,
+			render: () => {return (<HumanitarianAid/>)}
 		})
 
 		//SETUP PLAYER HANDS
@@ -169,7 +167,8 @@ class NewGame1 extends React.Component {
 
 		this.state = {
 			dim: false,
-			expandedSupplyCard: false, 
+			expandSupplyCard: false, 
+			expandedSupplyCard: false,
 
 			player: {
 				id: 0, 
@@ -225,7 +224,8 @@ class NewGame1 extends React.Component {
 				'3': 5, 
 				'4': 6, 
 				'5': 6
-			}
+			},
+
 		};
 
 		/*
@@ -371,12 +371,13 @@ class NewGame1 extends React.Component {
 		}
 	}
 
-	expandSupplyCard(){
-		this.setState({expandedSupplyCard: true});
+	expandSupplyCard(card){
+		console.log('expanding');
+		this.setState({expandSupplyCard: true, expandedSupplyCard: card});
 	}
 
 	unExpandSupplyCard(){
-		this.setState({expandedSupplyCard: false});
+		this.setState({expandSupplyCard: false, expandedSupplyCard: false});
 	}
 
 	render() {
@@ -406,11 +407,19 @@ class NewGame1 extends React.Component {
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
 				<Ionicons style={styles.goBack} name="md-settings" size={32} color="black" onPress={this.props.goBack}/>
 
-				{this.state.expandedSupplyCard ? 
-						<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
-							<Text onPress={this.unExpandSupplyCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
-						</View> 
-					: null}
+				{this.state.expandSupplyCard ? 
+					this.state.expandedSupplyCard 
+						? (
+							<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
+								<TouchableWithoutFeedback onPress={this.unExpandSupplyCard.bind(this)}>{this.props.expandedSupplyCard()}</TouchableWithoutFeedback>
+							</View>
+						) 
+						: (
+							<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
+								<Text onPress={this.unExpandSupplyCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
+							</View>
+						)
+					: undefined}
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {width: '85%', right: null}] : styles.opponentContainer}>
 					{Object.keys(this.state.enemies).map(enemyId => {
