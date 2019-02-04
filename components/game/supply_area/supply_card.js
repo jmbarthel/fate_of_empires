@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 
 
@@ -18,9 +18,10 @@ class SupplyCard1 extends React.Component {
     onPress(){
 		console.log('pressed');
 		if(this.props.card){
-			this.setState({expanded: true})
+			// this.setState({expanded: true})
+			this.props.expandSupplyCard(this.props.renderCard);
 		} else{
-			this.props.expandSupplyCard(this.props.renderCard.bind(this));
+			this.props.expandSupplyCard();
 		}
 	}
 	
@@ -31,23 +32,37 @@ class SupplyCard1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-                <TouchableWithoutFeedback onPress={this.onPress.bind(this)}>
+                <TouchableOpacity onPress={this.onPress.bind(this)}>
 					{
 						this.props.card 
-
+						
 						? this.props.renderCard()
-
+						
 						: <Text style={{width: '100%', height: '100%'}}>Card</Text>
 					}
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
 
-				{
-					this.props.expand 
+				{/* {
+					this.props.expanded
 
-					? this.props.renderCard()
+					? 
+					<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
+						<TouchableWithoutFeedback onPress={this.closeCard.bind(this)}>
+						{
+							this.props.card
+
+							? this.props.renderCard()
+
+							: <Text style={{width: '100%', height: '100%'}}>Card</Text>
+
+						}
+						{this.props.renderCard()}
+						
+						</TouchableWithoutFeedback>
+					</View>
 
 					: null
-				}
+				} */}
 
 			</View>
 		);

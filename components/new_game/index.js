@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';
@@ -7,8 +7,8 @@ import PlayerArea from '../game/player_area/index.js';
 import Opponent from '../game/opponent/index.js';
 import { Ionicons } from '@expo/vector-icons';
 // Cards
-import Peasant from '../game/cards/Peasant.js';
-import HumanitarianAid from '../game/cards/HumanitarianAid.js';
+import Peasant from '../game/cards/starters/Peasant.js';
+import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
 
 const mapStateToProps = state => {
     return { ...state };
@@ -381,6 +381,7 @@ class NewGame1 extends React.Component {
 	}
 
 	render() {
+		const Card = this.state.expandedSupplyCard;
 		return (
 			<View style={styles.container}>
 
@@ -410,12 +411,12 @@ class NewGame1 extends React.Component {
 				{this.state.expandSupplyCard ? 
 					this.state.expandedSupplyCard 
 						? (
-							<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
-								<TouchableWithoutFeedback onPress={this.unExpandSupplyCard.bind(this)}>{this.props.expandedSupplyCard()}</TouchableWithoutFeedback>
+							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%'}}>
+								<TouchableOpacity onPress={this.unExpandSupplyCard.bind(this)}><Card/></TouchableOpacity>
 							</View>
 						) 
 						: (
-							<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
+							<View style={{backgroundColor: '#502', position:'absolute', width: '30%', height: '70%'}}>
 								<Text onPress={this.unExpandSupplyCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
 							</View>
 						)

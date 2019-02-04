@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import SupplyCard from './supply_card.js';
 
 // Cards
-import Banker from '../cards/Banker.js';
-import Scientist from '../cards/Scientist.js';
-import Artist from '../cards/Artist.js';
+import Banker from '../cards/starters/Banker.js';
+import Scientist from '../cards/starters/Scientist.js';
+import Artist from '../cards/starters/Artist.js';
 
 const mapStateToProps = state => {
     return { ...state };
