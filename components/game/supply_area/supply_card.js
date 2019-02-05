@@ -11,15 +11,12 @@ class SupplyCard1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			expanded: false
 		};
     }
     
     onPress(){
-		console.log('pressed');
-		if(this.props.card){
-			// this.setState({expanded: true})
-			this.props.expandSupplyCard(this.props.renderCard);
+		if(this.props.real){
+			this.props.expandSupplyCard(this.props.card);
 		} else{
 			this.props.expandSupplyCard();
 		}
@@ -30,40 +27,21 @@ class SupplyCard1 extends React.Component {
 	}
 
 	render() {
+		if(this.props.real){
+			let Card = this.props.card();
+		}
+
 		return (
 			<View style={styles.container}>
                 <TouchableOpacity onPress={this.onPress.bind(this)}>
 					{
-						this.props.card 
+						this.props.real 
 						
-						? this.props.renderCard()
+						? this.props.card()
 						
 						: <Text style={{width: '100%', height: '100%'}}>Card</Text>
 					}
                 </TouchableOpacity>
-
-				{/* {
-					this.props.expanded
-
-					? 
-					<View style={{backgroundColor: '#f02', position:'absolute', width: '30%', height: '70%'}}>
-						<TouchableWithoutFeedback onPress={this.closeCard.bind(this)}>
-						{
-							this.props.card
-
-							? this.props.renderCard()
-
-							: <Text style={{width: '100%', height: '100%'}}>Card</Text>
-
-						}
-						{this.props.renderCard()}
-						
-						</TouchableWithoutFeedback>
-					</View>
-
-					: null
-				} */}
-
 			</View>
 		);
 	}

@@ -10,6 +10,9 @@ import { Ionicons } from '@expo/vector-icons';
 import Peasant from '../game/cards/starters/Peasant.js';
 import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
 
+// Setup
+import assembleSupplyDeck from './assemble_cards.js';
+
 const mapStateToProps = state => {
     return { ...state };
 };
@@ -163,7 +166,15 @@ class NewGame1 extends React.Component {
 				enemyArr[enemyId].hand.push(enemyArr[enemyId].deck.pop());
 			}
 			idx++;
-		})
+		});
+
+		//SET REVEALED SUPPLY CARDS
+		const supplyDeck = assembleSupplyDeck();
+		const supplyRevealed = [];
+		
+		for(let i = 0; i < 6; i++){
+			supplyRevealed.push(supplyDeck.pop());
+		}
 
 		this.state = {
 			dim: false,
@@ -212,8 +223,8 @@ class NewGame1 extends React.Component {
 			wondersRevealed: [],
 			wonderSupply: wonderSupplyArr,
 
-			supplyRevealed: [],
-			supplySupply: [],
+			supplyRevealed,
+			supplyDeck,
 
 			bankers: 10, 
 			artists: 10, 
@@ -372,8 +383,8 @@ class NewGame1 extends React.Component {
 	}
 
 	expandSupplyCard(card){
-		console.log('expanding');
-		this.setState({expandSupplyCard: true, expandedSupplyCard: card});
+		console.log('expanding', card().props.props)
+		this.setState({expandSupplyCard: true, expandedSupplyCard: card()});
 	}
 
 	unExpandSupplyCard(){
@@ -387,6 +398,8 @@ class NewGame1 extends React.Component {
 
 				<View style={[styles.areasContainer, {height: '70%'}]}>
 					<SupplyArea 
+						supplyDeck={this.state.supplyDeck}
+						supplyRevealed={this.state.supplyRevealed}
 						expandSupplyCard={this.expandSupplyCard.bind(this)}
 						unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
 					/>
@@ -412,7 +425,7 @@ class NewGame1 extends React.Component {
 					this.state.expandedSupplyCard 
 						? (
 							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%'}}>
-								<TouchableOpacity onPress={this.unExpandSupplyCard.bind(this)}><Card/></TouchableOpacity>
+								<TouchableOpacity onPress={this.unExpandSupplyCard.bind(this)}>{this.state.expandedSupplyCard}</TouchableOpacity>
 							</View>
 						) 
 						: (

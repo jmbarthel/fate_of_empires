@@ -22,20 +22,17 @@ class SupplyArea1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.resourceContainer}>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} card={true} renderCard={() => {return (<Banker/>)}}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} card={true} renderCard={() => {return (<Artist/>)}}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} card={true} renderCard={() => {return (<Scientist/>)}}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} real={true} card={Banker}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} real={true} card={Artist}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} real={true} card={Scientist}/>
 				</View>
 
 				<View style={styles.resourceContainer}>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard}/>
+					{
+						this.props.supplyRevealed.map((card, i) => {
+							return <SupplyCard key={i} expandSupplyCard={this.props.expandSupplyCard} real={true} card={card}/>
+						})
+					}
 				</View>
 			</View>
 		);
