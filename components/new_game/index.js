@@ -11,7 +11,7 @@ import Peasant from '../game/cards/starters/Peasant.js';
 import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
 
 // Setup
-import assembleSupplyDeck from './assemble_cards.js';
+import assembleSupplyDeck from './assemble_supply_cards.js';
 
 const mapStateToProps = state => {
     return { ...state };
@@ -171,8 +171,8 @@ class NewGame1 extends React.Component {
 		//SET REVEALED SUPPLY CARDS
 		const supplyDeck = assembleSupplyDeck();
 		const supplyRevealed = [];
-		
-		for(let i = 0; i < 6; i++){
+
+		for(let i = 0; i < 8; i++){
 			supplyRevealed.push(supplyDeck.pop());
 		}
 
