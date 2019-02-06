@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default Tenochtitlan = (props) => {
-    const type = 'cities';
+    const type = 'city';
     const name = 'Tenochtitlan';
     props = {...props, type, name}
     

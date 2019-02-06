@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default Glasgow = (props) => {
-    const type = 'cities';
+    const type = 'city';
     const name = 'Glasgow';
     props = {...props, type, name}
     

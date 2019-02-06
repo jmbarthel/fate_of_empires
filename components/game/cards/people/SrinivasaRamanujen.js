@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default SrinivasaRamanujen = (props) => {
-    const type = 'people';
+    const type = 'person';
     const name = 'SrinivasaRamanujen';
     props = {...props, type, name}
     

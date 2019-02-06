@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default Carthage = (props) => {
-    const type = 'cities';
+    const type = 'city';
     const name = 'Carthage';
     props = {...props, type, name}
     
