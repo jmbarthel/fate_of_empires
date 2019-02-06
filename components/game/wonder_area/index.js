@@ -9,8 +9,8 @@ const mapStateToProps = state => {
 };
 
 class WonderArea1 extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
         this.state = {};
 //          players_to_wonders
 //          wondersRevealed
@@ -21,9 +21,9 @@ class WonderArea1 extends React.Component {
     renderRevealedWonders(){
         let x = [];
 
-        for(let i=0; i<this.props.players_to_wonders[this.props.num_of_players]; i++){
+        for(let i=0; i < this.props.wondersRevealed.length; i++){
             x.push(
-                <Wonder key={i} k={i}/>
+                <Wonder key={i} card={this.props.wondersRevealed[i]}/>
             );
 
             if(i===this.props.players_to_wonders[this.props.num_of_players]-1){

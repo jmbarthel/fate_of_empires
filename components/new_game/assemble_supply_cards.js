@@ -1,7 +1,7 @@
 // People
 import AdaLovelace from '../game/cards/people/AdaLovelace.js';
 import AlbertEinstein from '../game/cards/people/AlbertEinstein.js';
-import AnastasiaNikoaevna from '../game/cards/people/AnastasiaNikoaevna.js';
+import AnastasiaNikolaevna from '../game/cards/people/AnastasiaNikolaevna.js';
 import Aristotle from '../game/cards/people/Aristotle.js';
 import AugustusCaesar from '../game/cards/people/AugustusCaesar.js';
 import BenjaminFranklin from '../game/cards/people/BenjaminFranklin.js';
@@ -138,7 +138,7 @@ const assembleSupplyDeck = () => {
     let supplyDeck = [
         AdaLovelace,
         AlbertEinstein,
-        AnastasiaNikoaevna,
+        AnastasiaNikolaevna,
         Aristotle,
         AugustusCaesar,
         BenjaminFranklin,

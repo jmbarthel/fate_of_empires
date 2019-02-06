@@ -12,6 +12,7 @@ import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
 
 // Setup
 import assembleSupplyDeck from './assemble_supply_cards.js';
+import assembleWonderDeck from './assemble_wonder_cards.js';
 
 const mapStateToProps = state => {
     return { ...state };
@@ -53,83 +54,46 @@ class NewGame1 extends React.Component {
 			centralized_government = 5, 
 			regions = 5;
 
-		const setupWonders = {
-			'2': {
-				ancient: 13, 
-				modern: 9, 
-				peasants: 10
-			}, 
-			'3': {
-				ancient: 7, 
-				modern: 3, 
-				peasants: 9
-			}, 
-			'4': {
-				ancient: 0, 
-				modern: 0, 
-				peasants: 8
-			}, 
-			'5': {
-				ancient: 0, 
-				modern: 0, 
-				peasants: 7
-			}, 
-		}
-
+		
 		// SET THE WONDER SUPPLY
-		let wonderSupplyArr = [];
-
-		wonderSupplyArr.push({id: 'last_turn'});
-
-		for(let i = 0; i < (modernWondersCount - setupWonders[num_of_players].modern); i++){
-			wonderSupplyArr.push({
-				id: Math.floor(Math.random() * 1000),
-				type: 'modern_wonder'
-			});
-		}
-
-		wonderSupplyArr.push({
-			id: 'age_of_enlightenment'
-		});
-
-		for(let i = 0; i < (ancientWondersCount - setupWonders[num_of_players].ancient); i++){
-			wonderSupplyArr.push({
-				id: Math.floor(Math.random() * 1000),
-				type: 'ancient_wonder'
-			});
+		let { wonderSupply, naturalWonders } = assembleWonderDeck(num_of_players);
+		let wondersRevealed = [];
+		const players_to_wonders = {
+			'2': 4, 
+			'3': 5, 
+			'4': 6, 
+			'5': 6
+		};
+		for(let i = 0; i < players_to_wonders[num_of_players]; i++){
+			wondersRevealed.push(wonderSupply.pop());
 		}
 
 		// SET THE PLAYERS DECKS
 		let playerDeck = [], playerHand=[];
 
+		const setupPeasants = {
+			'2': 10, 
+			'3': 9, 
+			'4': 8, 
+			'5': 7, 
+		}
+
 		// setting enemy decks
 		for(let i = 0; i < Object.keys(enemyArr).length; i++){
-			for(let j = 0; j < setupWonders[num_of_players].peasants; j++){
-				enemyArr[Object.keys(enemyArr)[i]].deck.push({
-					real: true,
-					render: () => {return (<Peasant/>)}
-				});
+			for(let j = 0; j < setupPeasants[num_of_players]; j++){
+				enemyArr[Object.keys(enemyArr)[i]].deck.push(Peasant);
 			}
 			// Adding humanitarian aid
-			enemyArr[Object.keys(enemyArr)[i]].deck.push({
-				real: true,
-				render: () => {return (<HumanitarianAid/>)}
-			});
+			enemyArr[Object.keys(enemyArr)[i]].deck.push(HumanitarianAid);
 		}
 
 		// Setting player deck
-		for(let i = 0; i < setupWonders[num_of_players].peasants; i++){
-			playerDeck.push({
-				real: true,
-				render: () => {return (<Peasant/>)}
-			});
+		for(let i = 0; i < setupPeasants[num_of_players]; i++){
+			playerDeck.push(Peasant);
 		}
 
 		// Adding humanitarian aid
-		playerDeck.push({
-			real: true,
-			render: () => {return (<HumanitarianAid/>)}
-		})
+		playerDeck.push(HumanitarianAid);
 
 		//SETUP PLAYER HANDS
 		const setUpDraws = {
@@ -220,8 +184,10 @@ class NewGame1 extends React.Component {
 			num_of_enemies: num_of_enemies,
 			num_of_players: num_of_players,
 
-			wondersRevealed: [],
-			wonderSupply: wonderSupplyArr,
+			wondersRevealed,
+			wonderSupply,
+
+			naturalWonders,
 
 			supplyRevealed,
 			supplyDeck,
@@ -230,12 +196,7 @@ class NewGame1 extends React.Component {
 			artists: 10, 
 			scientists: 10,
 
-			players_to_wonders: {
-				'2': 4, 
-				'3': 5, 
-				'4': 6, 
-				'5': 6
-			},
+			players_to_wonders,
 
 		};
 

@@ -16,11 +16,8 @@ export default class Card extends React.Component {
         }
     }
 
-    englarge(){
+    enlarge(){
         let coordinates = [];
-
-
-
     }
 
     componentWillMount() {
@@ -76,10 +73,10 @@ export default class Card extends React.Component {
                 >
                 {this.state.expanded ? 
                     <View>
-                    <View style={{justifyContent: 'center', alignItems: 'center', height: '50%'}}>
-                        <Text>Artwork</Text>
+                    <View style={{justifyContent: 'center', alignItems: 'center', top: 0}}>
+                        {this.props.card()}
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '45%'}}>
+                    {/* <View style={{position: 'absolute', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: '45%'}}>
                         <View style={{width: '50%'}}>
                             <Text>Option 1</Text>
                         </View>
@@ -88,12 +85,10 @@ export default class Card extends React.Component {
                         <View style={{width: '45%'}}>
                             <Text>Option 2</Text>
                         </View>
-                    </View>
+                    </View> */}
                     </View> 
                     : 
-                        this.props.card.real ? 
-                        this.props.card.render() 
-                        : <Text>{this.props.card.name}</Text>
+                        this.props.card() 
                 }
                     
                 </Animated.View>
@@ -104,7 +99,7 @@ export default class Card extends React.Component {
 const styles = StyleSheet.create({
     card: {
         backgroundColor: "#075",
-        height: 70,
+        height: 80,
         width: 50,
         borderColor: '#fff', 
         borderWidth: 2,
@@ -113,8 +108,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#555'
     },
     expandedCard: {
-        height: 210, 
-        width: 150,
+        height: 80*3, 
+        width: 50*3,
     }
 
 });

@@ -58,6 +58,7 @@ export default class Wonder extends React.Component {
                     {...this.panResponder.panHandlers}
                     style={[panStyle, this.props.style, styles.wonder]}
                 >
+                {this.props.card()}
                     
                 </Animated.View>
 		);

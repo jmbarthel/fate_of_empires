@@ -50,31 +50,36 @@ import YellowstoneNationalPark from '../game/cards/wonders/natural/YellowstoneNa
 import YosemiteNationalPark from '../game/cards/wonders/natural/YosemiteNationalPark.js';
 
 // Modern
-import BigBen from '../game/cards/wonders/natural/BigBen.js';
-import CCTV from '../game/cards/wonders/natural/CCTV.js';
-import CERN from '../game/cards/wonders/natural/CERN.js';
-import EiffelTower from '../game/cards/wonders/natural/EiffelTower.js';
-import GoldenGateBridge from '../game/cards/wonders/natural/GoldenGateBridge.js';
-import HumanGenomeProject from '../game/cards/wonders/natural/HumanGenomeProject.js';
-import ISS from '../game/cards/wonders/natural/ISS.js';
-import Louvre from '../game/cards/wonders/natural/Louvre.js';
-import ManhattanProject from '../game/cards/wonders/natural/ManhattanProject.js';
-import NeuschwansteinCastle from '../game/cards/wonders/natural/NeuschwansteinCastle.js';
-import NewYorkStockExchange from '../game/cards/wonders/natural/NewYorkStockExchange.js';
-import SagradaFamilia from '../game/cards/wonders/natural/SagradaFamilia.js';
-import SpaceRace from '../game/cards/wonders/natural/SpaceRace.js';
-import StatueofLiberty from '../game/cards/wonders/natural/StatueofLiberty.js';
-import SuezCanal from '../game/cards/wonders/natural/SuezCanal.js';
-import SydneyOperaHouse from '../game/cards/wonders/natural/SydneyOperaHouse.js';
-import Taipei101 from '../game/cards/wonders/natural/Taipei101.js';
-import TheChunnel from '../game/cards/wonders/natural/TheChunnel.js';
-import TheInternet from '../game/cards/wonders/natural/TheInternet.js';
-import ThePentagon from '../game/cards/wonders/natural/ThePentagon.js';
-import UnifiedCurrency from '../game/cards/wonders/natural/UnifiedCurrency.js';
-import UnitedNations from '../game/cards/wonders/natural/UnitedNations.js';
-import VictoriaHarbour from '../game/cards/wonders/natural/VictoriaHarbour.js';
+import BigBen from '../game/cards/wonders/moderns/BigBen.js';
+import CCTV from '../game/cards/wonders/moderns/CCTV.js';
+import CERN from '../game/cards/wonders/moderns/CERN.js';
+import EiffelTower from '../game/cards/wonders/moderns/EiffelTower.js';
+import GoldenGateBridge from '../game/cards/wonders/moderns/GoldenGateBridge.js';
+import HumanGenomeProject from '../game/cards/wonders/moderns/HumanGenomeProject.js';
+import ISS from '../game/cards/wonders/moderns/ISS.js';
+import Louvre from '../game/cards/wonders/moderns/Louvre.js';
+import ManhattanProject from '../game/cards/wonders/moderns/ManhattanProject.js';
+import NeuschwansteinCastle from '../game/cards/wonders/moderns/NeuschwansteinCastle.js';
+import NewYorkStockExchange from '../game/cards/wonders/moderns/NewYorkStockExchange.js';
+import SagradaFamilia from '../game/cards/wonders/moderns/SagradaFamilia.js';
+import SpaceRace from '../game/cards/wonders/moderns/SpaceRace.js';
+import StatueofLiberty from '../game/cards/wonders/moderns/StatueofLiberty.js';
+import SuezCanal from '../game/cards/wonders/moderns/SuezCanal.js';
+import SydneyOperaHouse from '../game/cards/wonders/moderns/SydneyOperaHouse.js';
+import Taipei101 from '../game/cards/wonders/moderns/Taipei101.js';
+import TheChunnel from '../game/cards/wonders/moderns/TheChunnel.js';
+import TheInternet from '../game/cards/wonders/moderns/TheInternet.js';
+import ThePentagon from '../game/cards/wonders/moderns/ThePentagon.js';
+import UnifiedCurrency from '../game/cards/wonders/moderns/UnifiedCurrency.js';
+import UnitedNations from '../game/cards/wonders/moderns/UnitedNations.js';
+import VictoriaHarbour from '../game/cards/wonders/moderns/VictoriaHarbour.js';
+
+// Starter things
+import AgeofEnlightenment from '../game/cards/starters/AgeofEnlightenment.js';
+import ElectWorldLeader from '../game/cards/starters/ElectWorldLeader.js';
 
 const shuffle = a => {
+    // hi
     var j, x, i;
     for (i = a.length - 1; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
@@ -85,7 +90,7 @@ const shuffle = a => {
     return a;
 }
 
-const assembleWonderDeck = () => {
+const assembleWonderDeck = (playersCount) => {
     let ancients = [
         AngkorWat,
         BolshoiTheater,
@@ -165,10 +170,48 @@ const assembleWonderDeck = () => {
         YosemiteNationalPark,
     ];
 
+    const setupWonders = {
+        '2': {
+            ancient: 13, 
+            modern: 9, 
+        }, 
+        '3': {
+            ancient: 7, 
+            modern: 3, 
+        }, 
+        '4': {
+            ancient: 0, 
+            modern: 0, 
+        }, 
+        '5': {
+            ancient: 0, 
+            modern: 0, 
+        }, 
+    }
+
+    ancients = shuffle(ancients);
+    moderns = shuffle(moderns); 
+    naturals = shuffle(naturals);
+
+    let wonderSupply = [];
+
+    wonderSupply.push(ElectWorldLeader);
+
+    for(let i = 0; i < (moderns.length - setupWonders[playersCount].modern); i++){
+        wonderSupply.push(moderns[i]);
+    }
+
+    wonderSupply.push(AgeofEnlightenment);
+
+    for(let i = 0; i < (ancients.length - setupWonders[playersCount].ancient); i++){
+        wonderSupply.push(ancients[i]);
+    }
+
+    wonderSupply.push()
+
     return {
-        ancients: shuffle(ancients),
-        moderns: shuffle(moderns), 
-        naturals: shuffle(naturals),
+        wonderSupply, 
+        naturalWonders: naturals
     };
 }
 
