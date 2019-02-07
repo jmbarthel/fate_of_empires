@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default BluePools = (props) => {
-    const type = 'natural_wonder';
+    const cost = 5; const type='natural_wonder';
     const name = 'BluePools';
     props = {...props, type, name}
     

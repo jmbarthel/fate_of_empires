@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default LighthouseofAlexandria = (props) => {
-    const type = 'ancient_wonder';
+    const cost = 5; const type='ancient_wonder';
     const name = 'LighthouseofAlexandria';
     props = {...props, type, name}
     

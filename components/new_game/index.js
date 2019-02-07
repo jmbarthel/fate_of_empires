@@ -344,12 +344,21 @@ class NewGame1 extends React.Component {
 	}
 
 	expandSupplyCard(card){
-		console.log('expanding', card().props.props)
+		console.log('expanding supply', card().props.props)
 		this.setState({expandSupplyCard: true, expandedSupplyCard: card()});
 	}
 
 	unExpandSupplyCard(){
 		this.setState({expandSupplyCard: false, expandedSupplyCard: false});
+	}
+
+	expandWonderCard(card){
+		console.log('expanding wonder', card().props.props)
+		this.setState({expandWonderCard: true, expandedWonderCard: card()});
+	}
+
+	unExpandWonderCard(){
+		this.setState({expandWonderCard: false, expandedWonderCard: false});
 	}
 
 	render() {
@@ -369,6 +378,7 @@ class NewGame1 extends React.Component {
 						wondersRevealed={this.state.wondersRevealed}
 						wonderSupply={this.state.wonderSupply}
 						num_of_players={this.state.num_of_players}
+						expandWonderCard={this.expandWonderCard.bind(this)}
 					/>
 				</View>
 
@@ -381,20 +391,6 @@ class NewGame1 extends React.Component {
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
 				<Ionicons style={styles.goBack} name="md-settings" size={32} color="black" onPress={this.props.goBack}/>
-
-				{this.state.expandSupplyCard ? 
-					this.state.expandedSupplyCard 
-						? (
-							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%'}}>
-								<TouchableOpacity onPress={this.unExpandSupplyCard.bind(this)}>{this.state.expandedSupplyCard}</TouchableOpacity>
-							</View>
-						) 
-						: (
-							<View style={{backgroundColor: '#502', position:'absolute', width: '30%', height: '70%'}}>
-								<Text onPress={this.unExpandSupplyCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
-							</View>
-						)
-					: undefined}
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {width: '85%', right: null}] : styles.opponentContainer}>
 					{Object.keys(this.state.enemies).map(enemyId => {
@@ -429,6 +425,34 @@ class NewGame1 extends React.Component {
 						}
 					})}
 				</View>
+
+				{this.state.expandSupplyCard ? 
+					this.state.expandedSupplyCard 
+						? (
+							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', right: 15}}>
+								<TouchableOpacity onPress={this.unExpandSupplyCard.bind(this)}>{this.state.expandedSupplyCard}</TouchableOpacity>
+							</View>
+						) 
+						: (
+							<View style={{backgroundColor: '#502', position:'absolute', width: '30%', height: '70%', right: 15}}>
+								<Text onPress={this.unExpandSupplyCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
+							</View>
+						)
+					: undefined}
+
+				{this.state.expandWonderCard ? 
+					this.state.expandedWonderCard 
+						? (
+							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', left: 15}}>
+								<TouchableOpacity onPress={this.unExpandWonderCard.bind(this)}>{this.state.expandedWonderCard}</TouchableOpacity>
+							</View>
+						) 
+						: (
+							<View style={{backgroundColor: '#502', position:'absolute', width: '30%', height: '70%', left: 15}}>
+								<Text onPress={this.unExpandWonderCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
+							</View>
+						)
+					: undefined}
 			
 			</View>
 		);

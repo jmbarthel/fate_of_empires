@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default EiffelTower = (props) => {
-    const type = 'modern_wonder';
+    const cost = 5; const type='modern_wonder';
     const name = 'EiffelTower';
     props = {...props, type, name}
     

@@ -2,9 +2,16 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default SteamEngine = (props) => {
-    const type = 'technology';
-    const name = 'SteamEngine';
-    props = {...props, type, name}
+    props = {
+        ...props, 
+        type: 'technology', 
+        name: 'SteamEngine', 
+        cost: {
+            gold: 0,
+            influence: 0, 
+            science: 4,
+        },
+    }
     
     return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../assets/technology/SteamEngine.jpg')} />
 }

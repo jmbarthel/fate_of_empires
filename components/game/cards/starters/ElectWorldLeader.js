@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default ElectWorldLeader = (props) => {
-    const type = 'event';
+    const cost = 5; const type='event';
     const name = 'ElectWorldLeader';
     props = {...props, type, name}
     

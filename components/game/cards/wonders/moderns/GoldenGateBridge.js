@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default GoldenGateBridge = (props) => {
-    const type = 'modern_wonder';
+    const cost = 5; const type='modern_wonder';
     const name = 'GoldenGateBridge';
     props = {...props, type, name}
     

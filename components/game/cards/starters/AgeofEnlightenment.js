@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default AgeofEnlightenment = (props) => {
-    const type = 'event';
+    const cost = 5; const type='event';
     const name = 'AgeofEnlightenment';
     props = {...props, type, name}
     

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default Preikestolen = (props) => {
-    const type = 'natural_wonder';
+    const cost = 5; const type='natural_wonder';
     const name = 'Preikestolen';
     props = {...props, type, name}
     

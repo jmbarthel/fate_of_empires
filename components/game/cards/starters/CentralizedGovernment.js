@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default CentralizedGovernment = (props) => {
-    const type = 'government';
+    const cost = 5; const type='government';
     const name = 'CentralizedGovernment';
     props = {...props, type, name}
     
