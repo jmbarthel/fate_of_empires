@@ -144,6 +144,10 @@ class NewGame1 extends React.Component {
 			dim: false,
 			expandSupplyCard: false, 
 			expandedSupplyCard: false,
+			expandWonderCard: false, 
+			expandedWonderCard: false,
+			expandHandCard: false, 
+			expandedHandCard: false,
 
 			player: {
 				id: 0, 
@@ -168,11 +172,32 @@ class NewGame1 extends React.Component {
 					gold: 0, 
 					science: 0, 
 					influence: 0,
+					any: 0,
 					toward: {
-						people: 0, 
-						science: 0, 
-						influence: 0, 
-						anyWonder: 0, 
+						people: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						science: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						influence: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						anyWonder: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
 					}
 				},
 				capital: []
@@ -361,6 +386,67 @@ class NewGame1 extends React.Component {
 		this.setState({expandWonderCard: false, expandedWonderCard: false});
 	}
 
+	expandHandCard(card){
+		console.log('expanding hand', card().props.props)
+		this.setState({expandHandCard: true, expandedHandCard: card(), expandWonderCard: false, expandSupplyCard: false, expandedSupplyCard: false, expandedWonderCard: false});
+	}
+
+	unExpandHandCard(){
+		this.setState({expandHandCard: false, expandedHandCard: false});
+	}
+
+	chooseOption(choice, card){
+		let { choiceCount, choices } = card.props.props;
+
+		console.log('you chose: ', choice, 'choicecount: ', choiceCount, 'options: ', choices)
+
+		this.setState((prevState) => {
+			return {
+				...prevState, 
+				player: {
+					...prevState.player, 
+					resources: {
+						...prevState.player.resources, 
+						any: prevState.player.resources.any + 1
+					}
+				}
+			}
+		})
+	}
+
+	buySupplyCard(card){
+		let { cost } = card.props.props;
+		let tempResources = { 
+			gold: this.state.player.resources.gold, 
+			influence: this.state.player.resources.influence, 
+			science: this.state.player.resources.science, 
+			any: this.state.player.resources.any 
+		};
+
+		console.log('before', tempResources);
+
+		for(let key in cost){
+			console.log('You have ', this.state.player.resources[key], key, 'and you need ', cost[key], key);
+
+			if(tempResources[key] + tempResources.any < cost[key]){
+				alert("You cannot afford this.");
+				return;
+			} else{
+				if(tempResources[key] > cost[key]){
+					tempResources[key] -= cost[key];
+				} else{
+					cost[key] -= tempResources[key];
+					tempResources[key] -= tempResources[key];
+					tempResources.any -= cost[key];
+				}
+			}
+		}
+
+		alert('Successfully purchased '+ card.props.props.name);
+		console.log('after', tempResources);
+
+	}
+
 	render() {
 		const Card = this.state.expandedSupplyCard;
 		return (
@@ -386,6 +472,7 @@ class NewGame1 extends React.Component {
 					<PlayerArea 
 						player={this.state.player} 
 						toggleDim={this.toggleDim.bind(this)}
+						expandHandCard={this.expandHandCard.bind(this)}
 					/>
 				</View>
 
@@ -427,31 +514,61 @@ class NewGame1 extends React.Component {
 				</View>
 
 				{this.state.expandSupplyCard ? 
-					this.state.expandedSupplyCard 
-						? (
+						(
 							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', right: 15}}>
-								<TouchableOpacity onPress={this.unExpandSupplyCard.bind(this)}>{this.state.expandedSupplyCard}</TouchableOpacity>
+								{this.state.expandedSupplyCard}
+								<TouchableOpacity 
+									onPress={this.unExpandSupplyCard.bind(this)}
+									style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+								/>
+								<TouchableOpacity
+									style={{position: 'absolute', backgroundColor: '#F00', height: '20%', width: '50%', bottom: 0, right: 0 }}
+									onPress={this.buySupplyCard.bind(this, this.state.expandedSupplyCard)}
+								/>
 							</View>
 						) 
-						: (
-							<View style={{backgroundColor: '#502', position:'absolute', width: '30%', height: '70%', right: 15}}>
-								<Text onPress={this.unExpandSupplyCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
-							</View>
-						)
 					: undefined}
 
 				{this.state.expandWonderCard ? 
-					this.state.expandedWonderCard 
-						? (
+						(
 							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', left: 15}}>
-								<TouchableOpacity onPress={this.unExpandWonderCard.bind(this)}>{this.state.expandedWonderCard}</TouchableOpacity>
+								{this.state.expandedWonderCard}
+								<TouchableOpacity 
+									onPress={this.unExpandWonderCard.bind(this)}
+									style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+								/>
+								<TouchableOpacity
+									style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
+									// onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
+								/>
+								<TouchableOpacity
+									style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
+									// onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
+								/>
 							</View>
 						) 
-						: (
-							<View style={{backgroundColor: '#502', position:'absolute', width: '30%', height: '70%', left: 15}}>
-								<Text onPress={this.unExpandWonderCard.bind(this)} style={{width: '100%', height: '100%'}}>Expanded</Text>
+					: undefined}
+
+				{this.state.expandHandCard ? 
+						(
+							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%'}}>
+								<View>
+									{this.state.expandedHandCard}
+									<TouchableOpacity 
+										onPress={this.unExpandHandCard.bind(this)} 
+										style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+									/>
+									<TouchableOpacity
+										style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
+										onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
+									/>
+									<TouchableOpacity
+										style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
+										onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
+									/>
+								</View>
 							</View>
-						)
+						) 
 					: undefined}
 			
 			</View>

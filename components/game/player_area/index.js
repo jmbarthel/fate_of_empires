@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, Image, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import Capital from './capital.js';
 import Hand from './hand.js';
@@ -43,7 +43,6 @@ class PlayerArea1 extends React.Component {
 				},
 
 				capital: array of cards on the capital
-
 			}
 		*/
 	}
@@ -51,7 +50,13 @@ class PlayerArea1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Hand style={styles.hand} hand={this.props.player.hand} toggleDim={this.props.toggleDim}/>
+				<Hand style={styles.hand} hand={this.props.player.hand} toggleDim={this.props.toggleDim} expandHandCard={this.props.expandHandCard}/>
+				<View style={{width: '10%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/AnyMix.png')}/> {this.props.player.resources.any}</Text></View>
+					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Gold.png')}/> {this.props.player.resources.gold}</Text></View>
+					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Influence.png')}/> {this.props.player.resources.influence}</Text></View>
+					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Science.png')}/> {this.props.player.resources.science}</Text></View>
+				</View>
 				<Capital style={styles.capital}/>
 				<YourWonders style={styles.wonders}/>
 			</View>
@@ -69,10 +74,10 @@ const styles = StyleSheet.create({
 		height: '100%', 
 	},
 	hand: {
-		width: '55%'
+		width: '50%'
 	},
 	capital: {
-		width: '25%'
+		width: '20%'
 	},
 	wonders: {
 		width: '20%'
