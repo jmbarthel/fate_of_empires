@@ -443,6 +443,21 @@ class NewGame1 extends React.Component {
 		}
 
 		alert('Successfully purchased '+ card.props.props.name);
+		this.setState((prevState) => {
+			return {
+				...prevState, 
+				player: {
+					...prevState.player, 
+					resources: {
+						...prevState.player.resources, 
+						gold: tempResources.gold,
+						influence: tempResources.influence,
+						science: tempResources.science,
+						any: tempResources.any,
+					}
+				}
+			}
+		})
 		console.log('after', tempResources);
 
 	}
