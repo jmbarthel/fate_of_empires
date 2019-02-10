@@ -612,7 +612,6 @@ class NewGame1 extends React.Component {
 	}
 
 	render() {
-		const Card = this.state.expandedSupplyCard;
 		return (
 			<View style={styles.container}>
 

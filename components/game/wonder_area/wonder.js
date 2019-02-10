@@ -12,7 +12,11 @@ export default class Wonder extends React.Component {
         super();
         this.state = {
             // pan: new Animated.ValueXY(),
-			// opacity: new Animated.Value(1)
+            // opacity: new Animated.Value(1)
+            layout: {
+                width: 0, 
+                height: 0
+            }
         }
     }
 
@@ -65,10 +69,19 @@ export default class Wonder extends React.Component {
                 <View 
                     // {...this.panResponder.panHandlers}
                     style={[this.props.style, styles.wonder]}
+                    onLayout={(e) => {
+                        let {x, y, width, height} = e.nativeEvent.layout;
+                        this.setState({layout: {width, height}})
+                    }}
                 >
-                <TouchableOpacity onPress={this.onPress.bind(this)}>
-                    {this.props.card()}
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={this.onPress.bind(this)}>
+                        {this.props.card({
+                            layout: this.state.layout, 
+                            style: {
+                                borderRadius: 25,
+                            }
+                        })}
+                    </TouchableOpacity>
                     
                 </View>
 		);
@@ -77,13 +90,12 @@ export default class Wonder extends React.Component {
 
 const styles = StyleSheet.create({
     wonder: {
-        // borderRadius: 5, 
+        borderRadius: 25, 
 		// borderColor: '#000',
 		// borderWidth: 1,
 		width: '30%',
-		height: '30%',
+		height: '50%',
         margin: 3,
-        // backgroundColor: '#555'
     }
 });
   

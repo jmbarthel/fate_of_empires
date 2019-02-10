@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "landscape",
-    "icon": "./assets/other/FoEmpiresBack.jpg",
+    "icon": "",
     "splash": {
-      "image": "./assets/other/FoEmpiresBack.jpg",
+      "image": "",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

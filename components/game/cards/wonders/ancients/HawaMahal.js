@@ -2,9 +2,26 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default HawaMahal = (props) => {
-    const cost = 5; const type='ancient_wonder';
-    const name = 'HawaMahal';
-    props = {...props, type, name}
+    props = {
+        ...props, 
+        type: 'ancient_wonder', 
+        name: 'HawaMahal', 
+        cost: {
+            gold: 0,
+            influence: 0, 
+            science: 4,
+        },
+    }
     
-    return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/HawaMahal.jpg')} />
+    if(props.expanded){
+        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/HawaMahal.jpg')} />
+    } else{
+        return <Image style={{
+            width: props.layout.width, 
+            maxHeight: props.layout.height,
+            ...props.style
+        }} 
+        resizeMode='contain'
+        props={props} source={require('../../../../../assets/wonders/ancients_sprites/HawaMahal.png')} />
+    }
 }
