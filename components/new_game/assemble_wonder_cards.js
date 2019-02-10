@@ -207,7 +207,8 @@ const assembleWonderDeck = (playersCount) => {
         wonderSupply.push(ancients[i]);
     }
 
-    wonderSupply.push()
+    wonderSupply.push(ChichenItza);
+    wonderSupply.push(HimejiCastle);
 
     return {
         wonderSupply, 

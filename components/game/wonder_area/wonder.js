@@ -47,7 +47,7 @@ export default class Wonder extends React.Component {
     
     onPress(){
         if(this.props.real){
-			this.props.expandWonderCard(this.props.card);
+			this.props.expandWonderCard(this.props.card({ num: this.props.num, expanded: true }));
 		} else{
 			this.props.expandWonderCard();
 		}
@@ -77,13 +77,13 @@ export default class Wonder extends React.Component {
 
 const styles = StyleSheet.create({
     wonder: {
-        borderRadius: 5, 
-		borderColor: '#000',
-		borderWidth: 1,
-		width: '20%',
-		height: '50%',
+        // borderRadius: 5, 
+		// borderColor: '#000',
+		// borderWidth: 1,
+		width: '30%',
+		height: '30%',
         margin: 3,
-        backgroundColor: '#555'
+        // backgroundColor: '#555'
     }
 });
   

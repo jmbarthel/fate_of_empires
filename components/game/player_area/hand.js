@@ -37,7 +37,7 @@ class Hand1 extends React.Component {
             }
 
             hand.push(
-                <Card key={i} angle={degrees} toggleDim={this.props.toggleDim} card={this.props.hand[i]} expandHandCard={this.props.expandHandCard}/>
+                <Card key={i} num={i} angle={degrees} toggleDim={this.props.toggleDim} card={this.props.hand[i]} expandHandCard={this.props.expandHandCard}/>
             )
         }
 

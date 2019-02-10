@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Animated, PanResponder, Text } from "react-native";
+import { StyleSheet, View, Animated, PanResponder, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 
 
@@ -30,7 +30,8 @@ export default class Card extends React.Component {
 		
 		// Initialize PanResponder with move handling
 		this.panResponder = PanResponder.create({
-            onStartShouldSetPanResponder: () => true,
+            // Only animate if it is being dragged. Otherwise, allow the touchable opacity responder to expand. 
+            onMoveShouldSetPanResponder: (event, gesture) => { return Math.abs(gesture.dx) > 5 || Math.abs(gesture.dy) > 5; },
 			onPanResponderGrant: (e, gesture) => {
                 this.state.pan.setOffset({
                     x: this._val.x,
@@ -46,7 +47,7 @@ export default class Card extends React.Component {
             ]),
 			onPanResponderRelease: (e, gesture) => {
                 if(gesture.dy < -150){
-                    this.props.expandHandCard(this.props.card);
+                    this.props.expandHandCard(this.props.card({ num: this.props.num }));
                 } 
                 this.state.pan.flattenOffset();
                 Animated.spring(this.state.pan, {
@@ -65,12 +66,14 @@ export default class Card extends React.Component {
         // Calculate the transform property and set it as a value for our style which we add below to the Animated.View component
         // let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
 		return (
-                <Animated.View 
-                    {...this.panResponder.panHandlers}
-                    style={[panStyle, styles.card]}
-                >
-                    {this.props.card()} 
-                </Animated.View>
+            <Animated.View 
+                {...this.panResponder.panHandlers}
+                style={[panStyle, styles.card]}
+            >
+                <TouchableOpacity onPress={() => {this.props.expandHandCard(this.props.card({ num: this.props.num }))}}>
+                    {this.props.card({num: this.props.num})} 
+                </TouchableOpacity>
+            </Animated.View>
 		);
 	}
 }

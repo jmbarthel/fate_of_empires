@@ -16,7 +16,7 @@ class SupplyCard1 extends React.Component {
     
     onPress(){
 		if(this.props.real){
-			this.props.expandSupplyCard(this.props.card);
+			this.props.expandSupplyCard(this.props.card({num: this.props.num}));
 		} else{
 			this.props.expandSupplyCard();
 		}

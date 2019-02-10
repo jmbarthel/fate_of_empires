@@ -30,7 +30,7 @@ class SupplyArea1 extends React.Component {
 				<View style={styles.resourceContainer}>
 					{
 						this.props.supplyRevealed.map((card, i) => {
-							return <SupplyCard key={i} expandSupplyCard={this.props.expandSupplyCard} real={true} card={card}/>
+							return <SupplyCard key={i} num={i} expandSupplyCard={this.props.expandSupplyCard} real={true} card={card}/>
 						})
 					}
 				</View>

@@ -369,8 +369,12 @@ class NewGame1 extends React.Component {
 	}
 
 	expandSupplyCard(card){
-		console.log('expanding supply', card().props.props)
-		this.setState({expandSupplyCard: true, expandedSupplyCard: card()});
+		console.log('expanding supply', card.props.props)
+		if(this.state.expandedSupplyCard && this.state.expandedSupplyCard.props.props.name === card.props.props.name){
+			this.unExpandSupplyCard();
+		} else{
+			this.setState({expandSupplyCard: true, expandedSupplyCard: card});
+		}
 	}
 
 	unExpandSupplyCard(){
@@ -378,8 +382,12 @@ class NewGame1 extends React.Component {
 	}
 
 	expandWonderCard(card){
-		console.log('expanding wonder', card().props.props)
-		this.setState({expandWonderCard: true, expandedWonderCard: card()});
+		console.log('expanding wonder', card.props.props)
+		if(this.state.expandedWonderCard && this.state.expandedWonderCard.props.props.name === card.props.props.name){
+			this.unExpandWonderCard();
+		} else{
+			this.setState({expandWonderCard: true, expandedWonderCard: card});
+		}
 	}
 
 	unExpandWonderCard(){
@@ -387,8 +395,8 @@ class NewGame1 extends React.Component {
 	}
 
 	expandHandCard(card){
-		console.log('expanding hand', card().props.props)
-		this.setState({expandHandCard: true, expandedHandCard: card(), expandWonderCard: false, expandSupplyCard: false, expandedSupplyCard: false, expandedWonderCard: false});
+		console.log('expanding hand', card.props.props)
+		this.setState({expandHandCard: true, expandedHandCard: card, expandWonderCard: false, expandSupplyCard: false, expandedSupplyCard: false, expandedWonderCard: false});
 	}
 
 	unExpandHandCard(){
@@ -398,13 +406,18 @@ class NewGame1 extends React.Component {
 	chooseOption(choice, card){
 		let { choiceCount, choices } = card.props.props;
 
-		console.log('you chose: ', choice, 'choicecount: ', choiceCount, 'options: ', choices)
+		console.log('you chose: ', choice, 'choicecount: ', choiceCount);
+		console.log('spending a card: ', card.props.props);
 
 		this.setState((prevState) => {
+			prevState.player.hand.splice(card.props.props.num, 1);
 			return {
 				...prevState, 
+				expandHandCard: false, 
+				expandedHandCard: false,
 				player: {
 					...prevState.player, 
+					hand: prevState.player.hand,
 					resources: {
 						...prevState.player.resources, 
 						any: prevState.player.resources.any + 1
@@ -416,50 +429,186 @@ class NewGame1 extends React.Component {
 
 	buySupplyCard(card){
 		let { cost } = card.props.props;
-		let tempResources = { 
+
+		let yourResources = { 
 			gold: this.state.player.resources.gold, 
 			influence: this.state.player.resources.influence, 
 			science: this.state.player.resources.science, 
 			any: this.state.player.resources.any 
 		};
 
-		console.log('before', tempResources);
+		console.log('you have', yourResources, 'and you need', cost);
 
-		for(let key in cost){
-			console.log('You have ', this.state.player.resources[key], key, 'and you need ', cost[key], key);
-
-			if(tempResources[key] + tempResources.any < cost[key]){
-				alert("You cannot afford this.");
-				return;
-			} else{
-				if(tempResources[key] > cost[key]){
-					tempResources[key] -= cost[key];
+		if(cost.gold > 0){
+			if(yourResources.gold < cost.gold){
+				if(yourResources.any + yourResources.gold < cost.gold){
+					alert('1You cannot afford '+card.props.props.name);
+					return;
 				} else{
-					cost[key] -= tempResources[key];
-					tempResources[key] -= tempResources[key];
-					tempResources.any -= cost[key];
+					cost.gold -= yourResources.gold;
+					yourResources.gold -= yourResources.gold;
+					yourResources.any -= cost.gold;
+					cost.gold = 0;
+				}
+			} else{
+				yourResources.gold -= cost.gold;
+			}
+		}
+
+		if(cost.influence > 0){
+			if(yourResources.influence < cost.influence){
+				if(yourResources.any + yourResources.influence < cost.influence){
+					alert('2You cannot afford '+card.props.props.name);
+					return;
+				} else{
+					cost.influence -= yourResources.influence;
+					yourResources.influence -= yourResources.influence;
+					yourResources.any -= cost.influence;
+					cost.influence = 0;
+				}
+			} else{
+				yourResources.gold -= cost.gold;
+			}
+		}
+
+		if(cost.science > 0){
+			if(yourResources.science < cost.science){
+				if(yourResources.any + yourResources.science < cost.science){
+					alert('3You cannot afford '+card.props.props.name);
+					return;
+				} else{
+					cost.science -= yourResources.science;
+					yourResources.science -= yourResources.science;
+					yourResources.any -= cost.science;
+					cost.science = 0;
+				}
+			} else{
+				yourResources.science -= cost.science;
+			}
+		}
+
+		if(cost.any > 0){
+			if(yourResources.gold + yourResources.influence + yourResources.science + yourResources.any < cost.any){
+				alert('4You cannot afford '+card.props.props.name);
+				return;
+			}
+
+			for(let key in yourResources){
+				if(yourResources[key] > 0){
+					if(yourResources[key] >= cost.any){
+						yourResources[key] -= cost.any;
+						cost.any = 0;
+					} else{
+						cost.any -= yourResources[key];
+						yourResources[key] = 0;
+					}
 				}
 			}
 		}
 
 		alert('Successfully purchased '+ card.props.props.name);
+
 		this.setState((prevState) => {
-			return {
-				...prevState, 
-				player: {
-					...prevState.player, 
-					resources: {
-						...prevState.player.resources, 
-						gold: tempResources.gold,
-						influence: tempResources.influence,
-						science: tempResources.science,
-						any: tempResources.any,
+
+			let typePurchased = ((['ancient_wonder', 'modern_wonder'].indexOf(card.props.props.type) > -1) 
+										? ('wonders') 
+									: ((['person', 'technology', 'city'].indexOf(card.props.props.type) > -1)
+										? ('supply') 
+										: ('worker'))
+									
+									)+'Revealed';
+			let returnState; 
+
+			if(typePurchased === 'wondersRevealed'){
+
+				prevState.wondersRevealed.splice(card.props.props.num, 1);
+
+				alert('removing wonder');
+
+				returnState = {
+					...prevState, 
+					player: {
+						...prevState.player, 
+						resources: {
+							...prevState.player.resources, 
+							gold: yourResources.gold,
+							influence: yourResources.influence,
+							science: yourResources.science,
+							any: yourResources.any,
+						}
+					},
+					wondersRevealed: prevState.wondersRevealed
+				}
+
+				returnState.wondersRevealed.push(prevState.wonderSupply.pop());
+
+			} else if(typePurchased === 'supplyRevealed'){
+
+				alert('removing supply card', card.props.props);
+
+				prevState.supplyRevealed.splice(card.props.props.num, 1);
+
+				returnState = {
+					...prevState, 
+					player: {
+						...prevState.player, 
+						resources: {
+							...prevState.player.resources, 
+							gold: yourResources.gold,
+							influence: yourResources.influence,
+							science: yourResources.science,
+							any: yourResources.any,
+						}
+					},
+					supplyRevealed: prevState.supplyRevealed
+				}
+
+				returnState.supplyRevealed.push(prevState.supplyDeck.pop());
+
+			} else{
+				alert('removing worker', card.props.props);
+
+				returnState = {
+					...prevState, 
+					player: {
+						...prevState.player, 
+						resources: {
+							...prevState.player.resources, 
+							gold: yourResources.gold,
+							influence: yourResources.influence,
+							science: yourResources.science,
+							any: yourResources.any,
+						}
+					},
+				}
+
+				if(card.props.props.name === 'Banker'){
+					returnState = {
+						...returnState, 
+						bankers: prevState.bankers - 1
+					}
+				} else if(card.props.props.name === 'Artist'){
+					returnState = {
+						...returnState, 
+						artists: prevState.artists - 1
+					}
+				} else if(card.props.props.name === 'Scientist'){
+					returnState = {
+						...returnState, 
+						scientists: prevState.scientists - 1
 					}
 				}
 			}
-		})
-		console.log('after', tempResources);
 
+			returnState.expandHandCard = false;
+			returnState.expandedHandCard = false;
+			returnState.expandSupplyCard = false;
+			returnState.expandedSupplyCard = false;
+			returnState.expandWonderCard = false;
+			returnState.expandedWonderCard = false;
+
+			return returnState;
+		});
 	}
 
 	render() {
@@ -537,7 +686,7 @@ class NewGame1 extends React.Component {
 									style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
 								/>
 								<TouchableOpacity
-									style={{position: 'absolute', backgroundColor: '#F00', height: '20%', width: '50%', bottom: 0, right: 0 }}
+									style={{position: 'absolute', height: '20%', width: '50%', bottom: 0, right: 0 }}
 									onPress={this.buySupplyCard.bind(this, this.state.expandedSupplyCard)}
 								/>
 							</View>

@@ -6,5 +6,9 @@ export default HimejiCastle = (props) => {
     const name = 'HimejiCastle';
     props = {...props, type, name}
     
-    return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/HimejiCastle.jpg')} />
+    if(props.expanded){
+        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/HimejiCastle.jpg')} />
+    } else{
+        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients_sprites/HimejiCastle.png')} />
+    }
 }

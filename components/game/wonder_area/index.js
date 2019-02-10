@@ -23,7 +23,7 @@ class WonderArea1 extends React.Component {
 
         for(let i=0; i < this.props.wondersRevealed.length; i++){
             x.push(
-                <Wonder key={i} card={this.props.wondersRevealed[i]} real={true} expandWonderCard={this.props.expandWonderCard}/>
+                <Wonder key={i} num={i} card={this.props.wondersRevealed[i]} real={true} expandWonderCard={this.props.expandWonderCard}/>
             );
 
             if(i===this.props.players_to_wonders[this.props.num_of_players]-1){
