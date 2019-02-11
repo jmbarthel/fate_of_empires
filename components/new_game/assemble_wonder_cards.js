@@ -207,12 +207,6 @@ const assembleWonderDeck = (playersCount) => {
         wonderSupply.push(ancients[i]);
     }
 
-    wonderSupply.push(ChichenItza);
-    wonderSupply.push(AngkorWat);
-    wonderSupply.push(HimejiCastle);
-    wonderSupply.push(HawaMahal);
-    wonderSupply.push(GreatWall);
-
     return {
         wonderSupply, 
         naturalWonders: naturals

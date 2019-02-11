@@ -15,11 +15,15 @@ class SupplyCard1 extends React.Component {
     }
     
     onPress(){
-		if(this.props.real){
-			this.props.expandSupplyCard(this.props.card({num: this.props.num}));
+		if(this.props.turn === 1){
+			if(this.props.real){
+				this.props.expandSupplyCard(this.props.card({num: this.props.num}));
+			} else{
+				this.props.expandSupplyCard();
+			}
 		} else{
-			this.props.expandSupplyCard();
-		}
+            alert('Not your turn.');
+        }
 	}
 	
 	closeCard(){

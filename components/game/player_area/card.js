@@ -3,11 +3,11 @@ import { StyleSheet, Animated, PanResponder, TouchableOpacity } from "react-nati
 import { connect } from 'react-redux';
 
 
-// const mapStateToProps = state => {
-//     return { ...state };
-// };
+const mapStateToProps = state => {
+    return { ...state };
+};
 
-export default class Card extends React.Component {
+class Card1 extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +17,11 @@ export default class Card extends React.Component {
     }
 
     enlarge(){
-        let coordinates = [];
+        if(this.props.turn === 1){
+            this.props.expandHandCard(this.props.card({ num: this.props.num }));
+        } else{
+            alert('Not your turn.');
+        }
     }
 
     componentWillMount() {
@@ -47,7 +51,7 @@ export default class Card extends React.Component {
             ]),
 			onPanResponderRelease: (e, gesture) => {
                 if(gesture.dy < -150){
-                    this.props.expandHandCard(this.props.card({ num: this.props.num }));
+                    this.enlarge();
                 } 
                 this.state.pan.flattenOffset();
                 Animated.spring(this.state.pan, {
@@ -70,7 +74,7 @@ export default class Card extends React.Component {
                 {...this.panResponder.panHandlers}
                 style={[panStyle, styles.card]}
             >
-                <TouchableOpacity onPress={() => {this.props.expandHandCard(this.props.card({ num: this.props.num }))}}>
+                <TouchableOpacity onPress={this.enlarge.bind(this)}>
                     {this.props.card({num: this.props.num})} 
                 </TouchableOpacity>
             </Animated.View>
@@ -91,4 +95,4 @@ const styles = StyleSheet.create({
     },
 });
   
-// export default Card = connect(mapStateToProps)(Card1);
+export default Card = connect(mapStateToProps)(Card1);

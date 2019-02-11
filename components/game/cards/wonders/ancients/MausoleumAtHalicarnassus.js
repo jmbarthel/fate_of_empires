@@ -13,5 +13,15 @@ export default MausoleumAtHalicarnassus = (props) => {
         },
     }
     
-    return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/MausoleumAtHalicarnassus.jpg')} />
+    if(props.expanded){
+        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/MausoleumAtHalicarnassus.jpg')} />
+    } else{
+        return <Image style={{
+            width: props.layout.width, 
+            maxHeight: props.layout.height,
+            ...props.style
+        }} 
+        resizeMode='contain'
+        props={props} source={require('../../../../../assets/wonders/ancients_sprites/MausoleumAtHalicarnassus.png')} />
+    }
 }

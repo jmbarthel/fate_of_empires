@@ -12,6 +12,16 @@ export default MoaiofRapaNui = (props) => {
             science: 4,
         },
     }
-    
-    return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/MoaiofRapaNui.jpg')} />
+      
+    if(props.expanded){
+        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/MoaiofRapaNui.jpg')} />
+    } else{
+        return <Image style={{
+            width: props.layout.width, 
+            maxHeight: props.layout.height,
+            ...props.style
+        }} 
+        resizeMode='contain'
+        props={props} source={require('../../../../../assets/wonders/ancients_sprites/MoaiofRapaNui.png')} />
+    }
 }

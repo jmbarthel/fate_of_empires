@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, Text } from "react-native";
 import { connect } from 'react-redux';
 import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';
@@ -16,6 +16,12 @@ import assembleWonderDeck from './assemble_wonder_cards.js';
 
 const mapStateToProps = state => {
     return { ...state };
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		changeTurn: turn => dispatch(changeTurn(turn)),
+	};
 };
 
 class NewGame1 extends React.Component {
@@ -203,8 +209,6 @@ class NewGame1 extends React.Component {
 				capital: []
 			},
 
-			activeTurn: 1,
-
 			enemies: enemyArr, 
 			num_of_enemies: num_of_enemies,
 			num_of_players: num_of_players,
@@ -255,6 +259,41 @@ class NewGame1 extends React.Component {
 
 			}
 		*/
+
+		this.sidebarAnimation = new Animated.ValueXY({ x: -200, y: 0 });
+
+	}
+
+	_toggleSideBar(){
+		if(this.state.sidebar){
+			this.setState({
+				sidebar: false,
+				expandHandCard: false,
+				expandedHandCard: false,
+				expandSupplyCard: false,
+				expandedSupplyCard: false,
+				expandWonderCard: false,
+				expandedWonderCard: false,
+			});
+			Animated.spring(this.sidebarAnimation, {
+				toValue: { x: -200, y: 0 },
+				friction: 10,
+			}).start();
+		} else{
+			this.setState({
+				sidebar: true,
+				expandHandCard: false,
+				expandedHandCard: false,
+				expandSupplyCard: false,
+				expandedSupplyCard: false,
+				expandWonderCard: false,
+				expandedWonderCard: false,
+			})
+			Animated.spring(this.sidebarAnimation, {
+				toValue: { x: 0, y: 0 },
+				friction: 10,
+			}).start();
+		}
 	}
 
 	closeAllEnemies(){
@@ -611,6 +650,10 @@ class NewGame1 extends React.Component {
 		});
 	}
 
+	endTurn(){
+		this.props.changeTurn(this.props.turn + 1);
+	}
+
 	render() {
 		return (
 			<View style={styles.container}>
@@ -640,10 +683,10 @@ class NewGame1 extends React.Component {
 				</View>
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
-				<Ionicons style={styles.goBack} name="md-settings" size={32} color="black" onPress={this.props.goBack}/>
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {width: '85%', right: null}] : styles.opponentContainer}>
-					{Object.keys(this.state.enemies).map(enemyId => {
+					{	this.state.dim ? 
+						Object.keys(this.state.enemies).map(enemyId => {
 						let enemy = this.state.enemies[enemyId],
 							func = !enemy.expanded ? this.expandEnemy.bind(this, enemy.id) : ()=>null,
 							style = enemy.expanded ? {width: '100%'} : {}
@@ -673,66 +716,82 @@ class NewGame1 extends React.Component {
 									</TouchableOpacity>
 								</View>);
 						}
-					})}
+					})
+					: <TouchableOpacity 
+						style={{
+							backgroundColor: '#0aa',
+							margin: 10,
+							alignItems: 'center'
+						}} 
+						onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
 				</View>
 
-				{this.state.expandSupplyCard ? 
-						(
-							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', right: 15}}>
-								{this.state.expandedSupplyCard}
-								<TouchableOpacity 
-									onPress={this.unExpandSupplyCard.bind(this)}
-									style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
-								/>
-								<TouchableOpacity
-									style={{position: 'absolute', height: '20%', width: '50%', bottom: 0, right: 0 }}
-									onPress={this.buySupplyCard.bind(this, this.state.expandedSupplyCard)}
-								/>
-							</View>
-						) 
-					: undefined}
+				{this.state.expandSupplyCard ? (
+					<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', right: 15}}>
+						{this.state.expandedSupplyCard}
+						<TouchableOpacity 
+							onPress={this.unExpandSupplyCard.bind(this)}
+							style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+						/>
+						<TouchableOpacity
+							style={{position: 'absolute', height: '20%', width: '50%', bottom: 0, right: 0 }}
+							onPress={this.buySupplyCard.bind(this, this.state.expandedSupplyCard)}
+						/>
+					</View>
+				) : undefined}
 
-				{this.state.expandWonderCard ? 
-						(
-							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', left: 15}}>
-								{this.state.expandedWonderCard}
-								<TouchableOpacity 
-									onPress={this.unExpandWonderCard.bind(this)}
-									style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
-								/>
-								<TouchableOpacity
-									style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
-									// onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
-								/>
-								<TouchableOpacity
-									style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
-									// onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
-								/>
-							</View>
-						) 
-					: undefined}
+				{this.state.expandWonderCard ? (
+					<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', left: 15}}>
+						{this.state.expandedWonderCard}
+						<TouchableOpacity 
+							onPress={this.unExpandWonderCard.bind(this)}
+							style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+						/>
+						<TouchableOpacity
+							style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
+							// onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
+						/>
+						<TouchableOpacity
+							style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
+							// onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
+						/>
+					</View>
+				) : undefined}
 
-				{this.state.expandHandCard ? 
-						(
-							<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%'}}>
-								<View>
-									{this.state.expandedHandCard}
-									<TouchableOpacity 
-										onPress={this.unExpandHandCard.bind(this)} 
-										style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
-									/>
-									<TouchableOpacity
-										style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
-										onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
-									/>
-									<TouchableOpacity
-										style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
-										onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
-									/>
-								</View>
-							</View>
-						) 
-					: undefined}
+				{this.state.expandHandCard ? (
+					<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%'}}>
+						<View>
+							{this.state.expandedHandCard}
+							<TouchableOpacity 
+								onPress={this.unExpandHandCard.bind(this)} 
+								style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+							/>
+							<TouchableOpacity
+								style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
+								onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
+							/>
+							<TouchableOpacity
+								style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
+								onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
+							/>
+						</View>
+					</View>
+				) : undefined}
+
+				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
+					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
+				</Animated.View>
+
+				<Ionicons 
+					style={styles.goBack} 
+					name="md-settings" 
+					size={32} 
+					color="black" 
+					onPress={this._toggleSideBar.bind(this)}
+				/>
 			
 			</View>
 		);
@@ -773,7 +832,17 @@ const styles = StyleSheet.create({
 		width: '100%', 
 		height: '100%',
 		opacity: 0.7
+	},
+	slider: {
+		position: 'absolute', 
+		width: '30%', 
+		height: '100%', 
+		top: 0, 
+		left: 0,
+		backgroundColor: 'rgba(88, 33, 88, 0.8)',
+		alignItems: 'center',
+		justifyContent: 'center',
 	}
 });
   
-export default NewGame = connect(mapStateToProps)(NewGame1);
+export default NewGame = connect(mapStateToProps, mapDispatchToProps)(NewGame1);

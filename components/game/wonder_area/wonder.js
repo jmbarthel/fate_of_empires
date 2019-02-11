@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 
-// const mapStateToProps = state => {
-//     return { ...state };
-// };
+const mapStateToProps = state => {
+    return { ...state };
+};
 
-export default class Wonder extends React.Component {
+class Wonder1 extends React.Component {
 	constructor(props) {
         super(props);
         this.state = {
@@ -19,11 +19,15 @@ export default class Wonder extends React.Component {
     }
     
     onPress(){
-        if(this.props.real){
-			this.props.expandWonderCard(this.props.card({ num: this.props.num, expanded: true }));
-		} else{
-			this.props.expandWonderCard();
-		}
+        if(this.props.turn === 1){
+            if(this.props.real){
+                this.props.expandWonderCard(this.props.card({ num: this.props.num, expanded: true }));
+            } else{
+                this.props.expandWonderCard();
+            }
+        } else{
+            alert('Not your turn.');
+        }
     }
 
 	render() {
@@ -51,7 +55,7 @@ export default class Wonder extends React.Component {
 
 const styles = StyleSheet.create({
     wonder: {
-        borderRadius: 25, 
+        // borderRadius: 25, 
 		// borderColor: '#000',
 		// borderWidth: 1,
 		width: '30%',
@@ -60,4 +64,4 @@ const styles = StyleSheet.create({
     }
 });
   
-// export default Wonder = connect(mapStateToProps)(Wonder1);
+export default Wonder = connect(mapStateToProps)(Wonder1);
