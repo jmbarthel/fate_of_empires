@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, Image } from "react-native";
 import { connect } from 'react-redux';
 import Capital from './capital.js';
 import Hand from './hand.js';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Animated, PanResponder, TouchableOpacity } from "react-native";
+import { StyleSheet, Animated, PanResponder, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 
 

@@ -3,10 +3,12 @@ import {
     OPEN_LIGHTBOX
 } from "../constants/action-types";
 
-export const closeLightbox = () => ({
+export const closeLightbox = (user) => ({
     type: CLOSE_LIGHTBOX,
+    payload: user
 });
 
-export const openLightbox = () => ({
-    type: OPEN_LIGHTBOX
+export const openLightbox = (user) => ({
+    type: OPEN_LIGHTBOX,
+    payload: user
 });

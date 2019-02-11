@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, Image } from "react-native";
+import { StyleSheet, Text, ScrollView } from "react-native";
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 

@@ -12,10 +12,6 @@ class WonderArea1 extends React.Component {
 	constructor(props) {
 		super(props);
         this.state = {};
-//          players_to_wonders
-//          wondersRevealed
-//          wonderSupply
-//          num_of_players
     }
     
     renderRevealedWonders(){

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import { connect } from 'react-redux';
 import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Animated, PanResponder, Text, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
-import { connect } from 'react-redux';
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+// import { connect } from 'react-redux';
 
 
 // const mapStateToProps = state => {
@@ -8,46 +8,15 @@ import { connect } from 'react-redux';
 // };
 
 export default class Wonder extends React.Component {
-	constructor() {
-        super();
+	constructor(props) {
+        super(props);
         this.state = {
-            // pan: new Animated.ValueXY(),
-            // opacity: new Animated.Value(1)
             layout: {
                 width: 0, 
                 height: 0
             }
         }
     }
-
-    // componentWillMount() {
-	// 	// Add a listener for the delta value change
-	// 	this._val = { x:0, y:0 }
-
-	// 	this.state.pan.addListener((value) => this._val = value);
-		
-	// 	// Initialize PanResponder with move handling
-	// 	this.panResponder = PanResponder.create({
-    //         onStartShouldSetPanResponder: () => true,
-	// 		onPanResponderGrant: (e, gesture) => {
-    //             this.state.pan.setOffset({
-    //                 x: this._val.x,
-	// 				y: this._val.y
-	// 			})
-	// 			this.state.pan.setValue({ x:0, y:0})
-	// 		},
-    //         onPanResponderMove: Animated.event([
-    //             null, { dx: this.state.pan.x, dy: this.state.pan.y }
-    //         ]),
-	// 		onPanResponderRelease: (e, gesture) => {
-    //             this.state.pan.flattenOffset();
-	// 			Animated.spring(this.state.pan, {
-	// 				toValue: { x: 0, y: 0 },
-	// 				friction: 5
-	// 			}).start();
-	// 		},
-    //     });
-    // }
     
     onPress(){
         if(this.props.real){
@@ -58,16 +27,8 @@ export default class Wonder extends React.Component {
     }
 
 	render() {
-        // const panStyle = {
-		// 	transform: this.state.pan.getTranslateTransform()
-        // }
-        
-        // Calculate the transform property and set it as a value for our style which we add below to the Animated.View component
-        // let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
-
 		return (
                 <View 
-                    // {...this.panResponder.panHandlers}
                     style={[this.props.style, styles.wonder]}
                     onLayout={(e) => {
                         let {x, y, width, height} = e.nativeEvent.layout;

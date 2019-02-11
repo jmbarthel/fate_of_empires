@@ -29,13 +29,13 @@ class Index1 extends React.Component {
 	}
 }
 
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		backgroundColor: '#ccc',
-// 		alignItems: 'center',
-// 		justifyContent: 'center',
-// 	},
-// });
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#ccc',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+});
   
 export default Index = connect(mapStateToProps)(Index1);

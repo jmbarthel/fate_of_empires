@@ -7,10 +7,25 @@ export default Cairo = (props) => {
         type: 'city', 
         name: 'Cairo', 
         cost: {
-            gold: 5,
-            influence: 0, 
+            gold: 0,
+            influence: 12, 
             science: 0,
         },
+        choiceCount: 2, 
+        choices: {
+            1: {
+                produceResource: {
+                    influence: 5,
+                }
+            },
+            2: {
+                produceResource: {
+                    workerOnCapital: {
+                        any: 1
+                    }
+                }
+            }
+        }
     }
     
     return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../assets/cities/Cairo.jpg')} />

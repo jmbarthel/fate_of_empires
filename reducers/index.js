@@ -17,6 +17,17 @@ const rootReducer = (state = initialState, action) => {
         //     return { ...state, 
         //         lightboxIsOpen: true
         //     };
+        // case LOG_IN:
+        //     return { ...state, 
+        //         id: action.payload.id,
+        //         username: action.payload.username,
+        //         profilePicture: action.payload.profilePicture,
+        //         fullName: action.payload.fullName,
+        //         totalPoints: action.payload.totalPoints,
+        //         createdAt: action.payload.createdAt,
+        //         userAddress: action.payload.blockchainAddress,
+        //         tokenLogin: action.payload.tokenLogin
+        //     };
         default:
             return state;
     }
