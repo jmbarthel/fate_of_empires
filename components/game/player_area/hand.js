@@ -24,6 +24,7 @@ class Hand1 extends React.Component {
         
         for(let i = 0; i < this.props.hand.length; i++){
             let degrees = ((45/(this.props.hand.length-i))-20),
+
             position = {
                 top: 0
             };
@@ -40,7 +41,7 @@ class Hand1 extends React.Component {
                 <Card key={i} num={i} angle={degrees} toggleDim={this.props.toggleDim} card={this.props.hand[i]} expandHandCard={this.props.expandHandCard}/>
             )
         }
-
+        
         return hand;
     }
 
@@ -48,8 +49,8 @@ class Hand1 extends React.Component {
 		return (
 			<View style={[this.props.style, styles.container]}>
                 <View style={{height: '100%', width: '16%', left: 4}}>
-                    <Deck name='deck'/>
-                    <Deck name='discard'/>
+                    <Deck name='deck' deck={this.props.deck}/>
+                    <Deck name='discard' deck={this.props.discard}/>
                 </View>
                 <View style={styles.cardArea}>
                     {this.renderHand()}

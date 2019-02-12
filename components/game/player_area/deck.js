@@ -8,15 +8,15 @@ const mapStateToProps = state => {
 };
 
 class Deck1 extends React.Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {};
 	}
 
 	render() {
 		return (
 			<View style={[this.props.style, styles.container]}>
-				<Text>{this.props.name}</Text>
+				<Text>{this.props.name}</Text><Text>{this.props.deck ? this.props.deck.length : null}</Text>
 			</View>
 		);
 	}

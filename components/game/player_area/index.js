@@ -50,7 +50,14 @@ class PlayerArea1 extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Hand style={styles.hand} hand={this.props.player.hand} toggleDim={this.props.toggleDim} expandHandCard={this.props.expandHandCard}/>
+				<Hand 
+					style={styles.hand} 
+					hand={this.props.player.hand} 
+					toggleDim={this.props.toggleDim} 
+					expandHandCard={this.props.expandHandCard} 
+					deck={this.props.player.deck}
+					discard={this.props.player.discard}
+				/>
 				<View style={{width: '10%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
 					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/AnyMix.png')}/> {this.props.player.resources.any}</Text></View>
 					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Gold.png')}/> {this.props.player.resources.gold}</Text></View>

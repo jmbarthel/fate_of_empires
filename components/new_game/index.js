@@ -6,6 +6,9 @@ import WonderArea from '../game/wonder_area/index.js';
 import PlayerArea from '../game/player_area/index.js';
 import Opponent from '../game/opponent/index.js';
 import { Ionicons } from '@expo/vector-icons';
+
+import { changeTurn } from "../../actions/index.js";
+
 // Cards
 import Peasant from '../game/cards/starters/Peasant.js';
 import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
@@ -15,7 +18,9 @@ import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
 
 const mapStateToProps = state => {
-    return { ...state };
+    return { 
+		turn: state.turn
+	};
 };
 
 const mapDispatchToProps = dispatch => {
@@ -449,7 +454,7 @@ class NewGame1 extends React.Component {
 		console.log('spending a card: ', card.props.props);
 
 		this.setState((prevState) => {
-			prevState.player.hand.splice(card.props.props.num, 1);
+			let played_cards = prevState.player.played_cards.concat(prevState.player.hand.splice(card.props.props.num, 1));
 			return {
 				...prevState, 
 				expandHandCard: false, 
@@ -457,6 +462,7 @@ class NewGame1 extends React.Component {
 				player: {
 					...prevState.player, 
 					hand: prevState.player.hand,
+					played_cards,
 					resources: {
 						...prevState.player.resources, 
 						any: prevState.player.resources.any + 1
@@ -585,7 +591,7 @@ class NewGame1 extends React.Component {
 
 				alert('removing supply card', card.props.props);
 
-				prevState.supplyRevealed.splice(card.props.props.num, 1);
+				let cardFunc = prevState.supplyRevealed.splice(card.props.props.num, 1);
 
 				returnState = {
 					...prevState, 
@@ -605,12 +611,21 @@ class NewGame1 extends React.Component {
 				returnState.supplyRevealed.push(prevState.supplyDeck.pop());
 
 			} else{
-				alert('removing worker', card.props.props);
+				// Worker 
+				let cardFunc;
+				if(card.props.props.name === 'Scientist'){
+					cardFunc = Scientist;
+				} else if(card.props.props.name === 'Artist'){
+					cardFunc = Artist;
+				} else{
+					cardFunc = Banker;
+				}
 
 				returnState = {
 					...prevState, 
 					player: {
-						...prevState.player, 
+						...prevState.player,
+						discard: prevState.player.discard.concat(cardFunc),
 						resources: {
 							...prevState.player.resources, 
 							gold: yourResources.gold,
@@ -621,22 +636,22 @@ class NewGame1 extends React.Component {
 					},
 				}
 
-				if(card.props.props.name === 'Banker'){
-					returnState = {
-						...returnState, 
-						bankers: prevState.bankers - 1
-					}
-				} else if(card.props.props.name === 'Artist'){
-					returnState = {
-						...returnState, 
-						artists: prevState.artists - 1
-					}
-				} else if(card.props.props.name === 'Scientist'){
-					returnState = {
-						...returnState, 
-						scientists: prevState.scientists - 1
-					}
-				}
+				// if(card.props.props.name === 'Banker'){
+				// 	returnState = {
+				// 		...returnState, 
+				// 		bankers: prevState.bankers - 1
+				// 	}
+				// } else if(card.props.props.name === 'Artist'){
+				// 	returnState = {
+				// 		...returnState, 
+				// 		artists: prevState.artists - 1
+				// 	}
+				// } else if(card.props.props.name === 'Scientist'){
+				// 	returnState = {
+				// 		...returnState, 
+				// 		scientists: prevState.scientists - 1
+				// 	}
+				// }
 			}
 
 			returnState.expandHandCard = false;
@@ -650,8 +665,86 @@ class NewGame1 extends React.Component {
 		});
 	}
 
-	endTurn(){
-		this.props.changeTurn(this.props.turn + 1);
+	shuffle = a => {
+		var j, x, i;
+		for (i = a.length - 1; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			x = a[i];
+			a[i] = a[j];
+			a[j] = x;
+		}
+		return a;
+	}
+
+	endTurn = () => {
+		if(this.props.turn === 1){
+
+			let { player } = this.state, 
+				hand = player.hand,
+				discard = player.discard, 
+				deck = player.deck
+				played_cards = player.played_cards;
+	
+			if(hand.length > 0){
+				played_cards = played_cards.concat(hand);
+				hand = [];
+			}
+	
+			discard = discard.concat(played_cards);
+			played_cards = [];
+	
+			if(deck.length >= 5){
+				hand.push(deck.pop());
+				hand.push(deck.pop());
+				hand.push(deck.pop());
+				hand.push(deck.pop());
+				hand.push(deck.pop());
+			} else{
+				console.log('deck.length1 ', deck.length, discard.length);
+	
+				let x = deck.length;
+	
+				for(let i = 0; i < x; i++){
+					hand.push(deck.pop());
+				}
+	
+				deck = deck.concat(discard);
+	
+				discard = [];
+	
+				deck = this.shuffle(deck);
+	
+				console.log('deck.length2 ', deck.length);
+	
+				while(hand.length < 5){
+					console.log('adding another');
+					hand.push(deck.pop());
+				}
+			}
+	
+			let x = this;
+	
+			this.setState(prevState => {
+				return {
+					...prevState, 
+					player: {
+						...prevState.player, 
+						hand, 
+						deck,
+						played_cards, 
+						discard, 
+					}
+				}
+			}, () => {
+				x._toggleSideBar();
+				x.props.changeTurn(11);
+				setTimeout(() => {
+					alert('Your turn.');
+					x.props.changeTurn(1);
+				}, 5000);
+			});
+		}
+
 	}
 
 	render() {
@@ -781,7 +874,7 @@ class NewGame1 extends React.Component {
 				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
 					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
 					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN (work in prog)</Text></TouchableOpacity>
 					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
 				</Animated.View>
 

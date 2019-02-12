@@ -2,9 +2,10 @@ import React from 'react';
 import { StyleSheet, Animated, PanResponder, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 
-
 const mapStateToProps = state => {
-    return { ...state };
+    return { 
+        turn: state.turn 
+    };
 };
 
 class Card1 extends React.Component {
@@ -16,7 +17,8 @@ class Card1 extends React.Component {
         }
     }
 
-    enlarge(){
+    enlarge = () => {
+        console.log('this.props.turn', this.props.turn);
         if(this.props.turn === 1){
             this.props.expandHandCard(this.props.card({ num: this.props.num }));
         } else{

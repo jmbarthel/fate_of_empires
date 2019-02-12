@@ -9,8 +9,9 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_TURN:
-            return { ...state, 
-                turn: action.payload.turn
+            return { 
+                ...state, 
+                turn: action.payload
             };
         default:
             return state;
