@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
+import TheInternet from '../cards/wonders/moderns/TheInternet';
 
 
 const mapStateToProps = state => {
@@ -33,7 +34,7 @@ class Wonder1 extends React.Component {
 	render() {
 		return (
                 <View 
-                    style={[this.props.style, styles.wonder]}
+                    style={[this.props.style, styles.wonder, {width: (100/this.props.number_of_wonders)+'%'}]}
                     onLayout={(e) => {
                         let {x, y, width, height} = e.nativeEvent.layout;
                         this.setState({layout: {width, height}})
@@ -58,9 +59,9 @@ const styles = StyleSheet.create({
         // borderRadius: 25, 
 		// borderColor: '#000',
 		// borderWidth: 1,
-		width: '30%',
-		height: '50%',
-        margin: 3,
+        height: '100%',
+        // backgroundColor: '#000',
+        // margin: 3,
     }
 });
   

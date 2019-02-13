@@ -23,7 +23,10 @@ class Index1 extends React.Component {
 	render() {
 		return (
 			<View>
-				<MainMenu inGame={this.state.inGame} startGame={this.startGame.bind(this)}/>
+				<MainMenu 
+					inGame={this.state.inGame} 
+					startGame={this.startGame.bind(this)}
+				/>
 			</View>
 		);
 	}

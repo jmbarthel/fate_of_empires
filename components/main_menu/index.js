@@ -32,7 +32,7 @@ class MainMenu1 extends React.Component {
 			<View style={styles.container}>
 			 	<StatusBar hidden={true} />
 				{
-				  this.state.newGame ? <NewGame goBack={this.goBack.bind(this)} num_of_players={5}/> 
+				  this.state.newGame ? <NewGame goBack={this.goBack.bind(this)} num_of_players={4}/> 
 				: this.state.rules   ? <Rules goBack={this.goBack.bind(this)}/> 
 				: this.state.options ? <Options goBack={this.goBack.bind(this)}/> 
 				: 

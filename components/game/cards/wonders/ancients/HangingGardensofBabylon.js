@@ -13,5 +13,15 @@ export default HangingGardensofBabylon = (props) => {
         },
     }
     
-    return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/HangingGardensofBabylon.jpg')} />
+    if(props.expanded){
+        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/HangingGardensofBabylon.jpg')} />
+    } else{
+        return <Image style={{
+            width: props.layout.width, 
+            maxHeight: props.layout.height,
+            ...props.style
+        }} 
+        resizeMode='contain'
+        props={props} source={require('../../../../../assets/wonders/ancients_sprites/HangingGardensofBabylon.png')} />
+    }
 }

@@ -17,7 +17,7 @@ class SupplyCard1 extends React.Component {
     onPress(){
 		if(this.props.turn === 1){
 			if(this.props.real){
-				this.props.expandSupplyCard(this.props.card({num: this.props.num}));
+				this.props.expandSupplyCard(this.props.card({num: this.props.num, expanded: true}));
 			} else{
 				this.props.expandSupplyCard();
 			}
@@ -37,9 +37,9 @@ class SupplyCard1 extends React.Component {
 
 		return (
 			<View style={styles.container}>
-                <TouchableOpacity onPress={this.onPress.bind(this)}>
+				<TouchableOpacity onPress={this.onPress.bind(this)}>
 					{this.props.card()}
-                </TouchableOpacity>
+				</TouchableOpacity>
 			</View>
 		);
 	}

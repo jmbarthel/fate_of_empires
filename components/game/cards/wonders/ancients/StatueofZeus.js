@@ -17,8 +17,9 @@ export default StatueofZeus = (props) => {
         return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/StatueofZeus.jpg')} />
     } else{
         return <Image style={{
-            width: props.layout.width, 
+            width: props.layout.width - 12, 
             maxHeight: props.layout.height,
+            // padding: 5,
             ...props.style
         }} 
         resizeMode='contain'

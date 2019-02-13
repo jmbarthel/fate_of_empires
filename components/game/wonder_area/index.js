@@ -19,16 +19,22 @@ class WonderArea1 extends React.Component {
 
         for(let i=0; i < this.props.wondersRevealed.length; i++){
             x.push(
-                <Wonder key={i} num={i} card={this.props.wondersRevealed[i]} real={true} expandWonderCard={this.props.expandWonderCard}/>
+                <Wonder 
+                    key={i} 
+                    num={i} 
+                    card={this.props.wondersRevealed[i]} 
+                    real={true} 
+                    number_of_wonders={this.props.wondersRevealed.length}
+                    expandWonderCard={this.props.expandWonderCard}/>
             );
 
-            if(i===this.props.players_to_wonders[this.props.num_of_players]-1){
-                x.push(
-                    <View key={this.props.num_of_players*2} style={styles.wonderSupply}>
-                        <Text>{this.props.wonderSupply.length}</Text>
-                    </View>
-                )
-            }
+            // if(i===this.props.players_to_wonders[this.props.num_of_players]-1){
+            //     x.push(
+            //         <View key={this.props.num_of_players*2} style={styles.wonderSupply}>
+            //             <Text>{this.props.wonderSupply.length}</Text>
+            //         </View>
+            //     )
+            // }
         }
 
         return x;
@@ -49,16 +55,21 @@ const styles = StyleSheet.create({
     container: {
 		alignItems: 'center',
 		justifyContent: 'center',
-        width: '50%',
-        marginTop: 40,
+        width: '100%',
+        height: '100%',
+        // marginTop: 40,
+        top: 0,
+        right: 0,
+        // backgroundColor: '#f39'
     },
     revealedWonderArea: {
-        width: '90%', 
-        height: '80%',
+        width: '100%', 
+        height: '100%',
         margin: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        // backgroundColor: '#849'
     },
     wonderSupply: {
         width: '20%',

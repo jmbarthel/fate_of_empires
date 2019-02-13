@@ -13,5 +13,15 @@ export default GreatLibraryAlexandria = (props) => {
         },
     }
     
-    return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/GreatLibraryAlexandria.jpg')} />
+    if(props.expanded){
+        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../../assets/wonders/ancients/GreatLibraryAlexandria.jpg')} />
+    } else{
+        return <Image style={{
+            width: props.layout.width, 
+            maxHeight: props.layout.height,
+            ...props.style
+        }} 
+        resizeMode='contain'
+        props={props} source={require('../../../../../assets/wonders/ancients_sprites/GreatLibraryAlexandria.png')} />
+    }
 }

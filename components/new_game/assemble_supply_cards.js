@@ -257,7 +257,11 @@ const assembleSupplyDeck = () => {
         Vienna,
     ];
 
-    return shuffle(supplyDeck);
+    supplyDeck = shuffle(supplyDeck);
+
+    supplyDeck.push(AlbertEinstein);
+
+    return supplyDeck;
 }
 
 export default assembleSupplyDeck;

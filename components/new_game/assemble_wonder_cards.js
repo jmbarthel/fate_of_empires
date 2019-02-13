@@ -77,6 +77,7 @@ import VictoriaHarbour from '../game/cards/wonders/moderns/VictoriaHarbour.js';
 // Starter things
 import AgeofEnlightenment from '../game/cards/starters/AgeofEnlightenment.js';
 import ElectWorldLeader from '../game/cards/starters/ElectWorldLeader.js';
+import wonder from '../game/wonder_area/wonder.js';
 
 const shuffle = a => {
     // hi
@@ -206,6 +207,8 @@ const assembleWonderDeck = (playersCount) => {
     for(let i = 0; i < (ancients.length - setupWonders[playersCount].ancient); i++){
         wonderSupply.push(ancients[i]);
     }
+
+    // wonderSupply.push(StatueofZeus);
 
     return {
         wonderSupply, 

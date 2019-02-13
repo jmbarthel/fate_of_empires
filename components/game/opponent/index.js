@@ -53,7 +53,7 @@ class Opponent1 extends React.Component {
 				onPanResponderRelease: (e, gesture) => {
 					// Spring back to the original value if it is not over the drop zone, 
 					// Otherwise, load the next component or the previous component
-					if (this.swipeLeft(gesture)){
+					if(this.swipeLeft(gesture)){
 						Animated.spring(this.state.pan, {
 							toValue: { x: -8000, y: 0 },
 							friction: 10,
@@ -130,7 +130,7 @@ class Opponent1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-		backgroundColor: '#0aa',
+		backgroundColor: '#f65',
 		margin: 10,
 		alignItems: 'center',
 	},

@@ -758,13 +758,24 @@ class NewGame1 extends React.Component {
 						expandSupplyCard={this.expandSupplyCard.bind(this)}
 						unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
 					/>
-					<WonderArea 
-						players_to_wonders={this.state.players_to_wonders}
-						wondersRevealed={this.state.wondersRevealed}
-						wonderSupply={this.state.wonderSupply}
-						num_of_players={this.state.num_of_players}
-						expandWonderCard={this.expandWonderCard.bind(this)}
-					/>
+					<View style={{width: '50%', flexDirection: 'column'}}>
+						<View style={{height: '30%', width: '100%'}}>
+							<WonderArea 
+								players_to_wonders={this.state.players_to_wonders}
+								wondersRevealed={this.state.wondersRevealed}
+								wonderSupply={this.state.wonderSupply}
+								num_of_players={this.state.num_of_players}
+								expandWonderCard={this.expandWonderCard.bind(this)}
+							/>
+						</View>
+
+						<View style={{backgroundColor: '#3f4', height: '70%', width: '100%'}}>
+
+						</View>
+
+					</View>
+
+					
 				</View>
 
 				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
@@ -777,7 +788,7 @@ class NewGame1 extends React.Component {
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
 
-				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {width: '85%', right: null}] : styles.opponentContainer}>
+				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
 					{	this.state.dim ? 
 						Object.keys(this.state.enemies).map(enemyId => {
 						let enemy = this.state.enemies[enemyId],
@@ -874,7 +885,7 @@ class NewGame1 extends React.Component {
 				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
 					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
 					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
 					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
 				</Animated.View>
 
@@ -907,7 +918,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		flexDirection: 'row',
 		width: '50%',
-		top: 0,
+		// top: 0,
 		right: 0,
 		justifyContent: 'flex-end',
 	},
