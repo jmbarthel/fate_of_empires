@@ -20,7 +20,7 @@ class Card1 extends React.Component {
     enlarge = () => {
         console.log('this.props.turn', this.props.turn);
         if(this.props.turn === 1){
-            this.props.expandHandCard(this.props.card({ num: this.props.num }));
+            this.props.expandHandCard(this.props.card({ num: this.props.num, expanded: true }));
         } else{
             alert('Not your turn.');
         }
@@ -66,6 +66,7 @@ class Card1 extends React.Component {
 
 	render() {
         const panStyle = { transform: this.state.pan.getTranslateTransform() }
+        panStyle.transform.push({rotate: '8deg'})
 
         // panStyle.transform.push({rotate: this.props.angle+"deg"});
 
@@ -74,7 +75,7 @@ class Card1 extends React.Component {
 		return (
             <Animated.View 
                 {...this.panResponder.panHandlers}
-                style={[panStyle, styles.card]}
+                style={[panStyle, styles.card, {right: 0+(this.props.num * 60)}]}
             >
                 <TouchableOpacity onPress={this.enlarge.bind(this)}>
                     {this.props.card({num: this.props.num})} 
@@ -87,12 +88,13 @@ class Card1 extends React.Component {
 const styles = StyleSheet.create({
     card: {
         backgroundColor: "#075",
-        height: 80,
-        width: 50,
-        borderColor: '#fff', 
+        position: 'absolute',
+        right: 0,
+        height: '100%',
+        width: '25%',
+        borderColor: '#000', 
         borderWidth: 2,
-        borderRadius: 5,
-        margin: 3,
+        borderRadius: 10,
         backgroundColor: '#555'
     },
 });

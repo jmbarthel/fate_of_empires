@@ -38,7 +38,14 @@ class Hand1 extends React.Component {
             }
 
             hand.push(
-                <Card key={i} num={i} angle={degrees} toggleDim={this.props.toggleDim} card={this.props.hand[i]} expandHandCard={this.props.expandHandCard}/>
+                <Card 
+                    key={i} 
+                    num={i} 
+                    angle={degrees} 
+                    toggleDim={this.props.toggleDim} 
+                    card={this.props.hand[i]} 
+                    expandHandCard={this.props.expandHandCard}
+                />
             )
         }
         
@@ -48,10 +55,10 @@ class Hand1 extends React.Component {
 	render() {
 		return (
 			<View style={[this.props.style, styles.container]}>
-                <View style={{height: '100%', width: '16%', left: 4}}>
+                {/* <View style={{height: '100%', width: '16%', left: 4}}>
                     <Deck name='deck' deck={this.props.deck}/>
                     <Deck name='discard' deck={this.props.discard}/>
-                </View>
+                </View> */}
                 <View style={styles.cardArea}>
                     {this.renderHand()}
                 </View>
@@ -70,10 +77,13 @@ const styles = StyleSheet.create({
     },
     cardArea: {
         flexDirection: 'row', 
-        width: '84%', 
+        // width: '84%', 
+        left: 4,
+        // padding: 1,
+        width: '100%', 
         height: '100%', 
         justifyContent: 'center',
-        paddingTop: '3%'
+        // paddingTop: '3%'
     }
 });
   

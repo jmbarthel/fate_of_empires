@@ -16,6 +16,7 @@ import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
 // Setup
 import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
+import AlbertEinstein from '../game/cards/people/AlbertEinstein.js';
 
 const mapStateToProps = state => {
     return { 
@@ -105,6 +106,8 @@ class NewGame1 extends React.Component {
 
 		// Adding humanitarian aid
 		playerDeck.push(HumanitarianAid);
+		playerDeck.push(Scientist);
+		playerDeck.push(AlbertEinstein);
 
 		//SETUP PLAYER HANDS
 		const setUpDraws = {
@@ -772,10 +775,7 @@ class NewGame1 extends React.Component {
 						<View style={{backgroundColor: '#3f4', height: '70%', width: '100%'}}>
 
 						</View>
-
 					</View>
-
-					
 				</View>
 
 				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
