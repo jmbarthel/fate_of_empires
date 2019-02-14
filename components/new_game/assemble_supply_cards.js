@@ -259,8 +259,6 @@ const assembleSupplyDeck = () => {
 
     supplyDeck = shuffle(supplyDeck);
 
-    supplyDeck.push(AlbertEinstein);
-
     return supplyDeck;
 }
 

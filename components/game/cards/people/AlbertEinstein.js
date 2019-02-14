@@ -77,52 +77,79 @@ export default AlbertEinstein = (props) => {
                         style={{
                             top: 0, 
                             color: '#FFF',
+                            fontWeight: 'bold', 
                             textShadowColor:'#000',
                             textShadowOffset:{
-                                width: 0.5,
-                                height: 0.5
+                                width: 1,
+                                height: 1
                             },
                             textAlign: 'center',
                             textShadowRadius: 1,
-                            fontSize: 8.5
+                            fontSize: 8.5,
                         }}
                     >
                         {props.display_name}
                     </Text>
                 </View>
                 
+                <Image 
+                    source={require('../../../../assets/symbols/cardtypes/Person.png')}
+                    style={{
+                        width: '30%', 
+                        position: 'absolute',
+                        height: '25%', 
+                        left: 0, 
+                        bottom: 0
+                    }} 
+                />
+                
+                <Image 
+                    source={require('../../../../assets/symbols/goldResourceBack.png')}
+                    style={{
+                        width: '75%', 
+                        position: 'absolute',
+                        height: '25%', 
+                        right: -5, 
+                        bottom: 0
+                    }} 
+                />
+
                 <View 
                     style={{
-                        width: '60%',
+                        width: '70%',
                         height: '25%',
                         position: 'absolute',
-                        right: 0,
+                        right: -9,
                         bottom: 0,
                         flexDirection: 'row',
                         fontWeight: 'bold', 
-                        backgroundColor: "rgba(244, 233, 66, 0.6)", 
-                        borderRadius: 25,
+                        // backgroundColor: "rgba(176, 66, 244, 0.6)", 
+                        // borderRadius: 25,
                     }}
                 >
                     <Text style={{
                         color: '#FFF',
-                        margin: 1,
-                        textShadowColor:'#000',
+                        marginLeft: 4,
+                        fontWeight: 'bold', 
+                        textShadowColor:'#003',
                         textShadowOffset:{
                             width: 0.2,
                             height: 0.2
                         },
-                        textShadowRadius: 2
+                        textShadowRadius: 2,
+                        marginRight: 8
                     }}>
                         {props.cost.gold}
                     </Text>
+
                     <Image 
                         source={require('../../../../assets/symbols/actions/Gold.png')}
                         style={{
-                            width: '50%', 
+                            width: '40%', 
                             height: '100%', 
-                            right: 0, 
-                            bottom: 0
+                            right: 8,
+                            // marginLeft: 5,
+                            // bottom: 0.5
                         }} 
                     />
                 </View>
