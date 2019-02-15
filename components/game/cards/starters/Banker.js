@@ -34,13 +34,15 @@ export default Banker = (props) => {
                 props={props} 
                 style={{
                     width: '100%', 
-                    height: '100%'
+                    height: '100%',
+                    borderRadius: 10,
                 }}
             >
                 <Image 
                     style={{
                         width: '100%', 
                         height: '100%',
+                        borderRadius: 10,
                     }} 
                     source={require('../../../../assets/starters/pics/Banker.jpg')} 
                 />
@@ -82,6 +84,10 @@ export default Banker = (props) => {
                     }} 
                 />
 				
+                {props.hand ? null 
+                
+                : 
+                    <View style={{width: '100%', height: '100%', position: 'absolute'}}>
                 <Image 
                     source={require('../../../../assets/symbols/wildResourceBack.png')}
                     style={{
@@ -130,6 +136,8 @@ export default Banker = (props) => {
                         }} 
                     />
                 </View>
+            </View>
+            }
             </View>
         );
     }

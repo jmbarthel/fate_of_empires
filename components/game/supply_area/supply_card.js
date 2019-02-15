@@ -38,7 +38,7 @@ class SupplyCard1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<TouchableOpacity onPress={this.onPress.bind(this)}>
-					{this.props.card()}
+					{this.props.card({hand: 0})}
 				</TouchableOpacity>
 			</View>
 		);

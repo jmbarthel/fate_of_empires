@@ -37,13 +37,15 @@ export default MarieCurie = (props) => {
                 props={props} 
                 style={{
                     width: '100%', 
-                    height: '100%'
+                    height: '100%',
+                    borderRadius: 10,
                 }}
             >
                 <Image 
                     style={{
                         width: '100%', 
-                        height: '100%'
+                        height: '100%',
+                        borderRadius: 10,
                     }} 
                     props={props} 
                     source={require('../../../../assets/people/pics/MarieCurie.jpg')} 
@@ -100,6 +102,10 @@ export default MarieCurie = (props) => {
                     }} 
                 />
                 
+                {props.hand ? null 
+                
+                : 
+                    <View style={{width: '100%', height: '100%', position: 'absolute'}}>
                 <Image 
                     source={require('../../../../assets/symbols/goldResourceBack.png')}
                     style={{
@@ -152,6 +158,8 @@ export default MarieCurie = (props) => {
                         }} 
                     />
                 </View>
+                </View>
+                }
             </View>
         );
     }

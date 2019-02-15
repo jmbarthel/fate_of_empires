@@ -34,13 +34,15 @@ export default Scientist = (props) => {
                 props={props} 
                 style={{
                     width: '100%', 
-                    height: '100%'
+                    height: '100%',
+                    borderRadius: 10,
                 }}
             >
                 <Image 
                     style={{
                         width: '100%', 
                         height: '100%',
+                        borderRadius: 10,
                     }} 
                     source={require('../../../../assets/starters/pics/Scientist.jpg')} 
                 />
@@ -82,54 +84,60 @@ export default Scientist = (props) => {
                     }} 
                 />
                 
-                <Image 
-                    source={require('../../../../assets/symbols/wildResourceBack.png')}
-                    style={{
-                        width: '75%', 
-                        position: 'absolute',
-                        height: '25%', 
-                        right: -5, 
-                        bottom: 0
-                    }} 
-                />
-
-                <View 
-                    style={{
-                        width: '70%',
-                        height: '25%',
-                        position: 'absolute',
-                        right: -9,
-                        bottom: 0,
-                        flexDirection: 'row',
-                        fontWeight: 'bold', 
-                        // backgroundColor: "rgba(176, 66, 244, 0.6)", 
-                        // borderRadius: 25,
-                    }}
-                >
-                    <Text style={{
-                        color: '#FFF',
-                        marginLeft: 4,
-                        textShadowColor:'#003',
-                        textShadowOffset:{
-                            width: 0.2,
-                            height: 0.2
-                        },
-                        textShadowRadius: 2,
-                        marginRight: 4
-                    }}>
-                        {props.cost.any}
-                    </Text>
-
+                {props.hand ? null 
+                
+                : 
+                    <View style={{width: '100%', height: '100%', position: 'absolute'}}>
                     <Image 
-                        source={require('../../../../assets/symbols/actions/AnyMix.png')}
+                        source={require('../../../../assets/symbols/wildResourceBack.png')}
                         style={{
-                            width: '40%', 
-                            height: '100%', 
-                            // right: 5
-                            // bottom: 0.5
+                            width: '75%', 
+                            position: 'absolute',
+                            height: '25%', 
+                            right: -5, 
+                            bottom: 0
                         }} 
                     />
-                </View>
+
+                    <View 
+                        style={{
+                            width: '70%',
+                            height: '25%',
+                            position: 'absolute',
+                            right: -9,
+                            bottom: 0,
+                            flexDirection: 'row',
+                            fontWeight: 'bold', 
+                            // backgroundColor: "rgba(176, 66, 244, 0.6)", 
+                            // borderRadius: 25,
+                        }}
+                    >
+                        <Text style={{
+                            color: '#FFF',
+                            marginLeft: 4,
+                            textShadowColor:'#003',
+                            textShadowOffset:{
+                                width: 0.2,
+                                height: 0.2
+                            },
+                            textShadowRadius: 2,
+                            marginRight: 4
+                        }}>
+                            {props.cost.any}
+                        </Text>
+
+                        <Image 
+                            source={require('../../../../assets/symbols/actions/AnyMix.png')}
+                            style={{
+                                width: '40%', 
+                                height: '100%', 
+                                // right: 5
+                                // bottom: 0.5
+                            }} 
+                        />
+                    </View>
+                    </View>
+                }
             </View>
         );
     }

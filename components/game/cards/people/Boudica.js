@@ -46,14 +46,15 @@ export default Boudica = (props) => {
                 props={props} 
                 style={{
                     width: '100%', 
-                    height: '100%'
+                    height: '100%',
+                    borderRadius: 10,
                 }}
             >
                 <Image 
                     style={{
                         width: '100%', 
                         height: '100%',
-                        top: 0,
+                        borderRadius: 10,
                     }} 
                     props={props} 
                     source={require('../../../../assets/people/pics/Boudica.jpg')} 
@@ -110,6 +111,11 @@ export default Boudica = (props) => {
                     }} 
                 />
                 
+                {props.hand ? null 
+                
+                : 
+                    <View style={{width: '100%', height: '100%', position: 'absolute'}}>
+
                 <Image 
                     source={require('../../../../assets/symbols/goldResourceBack.png')}
                     style={{
@@ -160,6 +166,8 @@ export default Boudica = (props) => {
                         }} 
                     />
                 </View>
+            </View>
+                }
             </View>
         );
     }
