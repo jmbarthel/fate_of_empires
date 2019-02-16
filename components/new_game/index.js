@@ -909,7 +909,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		flexDirection: 'column',
-		backgroundColor: '#075'
+		backgroundColor: '#222'
 	},
 	areasContainer:{
 		flexDirection: 'row',

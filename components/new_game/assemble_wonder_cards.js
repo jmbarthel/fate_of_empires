@@ -208,7 +208,11 @@ const assembleWonderDeck = (playersCount) => {
         wonderSupply.push(ancients[i]);
     }
 
-    // wonderSupply.push(StatueofZeus);
+    wonderSupply.push(MoaiofRapaNui);
+    wonderSupply.push(NotreDame);
+    wonderSupply.push(Petra);
+    wonderSupply.push(StoneHenge);
+    wonderSupply.push(ThePyramids);
 
     return {
         wonderSupply, 
