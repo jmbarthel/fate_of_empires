@@ -20,7 +20,7 @@ export default Memphis = (props) => {
             },
             2: {
                 produceResource: {
-                    workerOnCapital: {
+                    eachWorkerOnCapital: {
                         any: 1
                     }
                 }

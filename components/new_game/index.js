@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, Text } from "react-native";
+import { Dimensions, View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, Text } from "react-native";
 import { connect } from 'react-redux';
 import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';
@@ -188,25 +188,37 @@ class NewGame1 extends React.Component {
 					influence: 0,
 					any: 0,
 					toward: {
-						people: {
+						person: {
 							gold: 0, 
 							science: 0, 
 							influence: 0,
 							any: 0,
 						}, 
-						science: {
+						technology: {
 							gold: 0, 
 							science: 0, 
 							influence: 0,
 							any: 0,
 						}, 
-						influence: {
+						city: {
 							gold: 0, 
 							science: 0, 
 							influence: 0,
 							any: 0,
 						}, 
-						anyWonder: {
+						A_M_wonders: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						N_wonders: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						allWonders: {
 							gold: 0, 
 							science: 0, 
 							influence: 0,
@@ -454,10 +466,83 @@ class NewGame1 extends React.Component {
 		let { choiceCount, choices } = card.props.props;
 
 		console.log('you chose: ', choice, 'choicecount: ', choiceCount);
-		console.log('spending a card: ', card.props.props);
+
+		if(choiceCount === 1){
+			choice = 1;
+		}
+		
+		let chosenOption = choices[choice];
+
+		console.log(chosenOption);
 
 		this.setState((prevState) => {
 			let played_cards = prevState.player.played_cards.concat(prevState.player.hand.splice(card.props.props.num, 1));
+
+			let resources = {
+				any: prevState.player.resources.any,
+				gold: prevState.player.resources.gold,
+				science: prevState.player.resources.science,
+				influence: prevState.player.resources.influence,
+				toward: {
+					A_M_wonders: prevState.player.resources.A_M_wonders,
+					N_wonders: prevState.player.resources.N_wonders,
+					allWonders: prevState.player.resources.allWonders,
+				}
+			};
+
+			for(let type in chosenOption){
+
+				if(type === 'produceResource'){
+
+					for(let resource in chosenOption[type]){
+
+						if((['any', 'gold', 'influence', 'science']).indexOf(resource) > -1){
+							console.log('adding: ', resource);
+							resources[resource] = resources[resource] + chosenOption[type][resource];
+						}
+
+						if(resource === 'toward'){
+							console.log('produce resource toward something')
+							//'[A_M_wonders, N_wonders, allWonders]'
+							
+						}
+
+						//eachPersonInHand
+
+						//eachTechInHand
+
+						//eachWorkerInHand
+
+						//eachWorkerOnCapital
+					}
+				}
+
+				if(type === 'produceResourceCondition'){
+					console.log('produceresourcecondition');
+					// inHand: {
+                        // person: {
+                            // gold: 1
+                        // }
+                    // }
+
+					// produceResourceCondition: {
+					// 	inHand: {
+					// 		city: {
+					// 			gold: 4
+					// 		}
+					// 	}
+					// }
+
+					// produceResourceCondition: {
+					// 	onCapital: {
+					// 		scientist: {
+					// 			science: 2
+					// 		}
+					// 	}
+					// }
+				}
+			}
+
 			return {
 				...prevState, 
 				expandHandCard: false, 
@@ -466,10 +551,7 @@ class NewGame1 extends React.Component {
 					...prevState.player, 
 					hand: prevState.player.hand,
 					played_cards,
-					resources: {
-						...prevState.player.resources, 
-						any: prevState.player.resources.any + 1
-					}
+					resources
 				}
 			}
 		})
@@ -751,6 +833,8 @@ class NewGame1 extends React.Component {
 	}
 
 	render() {
+		let height = Dimensions.get('window').height - 50;
+
 		return (
 			<View style={styles.container}>
 
@@ -831,7 +915,7 @@ class NewGame1 extends React.Component {
 				</View>
 
 				{this.state.expandSupplyCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', right: 15}}>
+					<View style={{backgroundColor: '#000', position:'absolute', width: (height) / 1.56, height: height, right: 15}}>
 						{this.state.expandedSupplyCard}
 						<TouchableOpacity 
 							onPress={this.unExpandSupplyCard.bind(this)}
@@ -845,7 +929,7 @@ class NewGame1 extends React.Component {
 				) : undefined}
 
 				{this.state.expandWonderCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%', left: 15}}>
+					<View style={{backgroundColor: '#000', position:'absolute', width: (height) / 1.56, height: height, left: 15}}>
 						{this.state.expandedWonderCard}
 						<TouchableOpacity 
 							onPress={this.unExpandWonderCard.bind(this)}
@@ -863,19 +947,19 @@ class NewGame1 extends React.Component {
 				) : undefined}
 
 				{this.state.expandHandCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: '30%', height: '85%'}}>
+					<View style={{backgroundColor: '#000', position:'absolute', width: (height) / 1.56, height: height }}>
 						<View>
 							{this.state.expandedHandCard}
 							<TouchableOpacity 
 								onPress={this.unExpandHandCard.bind(this)} 
-								style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+								style={{position: 'absolute', height: '50%', width: '100%', top: 0}}
 							/>
 							<TouchableOpacity
-								style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
+								style={{position: 'absolute', height: '50%', width: '50%', bottom: 0, left: 0, backgroundColor: 'rgba(150, 50, 0, 0.7)' }}
 								onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
 							/>
 							<TouchableOpacity
-								style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
+								style={{position: 'absolute', height: '50%', width: '50%', bottom: 0, right: 0, backgroundColor: 'rgba(150, 50, 0, 0.7)' }}
 								onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
 							/>
 						</View>

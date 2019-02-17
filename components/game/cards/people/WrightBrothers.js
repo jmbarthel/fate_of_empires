@@ -18,7 +18,7 @@ export default WrightBrothers = (props) => {
             1: {
                 produceResource: {
                     science: 4,
-                    eachScienceInHand: {
+                    eachTechInHand: {
                         science: 1
                     }
                 }, 

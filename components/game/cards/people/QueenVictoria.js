@@ -18,7 +18,7 @@ export default QueenVictoria = (props) => {
             1: {
                 produceResource: {
                     gold: 2,
-                    workerOnCapital: {
+                    eachWorkerOnCapital: {
                         gold: 1
                     }
                 },

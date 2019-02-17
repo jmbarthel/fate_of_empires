@@ -20,7 +20,7 @@ export default Auckland = (props) => {
             },
             2: {
                 produceResource: {
-                    workerOnCapital: {
+                    eachWorkerOnCapital: {
                         any: 1
                     }
                 }

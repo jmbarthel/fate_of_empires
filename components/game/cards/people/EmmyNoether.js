@@ -25,7 +25,7 @@ export default EmmyNoether = (props) => {
             }, 
             2: {
                 produceResource: {
-                    eachScienceInHand: {
+                    eachTechInHand: {
                         gold: 0, 
                         science: 0, 
                         influence: 0,

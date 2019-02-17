@@ -59,10 +59,10 @@ class PlayerArea1 extends React.Component {
 					discard={this.props.player.discard}
 				/>
 				<View style={{width: '10%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>
-					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/AnyMix.png')}/> {this.props.player.resources.any}</Text></View>
-					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Gold.png')}/> {this.props.player.resources.gold}</Text></View>
-					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Influence.png')}/> {this.props.player.resources.influence}</Text></View>
-					<View><Text><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Science.png')}/> {this.props.player.resources.science}</Text></View>
+					<View><Text style={{color: '#fff'}}><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/AnyMix.png')}/> {this.props.player.resources.any}</Text></View>
+					<View><Text style={{color: '#fff'}}><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Gold.png')}/> {this.props.player.resources.gold}</Text></View>
+					<View><Text style={{color: '#fff'}}><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Influence.png')}/> {this.props.player.resources.influence}</Text></View>
+					<View><Text style={{color: '#fff'}}><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Science.png')}/> {this.props.player.resources.science}</Text></View>
 				</View>
 				<Capital style={styles.capital}/>
 				<YourWonders style={styles.wonders}/>
