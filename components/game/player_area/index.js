@@ -14,9 +14,8 @@ class PlayerArea1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {dim: true};
-		/**
-		 * 
-		 * /* this.props.player
+		
+		/* this.props.player
 			Each player is an object as such: 
 			{
 				id: num, 
@@ -64,7 +63,10 @@ class PlayerArea1 extends React.Component {
 					<View><Text style={{color: '#fff'}}><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Influence.png')}/> {this.props.player.resources.influence}</Text></View>
 					<View><Text style={{color: '#fff'}}><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Science.png')}/> {this.props.player.resources.science}</Text></View>
 				</View>
-				<Capital style={styles.capital}/>
+				<Capital 
+					style={styles.capital}
+					capital={this.props.player.capital}
+				/>
 				<YourWonders style={styles.wonders}/>
 			</View>
 		);

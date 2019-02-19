@@ -123,16 +123,7 @@ import Tokyo from '../game/cards/cities/Tokyo.js';
 import Toronto from '../game/cards/cities/Toronto.js';
 import Vienna from '../game/cards/cities/Vienna.js';
 
-const shuffle = a => {
-    var j, x, i;
-    for (i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-    }
-    return a;
-}
+import { shuffle } from './utilities.js';
 
 const assembleSupplyDeck = () => {
     let supplyDeck = [

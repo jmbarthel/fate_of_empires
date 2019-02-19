@@ -2,7 +2,8 @@ import React from 'react';
 import { Image } from "react-native";
 
 export default HumanitarianAid = (props) => {
-    const cost = 5; const type='worker';
+    const cost = 5; 
+    const type='army';
     const name = 'HumanitarianAid';
     props = {...props, type, name}
     

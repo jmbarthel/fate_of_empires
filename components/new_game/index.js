@@ -16,7 +16,8 @@ import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
 // Setup
 import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
-import AlbertEinstein from '../game/cards/people/AlbertEinstein.js';
+
+import { shuffle } from './utilities.js';
 
 const mapStateToProps = state => {
     return { 
@@ -97,6 +98,7 @@ class NewGame1 extends React.Component {
 			}
 			// Adding humanitarian aid
 			enemyArr[Object.keys(enemyArr)[i]].deck.push(HumanitarianAid);
+			enemyArr[Object.keys(enemyArr)[i]].deck = shuffle(enemyArr[Object.keys(enemyArr)[i]].deck);
 		}
 
 		// Setting player deck
@@ -106,10 +108,15 @@ class NewGame1 extends React.Component {
 
 		// Adding humanitarian aid
 		playerDeck.push(HumanitarianAid);
-		playerDeck.push(Scientist);
-		playerDeck.push(AlbertEinstein);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
 
-		//SETUP PLAYER HANDS
+		playerDeck = shuffle(playerDeck);
+
+		// Setup player hands
 		const setUpDraws = {
 			'1': {
 				draw: 5, 
@@ -146,7 +153,7 @@ class NewGame1 extends React.Component {
 			idx++;
 		});
 
-		//SET REVEALED SUPPLY CARDS
+		// Set revealed supply cards
 		const supplyDeck = assembleSupplyDeck();
 		const supplyRevealed = [];
 
@@ -226,7 +233,10 @@ class NewGame1 extends React.Component {
 						}, 
 					}
 				},
-				capital: []
+				capital: {
+					workers: [], 
+					armies: [],
+				}
 			},
 
 			enemies: enemyArr, 
@@ -507,13 +517,18 @@ class NewGame1 extends React.Component {
 							
 						}
 
+						if(resource === 'eachWorkerOnCapital'){
+							console.log('produce resource per worker on capital')
+							resources['any'] = resources['any'] + (prevState.player.capital.workers.length);
+						}
+
 						//eachPersonInHand
 
 						//eachTechInHand
 
 						//eachWorkerInHand
 
-						//eachWorkerOnCapital
+						//eachCityInHand
 					}
 				}
 
@@ -750,15 +765,34 @@ class NewGame1 extends React.Component {
 		});
 	}
 
-	shuffle = a => {
-		var j, x, i;
-		for (i = a.length - 1; i > 0; i--) {
-			j = Math.floor(Math.random() * (i + 1));
-			x = a[i];
-			a[i] = a[j];
-			a[j] = x;
-		}
-		return a;
+	putOnCapital(card){
+		console.log('putting on capital', card.props.props);
+		this.setState(prevState => {
+			let capital;
+			if(card.props.props.type === 'worker'){
+				capital = {
+					...prevState.player.capital, 
+					workers: prevState.player.capital.workers.concat(prevState.player.hand.splice(card.props.props.num, 1))
+				}
+			} else if(card.props.props.type === 'army'){
+				capital = {
+					...prevState.player.capital, 
+					armies: prevState.player.capital.armies.concat(prevState.player.hand.splice(card.props.props.num, 1))
+				}
+			}
+
+			return {
+				...prevState, 
+				expandHandCard: false,
+				expandedHandCard: false, 
+				player: {
+					...prevState.player,
+					hand: prevState.player.hand, 
+					capital: capital
+
+				}
+			}
+		})
 	}
 
 	endTurn = () => {
@@ -785,8 +819,6 @@ class NewGame1 extends React.Component {
 				hand.push(deck.pop());
 				hand.push(deck.pop());
 			} else{
-				console.log('deck.length1 ', deck.length, discard.length);
-	
 				let x = deck.length;
 	
 				for(let i = 0; i < x; i++){
@@ -797,7 +829,7 @@ class NewGame1 extends React.Component {
 	
 				discard = [];
 	
-				deck = this.shuffle(deck);
+				deck = shuffle(deck);
 	
 				console.log('deck.length2 ', deck.length);
 	
@@ -818,6 +850,50 @@ class NewGame1 extends React.Component {
 						deck,
 						played_cards, 
 						discard, 
+						resources: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+							toward: {
+								person: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								}, 
+								technology: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								}, 
+								city: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								}, 
+								A_M_wonders: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								}, 
+								N_wonders: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								}, 
+								allWonders: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								}, 
+							}
+						},
 					}
 				}
 			}, () => {
@@ -856,7 +932,7 @@ class NewGame1 extends React.Component {
 							/>
 						</View>
 
-						<View style={{backgroundColor: '#3f4', height: '70%', width: '100%'}}>
+						<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
 
 						</View>
 					</View>
@@ -951,17 +1027,56 @@ class NewGame1 extends React.Component {
 						<View>
 							{this.state.expandedHandCard}
 							<TouchableOpacity 
+								style={{
+									position: 'absolute', 
+									height: '50%', 
+									width: '100%', 
+									top: 0
+								}}
 								onPress={this.unExpandHandCard.bind(this)} 
-								style={{position: 'absolute', height: '50%', width: '100%', top: 0}}
 							/>
 							<TouchableOpacity
-								style={{position: 'absolute', height: '50%', width: '50%', bottom: 0, left: 0, backgroundColor: 'rgba(150, 50, 0, 0.7)' }}
+								style={{
+									position: 'absolute', 
+									height: '50%', 
+									width: '50%', 
+									bottom: 0, 
+									left: 0, 
+									backgroundColor: 'rgba(150, 50, 0, 0.7)' 
+								}}
 								onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
 							/>
 							<TouchableOpacity
-								style={{position: 'absolute', height: '50%', width: '50%', bottom: 0, right: 0, backgroundColor: 'rgba(150, 50, 0, 0.7)' }}
+								style={{
+									position: 'absolute', 
+									height: '50%', 
+									width: '50%', 
+									bottom: 0, 
+									right: 0, 
+									backgroundColor: 'rgba(150, 50, 0, 0.7)' 
+								}}
 								onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
 							/>
+							{
+								this.state.expandedHandCard.props.props.type === 'worker' 
+								|| this.state.expandedHandCard.props.props.type === 'army' ? 
+
+								<TouchableOpacity 
+									style={{
+										position: 'absolute',
+										backgroundColor: '#f00',
+										right: -120,
+										top: 120,
+										borderRadius: 50,
+										padding: 20,
+									}}
+									onPress={this.putOnCapital.bind(this, this.state.expandedHandCard)}
+								>
+									<Text>Put on Capital</Text>
+								</TouchableOpacity>
+								: undefined
+							}
+
 						</View>
 					</View>
 				) : undefined}

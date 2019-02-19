@@ -10,8 +10,7 @@ const mapStateToProps = state => {
 class SupplyCard1 extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-		};
+		this.state = {};
     }
     
     onPress(){

@@ -77,19 +77,8 @@ import VictoriaHarbour from '../game/cards/wonders/moderns/VictoriaHarbour.js';
 // Starter things
 import AgeofEnlightenment from '../game/cards/starters/AgeofEnlightenment.js';
 import ElectWorldLeader from '../game/cards/starters/ElectWorldLeader.js';
-import wonder from '../game/wonder_area/wonder.js';
 
-const shuffle = a => {
-    // hi
-    var j, x, i;
-    for (i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-    }
-    return a;
-}
+import { shuffle } from './utilities.js';
 
 const assembleWonderDeck = (playersCount) => {
     let ancients = [
@@ -207,12 +196,6 @@ const assembleWonderDeck = (playersCount) => {
     for(let i = 0; i < (ancients.length - setupWonders[playersCount].ancient); i++){
         wonderSupply.push(ancients[i]);
     }
-
-    wonderSupply.push(MoaiofRapaNui);
-    wonderSupply.push(NotreDame);
-    wonderSupply.push(Petra);
-    wonderSupply.push(StoneHenge);
-    wonderSupply.push(ThePyramids);
 
     return {
         wonderSupply, 

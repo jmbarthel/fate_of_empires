@@ -6,7 +6,7 @@ export default ChingShih = (props) => {
         ...props, 
         type: 'person', 
         name: 'ChingShih', 
-        display_name: 'ChingShih', 
+        display_name: 'Ching Shih', 
         region: 'red',
         cost: {
             gold: 10,

@@ -15,10 +15,6 @@ class Hand1 extends React.Component {
 		this.state = {};
 	}
 
-    enlarge(){
-
-    }
-
     renderHand(){
         let hand = [];
         
