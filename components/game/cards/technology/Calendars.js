@@ -14,7 +14,7 @@ export default Calendars = (props) => {
         choiceCount: 1, 
         choices: {
             1: {
-                advanceTime: true, 
+                advanceTime: 1, 
                 produceResource: {
                     science: 2
                 }
