@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dimensions, View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, Text } from "react-native";
+import { Image, Dimensions, View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, Text } from "react-native";
+import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
 import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';
@@ -108,11 +109,11 @@ class NewGame1 extends React.Component {
 
 		// Adding humanitarian aid
 		playerDeck.push(HumanitarianAid);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
+		// playerDeck.push(Calculus);
+		// playerDeck.push(Calculus);
+		// playerDeck.push(Calculus);
+		// playerDeck.push(Calculus);
+		// playerDeck.push(Calculus);
 
 		playerDeck = shuffle(playerDeck);
 
@@ -290,11 +291,23 @@ class NewGame1 extends React.Component {
 			}
 		*/
 
-		this.sidebarAnimation = new Animated.ValueXY({ x: -200, y: 0 });
+		this.sidebarAnimation = new Animated.ValueXY({ x: -250, y: 0 });
 
 	}
 
-	_toggleSideBar(){
+	_toggleSideBar(off){
+		if(off){
+			if(this.state.sidebar === true){
+				Animated.spring(this.sidebarAnimation, {
+					toValue: { x: -250, y: 0 },
+					friction: 10,
+				}).start();
+			}
+			this.setState({
+				sidebar: false, 	
+			});
+
+		}
 		if(this.state.sidebar){
 			this.setState({
 				sidebar: false,
@@ -306,7 +319,7 @@ class NewGame1 extends React.Component {
 				expandedWonderCard: false,
 			});
 			Animated.spring(this.sidebarAnimation, {
-				toValue: { x: -200, y: 0 },
+				toValue: { x: -250, y: 0 },
 				friction: 10,
 			}).start();
 		} else{
@@ -931,9 +944,15 @@ class NewGame1 extends React.Component {
 								expandWonderCard={this.expandWonderCard.bind(this)}
 							/>
 						</View>
-
+			{/* 
+				DECKS 
+			*/}
 						<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
-
+							<View style={styles.decksCon}>
+								<View style={[styles.decks, {marginBottom: 5}]}><Text>Natural</Text><Text>{this.state.naturalWonders.length}</Text></View>
+								<View style={[styles.decks, {marginBottom: 5}]}><Text>A/M</Text><Text>{this.state.wonderSupply.length}</Text></View>
+								<View style={styles.decks}><Text>Supply</Text><Text>{this.state.supplyDeck.length}</Text></View>
+							</View> 
 						</View>
 					</View>
 				</View>
@@ -990,6 +1009,12 @@ class NewGame1 extends React.Component {
 						onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
 				</View>
 
+				{/*
+				
+				EXPANDED CARDS
+				
+				 */}
+
 				{this.state.expandSupplyCard ? (
 					<View style={{backgroundColor: '#000', position:'absolute', width: (height) / 1.56, height: height, right: 15}}>
 						{this.state.expandedSupplyCard}
@@ -1001,6 +1026,91 @@ class NewGame1 extends React.Component {
 							style={{position: 'absolute', height: '20%', width: '50%', bottom: 0, right: 0 }}
 							onPress={this.buySupplyCard.bind(this, this.state.expandedSupplyCard)}
 						/>
+						<View style={{
+							position: 'absolute', 
+							right: -150,
+							top: 30,
+							justifyContent: 'flex-start',
+							height: '100%',
+						}}>
+							{
+								this.state.expandedSupplyCard.props.props.type === 'worker' 
+								|| this.state.expandedSupplyCard.props.props.type === 'army'
+
+								? 
+									<TouchableOpacity 
+										style={{
+											width: 150,
+											alignSelf: 'flex-start',
+											backgroundColor: '#f0f',
+											borderRadius: 50,
+											padding: 20,
+										}}
+										onPress={this.putOnCapital.bind(this, this.state.expandedSupplyCard)}
+									>
+										<Text>Put on Capital</Text>
+									</TouchableOpacity>
+								: undefined
+							}
+							
+							{
+								this.state.expandedSupplyCard.props.props.cost.gold > 0 
+								? 
+									<View style={styles.sideBubblesCon}>
+										<LinearGradient 
+											colors={['#fff', '#f27']}
+											style={styles.sideBubbles}
+										>
+											<Image 
+												source={require('../../assets/symbols/actions/Gold.png')}
+												style={{
+													width: '100%', 
+													height: '100%', 
+												}} 
+											/>
+										</LinearGradient>
+									</View>
+								: undefined
+							}
+							{
+								this.state.expandedSupplyCard.props.props.cost.science > 0 
+								? 
+									<View style={styles.sideBubblesCon}>
+										<LinearGradient 
+											colors={['#fff', '#f27']}
+											style={styles.sideBubbles}
+										>
+											<Image 
+												source={require('../../assets/symbols/actions/Science.png')}
+												style={{
+													width: '100%', 
+													height: '100%', 
+												}} 
+											/>
+										</LinearGradient>
+									</View>
+								: undefined
+							}
+							{
+								this.state.expandedSupplyCard.props.props.cost.influence > 0 
+								? 
+									<View style={styles.sideBubblesCon}>
+										<LinearGradient 
+											colors={['#fff', '#f27']}
+											style={styles.sideBubbles}
+										>
+											<Image 
+												source={require('../../assets/symbols/actions/Influence.png')}
+												style={{
+													width: '100%', 
+													height: '100%', 
+												}} 
+											/>
+										</LinearGradient>
+									</View>
+								: undefined
+							}
+						</View>
 					</View>
 				) : undefined}
 
@@ -1019,6 +1129,91 @@ class NewGame1 extends React.Component {
 							style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
 							// onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
 						/>
+						<View style={{
+							position: 'absolute', 
+							right: -150,
+							top: 30,
+							justifyContent: 'flex-start',
+							height: '100%',
+						}}>
+							{
+								this.state.expandedWonderCard.props.props.type === 'worker' 
+								|| this.state.expandedWonderCard.props.props.type === 'army'
+
+								? 
+									<TouchableOpacity 
+										style={{
+											width: 150,
+											alignSelf: 'flex-start',
+											backgroundColor: '#f0f',
+											borderRadius: 50,
+											padding: 20,
+										}}
+										onPress={this.putOnCapital.bind(this, this.state.expandedWonderCard)}
+									>
+										<Text>Put on Capital</Text>
+									</TouchableOpacity>
+								: undefined
+							}
+							
+							{
+								this.state.expandedWonderCard.props.props.cost.gold > 0 
+								? 
+									<View style={styles.sideBubblesCon}>
+										<LinearGradient 
+											colors={['#fff', '#f27']}
+											style={styles.sideBubbles}
+										>
+											<Image 
+												source={require('../../assets/symbols/actions/Gold.png')}
+												style={{
+													width: '100%', 
+													height: '100%', 
+												}} 
+											/>
+										</LinearGradient>
+									</View>
+								: undefined
+							}
+							{
+								this.state.expandedWonderCard.props.props.cost.science > 0 
+								? 
+									<View style={styles.sideBubblesCon}>
+										<LinearGradient 
+											colors={['#fff', '#f27']}
+											style={styles.sideBubbles}
+										>
+											<Image 
+												source={require('../../assets/symbols/actions/Science.png')}
+												style={{
+													width: '100%', 
+													height: '100%', 
+												}} 
+											/>
+										</LinearGradient>
+									</View>
+								: undefined
+							}
+							{
+								this.state.expandedWonderCard.props.props.cost.influence > 0 
+								? 
+									<View style={styles.sideBubblesCon}>
+										<LinearGradient 
+											colors={['#fff', '#f27']}
+											style={styles.sideBubbles}
+										>
+											<Image 
+												source={require('../../assets/symbols/actions/Influence.png')}
+												style={{
+													width: '100%', 
+													height: '100%', 
+												}} 
+											/>
+										</LinearGradient>
+									</View>
+								: undefined
+							}
+						</View>
 					</View>
 				) : undefined}
 
@@ -1057,29 +1252,44 @@ class NewGame1 extends React.Component {
 								}}
 								onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
 							/>
-							{
-								this.state.expandedHandCard.props.props.type === 'worker' 
-								|| this.state.expandedHandCard.props.props.type === 'army' ? 
+							
+								<View style={{
+									position: 'absolute', 
+									right: -150,
+									top: 30,
+									justifyContent: 'flex-start',
+									height: '100%',
+								}}>
+									{
+										this.state.expandedHandCard.props.props.type === 'worker' 
+										|| this.state.expandedHandCard.props.props.type === 'army'
 
-								<TouchableOpacity 
-									style={{
-										position: 'absolute',
-										backgroundColor: '#f00',
-										right: -120,
-										top: 120,
-										borderRadius: 50,
-										padding: 20,
-									}}
-									onPress={this.putOnCapital.bind(this, this.state.expandedHandCard)}
-								>
-									<Text>Put on Capital</Text>
-								</TouchableOpacity>
-								: undefined
-							}
-
+										? 
+											<TouchableOpacity 
+												style={{
+													width: 150,
+													alignSelf: 'flex-start',
+													backgroundColor: '#f0f',
+													borderRadius: 50,
+													padding: 20,
+												}}
+												onPress={this.putOnCapital.bind(this, this.state.expandedHandCard)}
+											>
+												<Text>Put on Capital</Text>
+											</TouchableOpacity>
+										: undefined
+									}
+								</View>
 						</View>
 					</View>
 				) : undefined}
+
+
+				{/*
+				
+					SLIDER
+
+				 */}
 
 				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
 					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
@@ -1145,6 +1355,31 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(88, 33, 88, 0.8)',
 		alignItems: 'center',
 		justifyContent: 'center',
+	},
+	sideBubbles: {
+		width: 50, 
+		height: 50, 
+		borderRadius: 25, 
+		backgroundColor: '#555', 
+		padding: 8,
+		alignSelf: 'flex-start'
+	},
+	sideBubblesCon: {
+		width: 150,
+		marginBottom: 10
+	},
+	decks: {
+		backgroundColor: '#57f', 
+		justifyContent: 'center',
+		width: '80%', 
+		height: '30%', 
+		alignItems: 'center'
+	},
+	decksCon: {
+		width: '20%', 
+		height: '100%', 
+		alignItems: 'center', 
+		justifyContent: 'space-evenly',
 	}
 });
   

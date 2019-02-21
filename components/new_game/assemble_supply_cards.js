@@ -56,6 +56,7 @@ import Construction from '../game/cards/technology/Construction.js';
 import Currency from '../game/cards/technology/Currency.js';
 import Electricity from '../game/cards/technology/Electricity.js';
 import Engineering from '../game/cards/technology/Engineering.js';
+import Electronics from '../game/cards/technology/Electronics.js';
 import Explosives from '../game/cards/technology/Explosives.js';
 import GeneticEngineering from '../game/cards/technology/GeneticEngineering.js';
 import Gunpowder from '../game/cards/technology/Gunpowder.js';
@@ -181,6 +182,7 @@ const assembleSupplyDeck = () => {
         Construction,
         Currency,
         Electricity,
+        Electronics,
         Engineering,
         Explosives,
         GeneticEngineering,

@@ -33,7 +33,8 @@ export default WuZetian = (props) => {
     }
     
     if(props.expanded){
-        return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../assets/people/WuZetian.jpg')} />
+        return <Image 
+            style={{width: '100%', height: '100%'}} props={props} source={require('../../../../assets/people/WuZetian.jpg')} />
     } else{
         return (
             <View 
@@ -108,59 +109,59 @@ export default WuZetian = (props) => {
                 {props.hand ? null 
                 
                 : 
-                    <View style={{width: '100%', height: '100%', position: 'absolute'}}>
-                <Image 
-                    source={require('../../../../assets/symbols/goldResourceBack.png')}
-                    style={{
-                        width: '75%', 
-                        position: 'absolute',
-                        height: '25%', 
-                        right: -6, 
-                        bottom: 0
-                    }} 
-                />
-
-                <View 
-                    style={{
-                        width: '70%',
-                        height: '25%',
-                        position: 'absolute',
-                        right: -15,
-                        bottom: 0,
-                        flexDirection: 'row',
-                        fontWeight: 'bold', 
-                        // backgroundColor: "rgba(176, 66, 244, 0.6)", 
-                        // borderRadius: 25,
-                    }}
-                >
-                    <Text style={{
-                        color: '#FFF',
-                        marginLeft: 4,
-                        fontWeight: 'bold',
-                        textShadowColor:'#003',
-                        textShadowOffset:{
-                            width: 0.2,
-                            height: 0.2
-                        },
-                        textShadowRadius: 2,
-                        // right: 3,
-                        right: 8,
-                    }}>
-                        {props.cost.gold}
-                    </Text>
-
+                <View style={{width: '100%', height: '100%', position: 'absolute'}}>
                     <Image 
-                        source={require('../../../../assets/symbols/actions/Gold.png')}
+                        source={require('../../../../assets/symbols/goldResourceBack.png')}
                         style={{
-                            width: '40%', 
-                            height: '100%', 
-                            // right: 0,
-                            right: 8,
-                            // marginLeft: 5,
-                            // bottom: 0.5
+                            width: '75%', 
+                            position: 'absolute',
+                            height: '25%', 
+                            right: -6, 
+                            bottom: 0
                         }} 
                     />
-                </View>
+
+                    <View 
+                        style={{
+                            width: '70%',
+                            height: '25%',
+                            position: 'absolute',
+                            right: -15,
+                            bottom: 0,
+                            flexDirection: 'row',
+                            fontWeight: 'bold', 
+                            // backgroundColor: "rgba(176, 66, 244, 0.6)", 
+                            // borderRadius: 25,
+                        }}
+                    >
+                        <Text style={{
+                            color: '#FFF',
+                            marginLeft: 4,
+                            fontWeight: 'bold',
+                            textShadowColor:'#003',
+                            textShadowOffset:{
+                                width: 0.2,
+                                height: 0.2
+                            },
+                            textShadowRadius: 2,
+                            // right: 3,
+                            right: 8,
+                        }}>
+                            {props.cost.gold}
+                        </Text>
+
+                        <Image 
+                            source={require('../../../../assets/symbols/actions/Gold.png')}
+                            style={{
+                                width: '40%', 
+                                height: '100%', 
+                                // right: 0,
+                                right: 8,
+                                // marginLeft: 5,
+                                // bottom: 0.5
+                            }} 
+                        />
+                    </View>
                 </View>
                 }
             </View>
