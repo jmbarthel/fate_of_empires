@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Dimensions, View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, Text } from "react-native";
+import { Image, Dimensions, View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight, Text } from "react-native";
 import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
 import SupplyArea from '../game/supply_area/index.js';
@@ -108,12 +108,12 @@ class NewGame1 extends React.Component {
 		}
 
 		// Adding humanitarian aid
-		playerDeck.push(HumanitarianAid);
-		// playerDeck.push(Calculus);
-		// playerDeck.push(Calculus);
-		// playerDeck.push(Calculus);
-		// playerDeck.push(Calculus);
-		// playerDeck.push(Calculus);
+		// playerDeck.push(HumanitarianAid);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
+		playerDeck.push(Cairo);
 
 		playerDeck = shuffle(playerDeck);
 
@@ -451,34 +451,58 @@ class NewGame1 extends React.Component {
 	}
 
 	expandSupplyCard(card){
-		console.log('expanding supply', card.props.props)
 		if(this.state.expandedSupplyCard && this.state.expandedSupplyCard.props.props.name === card.props.props.name){
 			this.unExpandSupplyCard();
 		} else{
-			this.setState({expandSupplyCard: true, expandedSupplyCard: card});
+			this.setState({
+				expandSupplyCard: true, 
+				expandedSupplyCard: card,
+				expandHandCard: false, 
+				expandedHandCard: false, 
+				expandWonderCard: false, 
+				expandedWonderCard: false,
+			});
 		}
 	}
 
 	unExpandSupplyCard(){
-		this.setState({expandSupplyCard: false, expandedSupplyCard: false});
+		this.setState({
+			expandSupplyCard: false, 
+			expandedSupplyCard: false
+		});
 	}
 
 	expandWonderCard(card){
-		console.log('expanding wonder', card.props.props)
 		if(this.state.expandedWonderCard && this.state.expandedWonderCard.props.props.name === card.props.props.name){
 			this.unExpandWonderCard();
 		} else{
-			this.setState({expandWonderCard: true, expandedWonderCard: card});
+			this.setState({
+				expandWonderCard: true, 
+				expandedWonderCard: card,
+				expandSupplyCard: false, 
+				expandedSupplyCard: false,
+				expandHandCard: false, 
+				expandedHandCard: false, 
+			});
 		}
 	}
 
 	unExpandWonderCard(){
-		this.setState({expandWonderCard: false, expandedWonderCard: false});
+		this.setState({
+			expandWonderCard: false, 
+			expandedWonderCard: false
+		});
 	}
 
 	expandHandCard(card){
-		console.log('expanding hand', card.props.props)
-		this.setState({expandHandCard: true, expandedHandCard: card, expandWonderCard: false, expandSupplyCard: false, expandedSupplyCard: false, expandedWonderCard: false});
+		this.setState({
+			expandHandCard: true, 
+			expandedHandCard: card, 
+			expandWonderCard: false, 
+			expandSupplyCard: false, 
+			expandedSupplyCard: false, 
+			expandedWonderCard: false
+		});
 	}
 
 	unExpandHandCard(){
@@ -686,6 +710,7 @@ class NewGame1 extends React.Component {
 				returnState = {
 					...prevState, 
 					player: {
+						discard: prevState.player.discard.concat(cardFunc),
 						...prevState.player, 
 						resources: {
 							...prevState.player.resources, 
@@ -702,7 +727,7 @@ class NewGame1 extends React.Component {
 
 			} else if(typePurchased === 'supplyRevealed'){
 
-				alert('removing supply card', card.props.props);
+				// alert('removing supply card', card.props.props);
 
 				let cardFunc = prevState.supplyRevealed.splice(card.props.props.num, 1);
 
@@ -710,6 +735,7 @@ class NewGame1 extends React.Component {
 					...prevState, 
 					player: {
 						...prevState.player, 
+						discard: prevState.player.discard.concat(cardFunc),
 						resources: {
 							...prevState.player.resources, 
 							gold: yourResources.gold,
@@ -923,6 +949,9 @@ class NewGame1 extends React.Component {
 
 	render() {
 		let height = Dimensions.get('window').height - 50;
+		let cardHeight = height;
+		let screenWidth = Dimensions.get('window').width;
+		let cardWidth = cardHeight / 1.56;
 
 		return (
 			<View style={styles.container}>
@@ -944,9 +973,11 @@ class NewGame1 extends React.Component {
 								expandWonderCard={this.expandWonderCard.bind(this)}
 							/>
 						</View>
-			{/* 
-				DECKS 
-			*/}
+{/* 
+
+DECKS 
+
+*/}
 						<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
 							<View style={styles.decksCon}>
 								<View style={[styles.decks, {marginBottom: 5}]}><Text>Natural</Text><Text>{this.state.naturalWonders.length}</Text></View>
@@ -966,6 +997,12 @@ class NewGame1 extends React.Component {
 				</View>
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
+
+{/* 
+
+OPPONENTS
+
+*/}
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
 					{	this.state.dim ? 
@@ -1009,14 +1046,14 @@ class NewGame1 extends React.Component {
 						onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
 				</View>
 
-				{/*
-				
-				EXPANDED CARDS
-				
-				 */}
+{/*
+
+EXPANDED CARDS
+
+*/}
 
 				{this.state.expandSupplyCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: (height) / 1.56, height: height, right: 15}}>
+					<View style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, right: 15}}>
 						{this.state.expandedSupplyCard}
 						<TouchableOpacity 
 							onPress={this.unExpandSupplyCard.bind(this)}
@@ -1115,7 +1152,7 @@ class NewGame1 extends React.Component {
 				) : undefined}
 
 				{this.state.expandWonderCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: (height) / 1.56, height: height, left: 15}}>
+					<View style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, left: 15}}>
 						{this.state.expandedWonderCard}
 						<TouchableOpacity 
 							onPress={this.unExpandWonderCard.bind(this)}
@@ -1218,8 +1255,8 @@ class NewGame1 extends React.Component {
 				) : undefined}
 
 				{this.state.expandHandCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: (height) / 1.56, height: height }}>
-						<View>
+					<View pointerEvents='box-none' style={{width: '100%', height: '100%', position: 'absolute'}}>
+						<View style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, left: ((screenWidth/2) - (cardWidth/2)), top: 25}}>
 							{this.state.expandedHandCard}
 							<TouchableOpacity 
 								style={{
@@ -1252,44 +1289,47 @@ class NewGame1 extends React.Component {
 								}}
 								onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
 							/>
-							
-								<View style={{
-									position: 'absolute', 
-									right: -150,
-									top: 30,
-									justifyContent: 'flex-start',
-									height: '100%',
-								}}>
-									{
-										this.state.expandedHandCard.props.props.type === 'worker' 
-										|| this.state.expandedHandCard.props.props.type === 'army'
-
-										? 
-											<TouchableOpacity 
-												style={{
-													width: 150,
-													alignSelf: 'flex-start',
-													backgroundColor: '#f0f',
-													borderRadius: 50,
-													padding: 20,
-												}}
-												onPress={this.putOnCapital.bind(this, this.state.expandedHandCard)}
-											>
-												<Text>Put on Capital</Text>
-											</TouchableOpacity>
-										: undefined
-									}
-								</View>
 						</View>
+							
+							{
+								this.state.expandedHandCard.props.props.type === 'worker' 
+								|| this.state.expandedHandCard.props.props.type === 'army'
+
+								? 
+									<View style={{
+										position: 'absolute', 
+										right: -150,
+										left: ((screenWidth/2) - (cardWidth/2) + cardWidth),
+										top: 30,
+										justifyContent: 'flex-start',
+										height: '100%',
+										// backgroundColor: '#0f3'
+									}}>
+										<TouchableOpacity 
+											style={{
+												// width: 150,
+												// height: 30,
+												alignSelf: 'flex-start',
+												backgroundColor: '#f0f',
+												borderRadius: 50,
+												padding: 20,
+											}}
+											onPress={this.putOnCapital.bind(this, this.state.expandedHandCard)}
+										>
+											<Text>Put on Capital</Text>
+										</TouchableOpacity>
+									</View>
+								: undefined
+							}
 					</View>
 				) : undefined}
 
 
-				{/*
-				
-					SLIDER
+{/*
 
-				 */}
+SLIDER
+
+*/}
 
 				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
 					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
@@ -1302,7 +1342,7 @@ class NewGame1 extends React.Component {
 					style={styles.goBack} 
 					name="md-settings" 
 					size={32} 
-					color="black" 
+					color="white" 
 					onPress={this._toggleSideBar.bind(this)}
 				/>
 			
@@ -1327,7 +1367,6 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		flexDirection: 'row',
 		width: '50%',
-		// top: 0,
 		right: 0,
 		justifyContent: 'flex-end',
 	},
@@ -1373,7 +1412,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		width: '80%', 
 		height: '30%', 
-		alignItems: 'center'
+		alignItems: 'center',
+		borderRadius: 10,
 	},
 	decksCon: {
 		width: '20%', 
