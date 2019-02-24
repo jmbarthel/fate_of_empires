@@ -805,33 +805,42 @@ class NewGame1 extends React.Component {
 	}
 
 	putOnCapital(card){
+
 		console.log('putting on capital', card.props.props);
-		this.setState(prevState => {
-			let capital;
-			if(card.props.props.type === 'worker'){
-				capital = {
-					...prevState.player.capital, 
-					workers: prevState.player.capital.workers.concat(prevState.player.hand.splice(card.props.props.num, 1))
-				}
-			} else if(card.props.props.type === 'army'){
-				capital = {
-					...prevState.player.capital, 
-					armies: prevState.player.capital.armies.concat(prevState.player.hand.splice(card.props.props.num, 1))
-				}
-			}
 
-			return {
-				...prevState, 
-				expandHandCard: false,
-				expandedHandCard: false, 
-				player: {
-					...prevState.player,
-					hand: prevState.player.hand, 
-					capital: capital
-
+		if(
+			(card.props.props.type === 'worker' && this.state.player.capital.workers.length >= this.state.player.natural_wonders.length + 1) 
+			|| (card.props.props.type === 'army' && this.state.player.capital.armies.length >= this.state.player.natural_wonders.length + 1 )
+		){
+			alert('You have the maximum number of '+card.props.props.type+' cards on your capital.');
+		} else{
+			this.setState(prevState => {
+				let capital;
+				if(card.props.props.type === 'worker'){
+					capital = {
+						...prevState.player.capital, 
+						workers: prevState.player.capital.workers.concat(prevState.player.hand.splice(card.props.props.num, 1))
+					}
+				} else if(card.props.props.type === 'army'){
+					capital = {
+						...prevState.player.capital, 
+						armies: prevState.player.capital.armies.concat(prevState.player.hand.splice(card.props.props.num, 1))
+					}
 				}
-			}
-		})
+	
+				return {
+					...prevState, 
+					expandHandCard: false,
+					expandedHandCard: false, 
+					player: {
+						...prevState.player,
+						hand: prevState.player.hand, 
+						capital: capital
+	
+					}
+				}
+			});
+		}
 	}
 
 	endTurn = () => {
