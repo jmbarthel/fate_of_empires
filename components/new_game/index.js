@@ -19,6 +19,7 @@ import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
 
 import { shuffle } from './utilities.js';
+import PlitviceLakes from '../game/cards/wonders/natural/PlitviceLakes.js';
 
 const mapStateToProps = state => {
     return { 
@@ -109,11 +110,16 @@ class NewGame1 extends React.Component {
 
 		// Adding humanitarian aid
 		// playerDeck.push(HumanitarianAid);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
-		playerDeck.push(Cairo);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
+		playerDeck.push(Electronics);
 
 		playerDeck = shuffle(playerDeck);
 
@@ -186,7 +192,7 @@ class NewGame1 extends React.Component {
 
 				centralized_government: 0,
 
-				natural_wonders: [],
+				natural_wonders: [PlitviceLakes, PlitviceLakes, PlitviceLakes],
 				ancient_wonders: [],
 				modern_wonders: [], 
 
@@ -509,6 +515,16 @@ class NewGame1 extends React.Component {
 		this.setState({expandHandCard: false, expandedHandCard: false});
 	}
 
+	countInHand(type){
+		// @type = 'technology', 'city', 'person', 'army', 'worker'
+		console.log('you have', this.state.player.hand.filter(card => {
+			return card().props.props.type === type;
+		}).length, type, 'in hand');
+		return this.state.player.hand.filter(card => {
+			return card().props.props.type === type;
+		}).length;
+	}
+
 	chooseOption(choice, card){
 		let { choiceCount, choices } = card.props.props;
 
@@ -539,6 +555,12 @@ class NewGame1 extends React.Component {
 
 			for(let type in chosenOption){
 
+				if(type === 'draw'){
+					for(let i = 0; i < chosenOption[type]; i++){
+						prevState.player.hand.push(prevState.player.deck.pop());
+					}
+				}
+
 				if(type === 'produceResource'){
 
 					for(let resource in chosenOption[type]){
@@ -548,11 +570,11 @@ class NewGame1 extends React.Component {
 							resources[resource] = resources[resource] + chosenOption[type][resource];
 						}
 
-						if(resource === 'toward'){
-							console.log('produce resource toward something')
-							//'[A_M_wonders, N_wonders, allWonders]'
+						// if(resource === 'toward'){
+						// 	console.log('produce resource toward something')
+						// 	//'[A_M_wonders, N_wonders, allWonders]'
 							
-						}
+						// }
 
 						if(resource === 'eachWorkerOnCapital'){
 							console.log('produce resource per worker on capital')
@@ -560,39 +582,74 @@ class NewGame1 extends React.Component {
 						}
 
 						//eachPersonInHand
+						if(resource === 'eachPersonInHand'){
+							console.log('evaluating each person in hand');
+
+							let count = this.countInHand('person');
+							
+							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
+								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
+							});
+						}
 
 						//eachTechInHand
+						if(resource === 'eachTechInHand'){
+							console.log('evaluating each tech in hand');
+							let count = this.countInHand('technology');
+							
+							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
+								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
+							});
+						}
 
 						//eachWorkerInHand
+						if(resource === 'eachWorkerInHand'){
+							console.log('evaluating each worker in hand');
+
+							let count = this.countInHand('worker');
+							
+							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
+								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
+							});
+						}
 
 						//eachCityInHand
+						if(resource === 'eachCityInHand'){
+							console.log('evaluating each city in hand');
+
+							let count = this.countInHand('city');
+
+							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
+								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
+							});
+						}
 					}
 				}
 
-				if(type === 'produceResourceCondition'){
-					console.log('produceresourcecondition');
-					// inHand: {
-                        // person: {
-                            // gold: 1
-                        // }
-                    // }
+			// 	if(type === 'produceResourceCondition'){
+			// 		console.log('produceresourcecondition');
+			// 		// inHand: {
+            //             // person: {
+            //                 // gold: 1
+            //             // }
+            //         // }
 
-					// produceResourceCondition: {
-					// 	inHand: {
-					// 		city: {
-					// 			gold: 4
-					// 		}
-					// 	}
-					// }
+			// 		// produceResourceCondition: {
+			// 		// 	inHand: {
+			// 		// 		city: {
+			// 		// 			gold: 4
+			// 		// 		}
+			// 		// 	}
+			// 		// }
 
-					// produceResourceCondition: {
-					// 	onCapital: {
-					// 		scientist: {
-					// 			science: 2
-					// 		}
-					// 	}
-					// }
-				}
+			// 		// produceResourceCondition: {
+			// 		// 	onCapital: {
+			// 		// 		scientist: {
+			// 		// 			science: 2
+			// 		// 		}
+			// 		// 	}
+			// 		// }
+			// 	}
 			}
 
 			return {
@@ -809,8 +866,21 @@ class NewGame1 extends React.Component {
 		console.log('putting on capital', card.props.props);
 
 		if(
-			(card.props.props.type === 'worker' && this.state.player.capital.workers.length >= this.state.player.natural_wonders.length + 1) 
-			|| (card.props.props.type === 'army' && this.state.player.capital.armies.length >= this.state.player.natural_wonders.length + 1 )
+			(
+				card.props.props.type !== 'worker' 
+				&& 
+				this.state.player.capital.workers.length >= this.state.player.natural_wonders.length + 1
+				&& 
+				this.state.player.capital.workers.length <= 4
+			) 
+			|| 
+			(
+				card.props.props.type !== 'army' 
+				&& 
+				this.state.player.capital.armies.length >= this.state.player.natural_wonders.length + 1 
+				&&
+				this.state.player.capital.armies.length <= 4
+			)
 		){
 			alert('You have the maximum number of '+card.props.props.type+' cards on your capital.');
 		} else{
@@ -950,7 +1020,7 @@ class NewGame1 extends React.Component {
 				setTimeout(() => {
 					alert('Your turn.');
 					x.props.changeTurn(1);
-				}, 5000);
+				}, 500);
 			});
 		}
 
@@ -1301,9 +1371,15 @@ EXPANDED CARDS
 						</View>
 							
 							{
-								this.state.expandedHandCard.props.props.type === 'worker' 
-								|| this.state.expandedHandCard.props.props.type === 'army'
-
+								(
+								(this.state.expandedHandCard.props.props.type === 'worker' 
+								&& this.state.player.capital.workers.length < this.state.player.natural_wonders.length + 1
+								)
+								|| 
+								(this.state.expandedHandCard.props.props.type === 'army' 
+								&& this.state.player.capital.armies.length < this.state.player.natural_wonders.length + 1
+								) 
+								)
 								? 
 									<View style={{
 										position: 'absolute', 
