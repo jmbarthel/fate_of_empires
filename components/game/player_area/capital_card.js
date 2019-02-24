@@ -13,8 +13,8 @@ class CapitalCard1 extends React.Component {
 		this.state = {};
     }
     
-    onPress(){
-        console.log('hi');
+    // onPress(){
+    //     console.log('hi');
 		// if(this.props.turn === 1){
 		// 	if(this.props.real){
 		// 		this.props.expandCapitalCard(this.props.card({num: this.props.num, expanded: true}));
@@ -24,7 +24,7 @@ class CapitalCard1 extends React.Component {
 		// } else{
         //     alert('Not your turn.');
         // }
-	}
+	// }
 	
 	// closeCard(){
 	// 	this.setState({expanded: false})
@@ -33,9 +33,9 @@ class CapitalCard1 extends React.Component {
 	render() {
 		return (
 			<View style={[styles.container, {top: 0-(this.props.num * 100)}]}>
-				<TouchableOpacity onPress={this.onPress.bind(this)}>
+				<View>
 					{this.props.card({hand: 0})}
-				</TouchableOpacity>
+				</View>
 			</View>
 		);
 	}

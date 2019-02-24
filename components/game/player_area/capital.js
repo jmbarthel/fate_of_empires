@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
 import CapitalCard from './capital_card.js';
 
@@ -16,7 +16,7 @@ class Capital1 extends React.Component {
 
 	render() {
 		return (
-			<View style={[this.props.style, styles.container, {flexDirection: 'row'}]}>
+			<TouchableOpacity style={[this.props.style, styles.container, {flexDirection: 'row'}]} onPress={this.props.expandCapital}>
 					{
 						this.props.capital.workers.length > 0
 						?
@@ -41,7 +41,7 @@ class Capital1 extends React.Component {
 					? <Text style={{color: '#fff'}}>Capital</Text>
 					: undefined
 				}
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }

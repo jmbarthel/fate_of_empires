@@ -6,6 +6,7 @@ import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';
 import PlayerArea from '../game/player_area/index.js';
 import Opponent from '../game/opponent/index.js';
+import ExpandedCapital from './expanded_capital.js';
 import { Ionicons } from '@expo/vector-icons';
 
 import { changeTurn } from "../../actions/index.js";
@@ -19,7 +20,7 @@ import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
 
 import { shuffle } from './utilities.js';
-import PlitviceLakes from '../game/cards/wonders/natural/PlitviceLakes.js';
+import GeorgeWashington from '../game/cards/people/GeorgeWashington.js';
 
 const mapStateToProps = state => {
     return { 
@@ -109,17 +110,7 @@ class NewGame1 extends React.Component {
 		}
 
 		// Adding humanitarian aid
-		// playerDeck.push(HumanitarianAid);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
-		playerDeck.push(Electronics);
+		playerDeck.push(HumanitarianAid);
 
 		playerDeck = shuffle(playerDeck);
 
@@ -177,6 +168,8 @@ class NewGame1 extends React.Component {
 			expandHandCard: false, 
 			expandedHandCard: false,
 
+			expandedCapital: false,
+
 			player: {
 				id: 0, 
 				name: 'Player', 
@@ -192,7 +185,7 @@ class NewGame1 extends React.Component {
 
 				centralized_government: 0,
 
-				natural_wonders: [PlitviceLakes, PlitviceLakes, PlitviceLakes],
+				natural_wonders: [],
 				ancient_wonders: [],
 				modern_wonders: [], 
 
@@ -241,8 +234,9 @@ class NewGame1 extends React.Component {
 					}
 				},
 				capital: {
-					workers: [], 
-					armies: [],
+					workers: [Peasant, Scientist, Artist], 
+					armies: [HumanitarianAid],
+					other: [GeorgeWashington],
 				}
 			},
 
@@ -507,7 +501,8 @@ class NewGame1 extends React.Component {
 			expandWonderCard: false, 
 			expandSupplyCard: false, 
 			expandedSupplyCard: false, 
-			expandedWonderCard: false
+			expandedWonderCard: false,
+			expandedCapital: false,
 		});
 	}
 
@@ -515,11 +510,17 @@ class NewGame1 extends React.Component {
 		this.setState({expandHandCard: false, expandedHandCard: false});
 	}
 
+	expandCapital(){
+		console.log('expanding capital');
+		this.setState({expandedCapital: true});
+	}
+
 	countInHand(type){
 		// @type = 'technology', 'city', 'person', 'army', 'worker'
 		console.log('you have', this.state.player.hand.filter(card => {
 			return card().props.props.type === type;
 		}).length, type, 'in hand');
+
 		return this.state.player.hand.filter(card => {
 			return card().props.props.type === type;
 		}).length;
@@ -539,7 +540,18 @@ class NewGame1 extends React.Component {
 		console.log(chosenOption);
 
 		this.setState((prevState) => {
-			let played_cards = prevState.player.played_cards.concat(prevState.player.hand.splice(card.props.props.num, 1));
+			let played_cards;
+			if(!card.props.props.capital){
+				// Playing from your hand
+				played_cards = prevState.player.played_cards.concat(prevState.player.hand.splice(card.props.props.num, 1));
+			} else{
+				// Playing from the capital
+				if(card.props.props.type === 'worker'){
+					played_cards = prevState.player.played_cards.concat(prevState.player.capital.workers.splice(card.props.props.num, 1))
+				} else if(card.props.props.type === 'army'){
+					played_cards = prevState.player.played_cards.concat(prevState.player.capital.armies.splice(card.props.props.num, 1))
+				}
+			}
 
 			let resources = {
 				any: prevState.player.resources.any,
@@ -1072,6 +1084,7 @@ DECKS
 						player={this.state.player} 
 						toggleDim={this.toggleDim.bind(this)}
 						expandHandCard={this.expandHandCard.bind(this)}
+						expandCapital={this.expandCapital.bind(this)}
 					/>
 				</View>
 
@@ -1409,6 +1422,17 @@ EXPANDED CARDS
 					</View>
 				) : undefined}
 
+				{
+					this.state.expandedCapital ? 
+						(
+							<ExpandedCapital 
+								capital={this.state.player.capital} 
+								chooseOption={this.chooseOption.bind(this)}
+								expandHandCard={this.expandHandCard.bind(this)}
+							/>
+						)
+					: undefined
+				}
 
 {/*
 

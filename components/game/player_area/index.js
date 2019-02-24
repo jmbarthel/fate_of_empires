@@ -66,6 +66,7 @@ class PlayerArea1 extends React.Component {
 				<Capital 
 					style={styles.capital}
 					capital={this.props.player.capital}
+					expandCapital={this.props.expandCapital}
 				/>
 				<YourWonders style={styles.wonders}/>
 			</View>
