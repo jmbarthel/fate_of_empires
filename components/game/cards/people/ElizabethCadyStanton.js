@@ -20,9 +20,6 @@ export default ElizabethCadyStanton = (props) => {
                     toward: {
                         person: {
                             gold: 5, 
-                            science: 0, 
-                            influence: 0, 
-                            any: 0
                         }
                     }
                 }

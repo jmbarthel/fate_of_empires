@@ -17,9 +17,6 @@ export default BenjaminFranklin = (props) => {
         choices: {
             1: {
                 produceResource: {
-                    gold: 0,
-                    science: 0, 
-                    influence: 0,
                     any: 2,
                 }
             },
@@ -27,10 +24,7 @@ export default BenjaminFranklin = (props) => {
                 produceResource: {
                     toward: {
 						technology: {
-							gold: 0, 
 							science: 4, 
-							influence: 0,
-							any: 0,
 						}, 
 					}
                 },

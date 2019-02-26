@@ -173,7 +173,7 @@ class NewGame1 extends React.Component {
 			player: {
 				id: 0, 
 				name: 'Player', 
-				region: null, 
+				region: 'blue', 
 				trait: null,
 
 				activePlayer: true,
@@ -230,7 +230,19 @@ class NewGame1 extends React.Component {
 							science: 0, 
 							influence: 0,
 							any: 0,
-						}, 
+						},
+						yourRegion: {
+							gold: 0, 
+							science: 0, 
+							influence: 0, 
+							any: 0
+						},
+						otherRegion: {
+							gold: 0, 
+							science: 0, 
+							influence: 0, 
+							any: 0
+						}
 					}
 				},
 				capital: {
@@ -511,8 +523,11 @@ class NewGame1 extends React.Component {
 	}
 
 	expandCapital(){
-		console.log('expanding capital');
 		this.setState({expandedCapital: true});
+	}
+
+	closeCapital(){
+		this.setState({expandedCapital: false});
 	}
 
 	countInHand(type){
@@ -547,9 +562,11 @@ class NewGame1 extends React.Component {
 			} else{
 				// Playing from the capital
 				if(card.props.props.type === 'worker'){
-					played_cards = prevState.player.played_cards.concat(prevState.player.capital.workers.splice(card.props.props.num, 1))
+					played_cards = prevState.player.played_cards.concat(prevState.player.capital.workers.splice(card.props.props.num, 1));
 				} else if(card.props.props.type === 'army'){
-					played_cards = prevState.player.played_cards.concat(prevState.player.capital.armies.splice(card.props.props.num, 1))
+					played_cards = prevState.player.played_cards.concat(prevState.player.capital.armies.splice(card.props.props.num, 1));
+				} else{
+					played_cards = prevState.player.played_cards.concat(prevState.player.capital.other.splice(card.props.props.num, 1));
 				}
 			}
 
@@ -558,11 +575,7 @@ class NewGame1 extends React.Component {
 				gold: prevState.player.resources.gold,
 				science: prevState.player.resources.science,
 				influence: prevState.player.resources.influence,
-				toward: {
-					A_M_wonders: prevState.player.resources.A_M_wonders,
-					N_wonders: prevState.player.resources.N_wonders,
-					allWonders: prevState.player.resources.allWonders,
-				}
+				toward: prevState.player.resources.toward,
 			};
 
 			for(let type in chosenOption){
@@ -582,11 +595,16 @@ class NewGame1 extends React.Component {
 							resources[resource] = resources[resource] + chosenOption[type][resource];
 						}
 
-						// if(resource === 'toward'){
-						// 	console.log('produce resource toward something')
-						// 	//'[A_M_wonders, N_wonders, allWonders]'
-							
-						// }
+						if(resource === 'toward'){
+							console.log('produce resource toward something');
+							//'[A_M_wonders, N_wonders, allWonders, city, technology, person]'
+							Object.keys(chosenOption[type].toward).forEach(typeToward => {
+								Object.values(chosenOption[type].toward[typeToward]).forEach(typeResourceToward => {
+									resources.toward[typeToward][typeResourceToward] = 
+										resources.toward[typeToward][typeResourceToward] + chosenOption[type].toward[typeToward][typeResourceToward];
+								});
+							});
+						}
 
 						if(resource === 'eachWorkerOnCapital'){
 							console.log('produce resource per worker on capital')
@@ -670,7 +688,6 @@ class NewGame1 extends React.Component {
 				expandedHandCard: false,
 				player: {
 					...prevState.player, 
-					hand: prevState.player.hand,
 					played_cards,
 					resources
 				}
@@ -679,68 +696,112 @@ class NewGame1 extends React.Component {
 	}
 
 	buySupplyCard(card){
-		let { cost } = card.props.props;
+		let { cost, type, region } = card.props.props;
 
 		let yourResources = { 
 			gold: this.state.player.resources.gold, 
 			influence: this.state.player.resources.influence, 
 			science: this.state.player.resources.science, 
-			any: this.state.player.resources.any 
+			any: this.state.player.resources.any, 
+			toward: this.state.player.resources.toward,
 		};
 
-		console.log('you have', yourResources, 'and you need', cost);
+		let regionalTowards; 
 
-		if(cost.gold > 0){
-			if(yourResources.gold < cost.gold){
-				if(yourResources.any + yourResources.gold < cost.gold){
-					alert('1You cannot afford '+card.props.props.name);
-					return;
-				} else{
-					cost.gold -= yourResources.gold;
-					yourResources.gold -= yourResources.gold;
-					yourResources.any -= cost.gold;
-					cost.gold = 0;
+		if(region === this.state.player.region){
+			regionalTowards = 'yourRegion';
+		} else{
+			regionalTowards = 'otherRegion';
+		}
+
+		let error = false;
+
+		let options = ['gold', 'science', 'influence']
+		for(let index = 0; index < options.length; index++){
+			let resourceType = options[index];
+
+			if(cost[resourceType] > 0){
+				if((
+					yourResources.any + 
+					yourResources[resourceType] + 
+					// Workers and armies don't have cards that produce resources toward them
+					(
+						(['worker', 'army'].indexOf(type) === -1) 
+						? (yourResources.toward[type][resourceType]) 
+						: (0)
+					) + 
+					// Some cards do not have regions (workers/armies)
+					(
+						(['blue', 'red', 'yellow', 'purple', 'green'].indexOf(type) > -1) 
+						? (yourResources.toward[regionalTowards][resourceType] < cost[resourceType]) 
+						: (0)
+					)
+				) < cost[resourceType]){
+					alert('1 You cannot afford '+card.props.props.name);
+					error = true;
+					break;
 				}
-			} else{
-				yourResources.gold -= cost.gold;
+	
+				let i = 0;
+	
+				while(i < cost[resourceType]){
+	
+					if(yourResources.toward[type][resourceType] > 0){
+						yourResources.toward[type][resourceType]--;
+						i++;
+						continue;
+					}
+	
+					if(yourResources.toward[type].any > 0){
+						yourResources.toward[type].any--;
+						i++;
+						continue;
+					}
+					
+					if(regionalTowards){
+						if(yourResources.toward[regionalTowards][resourceType]){
+							yourResources.toward[regionalTowards][resourceType]--;
+							i++;
+							continue;
+						}
+					}
+	
+					if(yourResources[resourceType] > 0){
+						yourResources[resourceType]--;
+						i++;
+						continue;
+					}
+	
+					if(yourResources.any > 0){
+						yourResources.any--;
+						i++;
+						continue;
+					}
+				}
+	
+				// if(yourResources.gold < cost.gold){
+				// 	if(yourResources.any + yourResources.gold + towardResources.gold < cost.gold){
+				// 		alert('1You cannot afford '+card.props.props.name);
+				// 		return;
+				// 	} else{
+				// 		cost.gold -= yourResources.towardgold;
+				// 		yourResources.gold -= yourResources.gold;
+				// 		yourResources.any -= cost.gold;
+				// 		cost.gold = 0;
+				// 	}
+				// } else{
+				// 	yourResources.gold -= cost.gold;
+				// }
 			}
 		}
 
-		if(cost.influence > 0){
-			if(yourResources.influence < cost.influence){
-				if(yourResources.any + yourResources.influence < cost.influence){
-					alert('2You cannot afford '+card.props.props.name);
-					return;
-				} else{
-					cost.influence -= yourResources.influence;
-					yourResources.influence -= yourResources.influence;
-					yourResources.any -= cost.influence;
-					cost.influence = 0;
-				}
-			} else{
-				yourResources.gold -= cost.gold;
-			}
-		}
-
-		if(cost.science > 0){
-			if(yourResources.science < cost.science){
-				if(yourResources.any + yourResources.science < cost.science){
-					alert('3You cannot afford '+card.props.props.name);
-					return;
-				} else{
-					cost.science -= yourResources.science;
-					yourResources.science -= yourResources.science;
-					yourResources.any -= cost.science;
-					cost.science = 0;
-				}
-			} else{
-				yourResources.science -= cost.science;
-			}
+		if(error){
+			return;
 		}
 
 		if(cost.any > 0){
 			if(yourResources.gold + yourResources.influence + yourResources.science + yourResources.any < cost.any){
-				alert('4You cannot afford '+card.props.props.name);
+				alert('2 You cannot afford '+card.props.props.name);
 				return;
 			}
 
@@ -782,11 +843,11 @@ class NewGame1 extends React.Component {
 						discard: prevState.player.discard.concat(cardFunc),
 						...prevState.player, 
 						resources: {
-							...prevState.player.resources, 
 							gold: yourResources.gold,
 							influence: yourResources.influence,
 							science: yourResources.science,
 							any: yourResources.any,
+							toward: yourResources.toward
 						}
 					},
 					wondersRevealed: prevState.wondersRevealed
@@ -806,11 +867,11 @@ class NewGame1 extends React.Component {
 						...prevState.player, 
 						discard: prevState.player.discard.concat(cardFunc),
 						resources: {
-							...prevState.player.resources, 
 							gold: yourResources.gold,
 							influence: yourResources.influence,
 							science: yourResources.science,
 							any: yourResources.any,
+							toward: yourResources.toward
 						}
 					},
 					supplyRevealed: prevState.supplyRevealed
@@ -835,11 +896,11 @@ class NewGame1 extends React.Component {
 						...prevState.player,
 						discard: prevState.player.discard.concat(cardFunc),
 						resources: {
-							...prevState.player.resources, 
 							gold: yourResources.gold,
 							influence: yourResources.influence,
 							science: yourResources.science,
 							any: yourResources.any,
+							toward: yourResources.toward
 						}
 					},
 				}
@@ -1022,8 +1083,27 @@ class NewGame1 extends React.Component {
 									influence: 0,
 									any: 0,
 								}, 
+								yourRegion: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								},
+								otherRegion: {
+									gold: 0, 
+									science: 0, 
+									influence: 0,
+									any: 0,
+								}
 							}
 						},
+						expandedCapital: false,
+						expandHandCard: false,
+						expandedHandCard: false,
+						expandSupplyCard: false,
+						expandedSupplyCard: false,
+						expandWonderCard: false,
+						expandedWonderCard: false,
 					}
 				}
 			}, () => {
@@ -1137,6 +1217,14 @@ OPPONENTS
 						}} 
 						onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
 				</View>
+
+				<Ionicons 
+					style={styles.goBack} 
+					name="md-settings" 
+					size={32} 
+					color="white" 
+					onPress={this._toggleSideBar.bind(this)}
+				/>
 
 {/*
 
@@ -1429,6 +1517,7 @@ EXPANDED CARDS
 								capital={this.state.player.capital} 
 								chooseOption={this.chooseOption.bind(this)}
 								expandHandCard={this.expandHandCard.bind(this)}
+								closeCapital={this.closeCapital.bind(this)}
 							/>
 						)
 					: undefined
@@ -1441,19 +1530,12 @@ SLIDER
 */}
 
 				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
-					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '20%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
-					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '20%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>State</Text></TouchableOpacity>
+					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
 				</Animated.View>
-
-				<Ionicons 
-					style={styles.goBack} 
-					name="md-settings" 
-					size={32} 
-					color="white" 
-					onPress={this._toggleSideBar.bind(this)}
-				/>
 			
 			</View>
 		);

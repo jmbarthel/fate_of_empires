@@ -18,9 +18,6 @@ export default CleopatraVII = (props) => {
             1: {
                 produceResource: {
                     gold: 3,
-                    science: 0, 
-                    influence: 0,
-                    any: 0,
                 },
                 produceResourceCondition: {
                     inHand: {
@@ -36,10 +33,7 @@ export default CleopatraVII = (props) => {
                         produceResource: {
                             toward: {
                                 allWonders: {
-                                    gold: 0, 
-                                    science: 0, 
                                     influence: 10,
-                                    any: 0, 
                                 }
                             }
                         }

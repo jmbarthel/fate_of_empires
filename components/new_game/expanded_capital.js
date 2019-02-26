@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { connect } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 
 
 const mapStateToProps = state => {
@@ -38,6 +39,14 @@ class ExpandedCapital1 extends React.Component {
                     })}
                 </View>
 
+                <Ionicons 
+					style={styles.close} 
+					name="md-close" 
+					size={32} 
+					color="white" 
+					onPress={this.props.closeCapital}
+				/>
+
 			</View>
 		);
 	}
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: '100%',
         width: '100%',
-        backgroundColor: 'rgba(100, 0, 100, 0.5)',
+        backgroundColor: 'rgba(100, 100, 100, 0.7)',
         position: 'absolute',
     },
     cardRow: {
@@ -86,6 +95,11 @@ const styles = StyleSheet.create({
         height: 20,
         top: 50
     },
+    close: {
+        top: 10, 
+        right: 10,
+        position: 'absolute'
+    }
 });
   
 export default ExpandedCapital = connect(mapStateToProps)(ExpandedCapital1);

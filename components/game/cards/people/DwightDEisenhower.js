@@ -19,18 +19,13 @@ export default DwightDEisenhower = (props) => {
                 produceResource: {
                     gold: 3, 
                     science: 3, 
-                    influence: 0, 
-                    any: 0,
                 }
             },
             2: {
                 produceResource: {
                     toward: {
                         city: {
-                            gold: 0, 
-                            science: 0, 
                             influence: 5,
-                            any: 0
                         }
                     }
                 }

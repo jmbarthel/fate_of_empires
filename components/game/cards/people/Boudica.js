@@ -17,19 +17,13 @@ export default Boudica = (props) => {
         choices: {
             1: {
                 produceResource: {
-                    gold: 0,
-                    science: 0, 
                     influence: 4,
-                    any: 0,
                 }
             },
             2: {
                 produceResource: {
                     toward: {
                         yourRegion: {
-                            gold: 0, 
-                            science: 0, 
-                            influence: 0,
                             any: 3, 
                         }
 					}
