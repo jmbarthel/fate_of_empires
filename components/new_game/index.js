@@ -50,9 +50,10 @@ class NewGame1 extends React.Component {
 				id: i, 
 				expanded: false,
 				name: 'enemy '+i,
+				region: '',
+				flag: '',
 				deck: [],
 				hand: [],
-				activePlayer: false,
 			}
 		}
 
@@ -81,7 +82,25 @@ class NewGame1 extends React.Component {
 			'5': 6
 		};
 		for(let i = 0; i < players_to_wonders[num_of_players]; i++){
-			wondersRevealed.push(wonderSupply.pop());
+			wondersRevealed.push(
+				{	
+					claimedBy: {},
+					progress: {
+						/** Keys are the players
+						 0: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+						 },
+						 1: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+						 }
+						 */
+					},
+					card: wonderSupply.pop()
+				});
 		}
 
 		// SET THE PLAYERS DECKS
@@ -175,9 +194,9 @@ class NewGame1 extends React.Component {
 				name: 'Player', 
 				region: 'blue', 
 				trait: null,
+				flag: 'japan',
 
-				activePlayer: true,
-
+				claimedWonder: false,
 				hand: playerHand, 
 				deck: playerDeck,
 				discard: [], 
@@ -246,15 +265,17 @@ class NewGame1 extends React.Component {
 					}
 				},
 				capital: {
-					workers: [Peasant, Scientist, Artist], 
-					armies: [HumanitarianAid],
-					other: [GeorgeWashington],
-				}
+					workers: [], 
+					armies: [],
+					other: [],
+				},
 			},
 
 			enemies: enemyArr, 
 			num_of_enemies: num_of_enemies,
 			num_of_players: num_of_players,
+
+			ageOfEnlightenment: false, 
 
 			wondersRevealed,
 			wonderSupply,
@@ -986,6 +1007,23 @@ class NewGame1 extends React.Component {
 		}
 	}
 
+	placeFlag(card){
+		console.log('placing flag on ', card);
+		this.setState(prevState => {
+			let wondersRevealed = prevState.wondersRevealed;
+			wondersRevealed[card.props.props.num].claimedBy[prevState.player.flag] = true;
+
+			return {
+				...prevState, 
+				player: {
+					...prevState.player, 
+					claimedWonder: card.props.props.name,
+				},
+				wondersRevealed
+			}
+		});
+	}
+
 	endTurn = () => {
 		if(this.props.turn === 1){
 
@@ -1022,10 +1060,7 @@ class NewGame1 extends React.Component {
 	
 				deck = shuffle(deck);
 	
-				console.log('deck.length2 ', deck.length);
-	
 				while(hand.length < 5){
-					console.log('adding another');
 					hand.push(deck.pop());
 				}
 			}
@@ -1340,39 +1375,47 @@ EXPANDED CARDS
 						/>
 						<TouchableOpacity
 							style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
-							// onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
 						/>
 						<TouchableOpacity
 							style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
-							// onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
 						/>
+
 						<View style={{
 							position: 'absolute', 
 							right: -150,
-							top: 30,
+							left: (cardWidth),
+							// top: 30,
 							justifyContent: 'flex-start',
 							height: '100%',
+							// backgroundColor: '#0f3'
 						}}>
+							
 							{
-								this.state.expandedWonderCard.props.props.type === 'worker' 
-								|| this.state.expandedWonderCard.props.props.type === 'army'
+								(
+									!this.state.player.claimedWonder
+									&& this.state.player.claimedWonder !== this.state.expandedWonderCard.props.props.name
+									&& this.state.expandedWonderCard.props.props.claimedBy[this.state.player.flag] == undefined
+								)
 
-								? 
-									<TouchableOpacity 
+								? <TouchableOpacity 
 										style={{
-											width: 150,
 											alignSelf: 'flex-start',
 											backgroundColor: '#f0f',
 											borderRadius: 50,
 											padding: 20,
+											marginBottom: 5,
 										}}
-										onPress={this.putOnCapital.bind(this, this.state.expandedWonderCard)}
+										onPress={this.placeFlag.bind(this, this.state.expandedWonderCard)}
 									>
-										<Text>Put on Capital</Text>
+										<Text>Place Your Flag</Text>
 									</TouchableOpacity>
 								: undefined
 							}
-							
+
+
+
+
+
 							{
 								this.state.expandedWonderCard.props.props.cost.gold > 0 
 								? 
@@ -1430,7 +1473,10 @@ EXPANDED CARDS
 									</View>
 								: undefined
 							}
+
+							
 						</View>
+							
 					</View>
 				) : undefined}
 
@@ -1489,7 +1535,7 @@ EXPANDED CARDS
 										top: 30,
 										justifyContent: 'flex-start',
 										height: '100%',
-										// backgroundColor: '#0f3'
+										backgroundColor: '#0f3'
 									}}>
 										<TouchableOpacity 
 											style={{

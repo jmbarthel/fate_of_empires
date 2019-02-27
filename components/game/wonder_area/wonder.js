@@ -21,11 +21,7 @@ class Wonder1 extends React.Component {
     
     onPress(){
         if(this.props.turn === 1){
-            if(this.props.real){
-                this.props.expandWonderCard(this.props.card({ num: this.props.num, expanded: true }));
-            } else{
-                this.props.expandWonderCard();
-            }
+            this.props.expandWonderCard(this.props.card.card({num: this.props.num, expanded: true, progress: this.props.card.progress, claimedBy: this.props.card.claimedBy}));
         } else{
             alert('Not your turn.');
         }
@@ -41,7 +37,7 @@ class Wonder1 extends React.Component {
                     }}
                 >
                     <TouchableOpacity onPress={this.onPress.bind(this)}>
-                        {this.props.card({
+                        {this.props.card.card({
                             layout: this.state.layout, 
                             style: {
                                 borderRadius: 25,
