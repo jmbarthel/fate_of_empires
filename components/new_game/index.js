@@ -1413,9 +1413,6 @@ EXPANDED CARDS
 							}
 
 
-
-
-
 							{
 								this.state.expandedWonderCard.props.props.cost.gold > 0 
 								? 
