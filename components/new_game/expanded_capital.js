@@ -16,28 +16,48 @@ class ExpandedCapital1 extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.container}>
+			<TouchableOpacity style={styles.container} onPress={this.props.closeCapital}>
 
                 <View style={styles.cardRow}>
                     <Text style={styles.labelText}>Workers:</Text>
-                    {this.props.capital.workers.map((card, i) => {
-                        return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
-                    })}
+                    {
+                        this.props.capital.workers.length > 0 
+                        ? 
+                            this.props.capital.workers.map((card, i) => {
+                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
+                            })
+
+                        : <Text style={{color: '#fff', alignSelf: 'center', fontWeight: 'bold'}}>There are no workers on your capital.</Text>
+                    }
                 </View>
 
 				<View style={styles.cardRow}>
                     <Text style={styles.labelText}>Armies:</Text>
-                    {this.props.capital.armies.map((card, i) => {
-                        return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
-                    })}
+                    {
+                        this.props.capital.armies.length > 0
+                        ? 
+                            this.props.capital.armies.map((card, i) => {
+                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
+                            })
+
+                        : <Text style={{color: '#fff', alignSelf: 'center', fontWeight: 'bold'}}>There are no armies on your capital.</Text>
+
+                    }
                 </View>
 
-				<View style={styles.cardRow}>
-                    <Text style={styles.labelText}>Other:</Text>
-                    {this.props.capital.other.map((card, i) => {
-                        return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
-                    })}
-                </View>
+                {
+                    this.props.capital.other.length > 0
+                    ? 
+                        <View style={styles.cardRow}>
+                            <Text style={styles.labelText}>Other:</Text>
+                            
+                            {this.props.capital.other.map((card, i) => {
+                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
+                            })}
+
+                        </View>
+                    : undefined
+                }
 
                 <Ionicons 
 					style={styles.close} 
@@ -47,7 +67,7 @@ class ExpandedCapital1 extends React.Component {
 					onPress={this.props.closeCapital}
 				/>
 
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }

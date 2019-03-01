@@ -1,12 +1,12 @@
 import React from 'react';
-import { Image, Dimensions, View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, TouchableHighlight, Text } from "react-native";
-import { LinearGradient } from 'expo';
+import { Dimensions, View, StyleSheet, Animated, TouchableOpacity, TouchableWithoutFeedback, Text } from "react-native";
 import { connect } from 'react-redux';
 import SupplyArea from '../game/supply_area/index.js';
 import WonderArea from '../game/wonder_area/index.js';
 import PlayerArea from '../game/player_area/index.js';
 import Opponent from '../game/opponent/index.js';
 import ExpandedCapital from './expanded_capital.js';
+import ExpandedCards from './expanded_cards.js';
 import { Ionicons } from '@expo/vector-icons';
 
 import { changeTurn } from "../../actions/index.js";
@@ -20,7 +20,6 @@ import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
 
 import { shuffle } from './utilities.js';
-import GeorgeWashington from '../game/cards/people/GeorgeWashington.js';
 
 const mapStateToProps = state => {
     return { 
@@ -86,13 +85,13 @@ class NewGame1 extends React.Component {
 				{	
 					claimedBy: {},
 					progress: {
-						/** Keys are the players
-						 0: {
+						/** Keys are the players flags
+						 flag: {
 								gold: 0, 
 								science: 0, 
 								influence: 0,
 						 },
-						 1: {
+						 flag: {
 								gold: 0, 
 								science: 0, 
 								influence: 0,
@@ -961,7 +960,7 @@ class NewGame1 extends React.Component {
 
 		if(
 			(
-				card.props.props.type !== 'worker' 
+				card.props.props.type === 'worker' 
 				&& 
 				this.state.player.capital.workers.length >= this.state.player.natural_wonders.length + 1
 				&& 
@@ -969,7 +968,7 @@ class NewGame1 extends React.Component {
 			) 
 			|| 
 			(
-				card.props.props.type !== 'army' 
+				card.props.props.type === 'army' 
 				&& 
 				this.state.player.capital.armies.length >= this.state.player.natural_wonders.length + 1 
 				&&
@@ -1011,7 +1010,12 @@ class NewGame1 extends React.Component {
 		console.log('placing flag on ', card);
 		this.setState(prevState => {
 			let wondersRevealed = prevState.wondersRevealed;
-			wondersRevealed[card.props.props.num].claimedBy[prevState.player.flag] = true;
+
+			wondersRevealed[card.props.props.num].claimedBy[prevState.player.flag] = {
+				gold: 0, 
+				science: 0,
+				influence: 0, 
+			};
 
 			return {
 				...prevState, 
@@ -1180,9 +1184,7 @@ class NewGame1 extends React.Component {
 							/>
 						</View>
 {/* 
-
 DECKS 
-
 */}
 						<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
 							<View style={styles.decksCon}>
@@ -1206,9 +1208,7 @@ DECKS
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
 
 {/* 
-
 OPPONENTS
-
 */}
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
@@ -1262,297 +1262,35 @@ OPPONENTS
 				/>
 
 {/*
-
 EXPANDED CARDS
-
 */}
+				<ExpandedCards
+					height={height}
+					cardHeight={cardHeight}
+					screenWidth={screenWidth}
+					cardWidth={cardWidth}
 
-				{this.state.expandSupplyCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, right: 15}}>
-						{this.state.expandedSupplyCard}
-						<TouchableOpacity 
-							onPress={this.unExpandSupplyCard.bind(this)}
-							style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
-						/>
-						<TouchableOpacity
-							style={{position: 'absolute', height: '20%', width: '50%', bottom: 0, right: 0 }}
-							onPress={this.buySupplyCard.bind(this, this.state.expandedSupplyCard)}
-						/>
-						<View style={{
-							position: 'absolute', 
-							right: -150,
-							top: 30,
-							justifyContent: 'flex-start',
-							height: '100%',
-						}}>
-							{
-								this.state.expandedSupplyCard.props.props.type === 'worker' 
-								|| this.state.expandedSupplyCard.props.props.type === 'army'
+					player={this.state.player}
+					expandHandCard={this.state.expandHandCard}
+					expandedHandCard={this.state.expandedHandCard}
+					expandSupplyCard={this.state.expandSupplyCard}
+					expandedSupplyCard={this.state.expandedSupplyCard}
+					expandWonderCard={this.state.expandWonderCard}
+					expandedWonderCard={this.state.expandedWonderCard}
+					wondersRevealed={this.state.wondersRevealed}
 
-								? 
-									<TouchableOpacity 
-										style={{
-											width: 150,
-											alignSelf: 'flex-start',
-											backgroundColor: '#f0f',
-											borderRadius: 50,
-											padding: 20,
-										}}
-										onPress={this.putOnCapital.bind(this, this.state.expandedSupplyCard)}
-									>
-										<Text>Put on Capital</Text>
-									</TouchableOpacity>
-								: undefined
-							}
-							
-							{
-								this.state.expandedSupplyCard.props.props.cost.gold > 0 
-								? 
-									<View style={styles.sideBubblesCon}>
-										<LinearGradient 
-											colors={['#fff', '#f27']}
-											style={styles.sideBubbles}
-										>
-											<Image 
-												source={require('../../assets/symbols/actions/Gold.png')}
-												style={{
-													width: '100%', 
-													height: '100%', 
-												}} 
-											/>
-										</LinearGradient>
-									</View>
-								: undefined
-							}
-							{
-								this.state.expandedSupplyCard.props.props.cost.science > 0 
-								? 
-									<View style={styles.sideBubblesCon}>
-										<LinearGradient 
-											colors={['#fff', '#f27']}
-											style={styles.sideBubbles}
-										>
-											<Image 
-												source={require('../../assets/symbols/actions/Science.png')}
-												style={{
-													width: '100%', 
-													height: '100%', 
-												}} 
-											/>
-										</LinearGradient>
-									</View>
-								: undefined
-							}
-							{
-								this.state.expandedSupplyCard.props.props.cost.influence > 0 
-								? 
-									<View style={styles.sideBubblesCon}>
-										<LinearGradient 
-											colors={['#fff', '#f27']}
-											style={styles.sideBubbles}
-										>
-											<Image 
-												source={require('../../assets/symbols/actions/Influence.png')}
-												style={{
-													width: '100%', 
-													height: '100%', 
-												}} 
-											/>
-										</LinearGradient>
-									</View>
-								: undefined
-							}
-						</View>
-					</View>
-				) : undefined}
+					putOnCapital={this.putOnCapital.bind(this)}
+					placeFlag={this.placeFlag.bind(this)}
+					chooseOption={this.chooseOption.bind(this)}
+					buySupplyCard={this.buySupplyCard.bind(this)}
+					unExpandHandCard={this.unExpandHandCard.bind(this)}
+					unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
+					unExpandWonderCard={this.unExpandWonderCard.bind(this)}
+				/>
 
-				{this.state.expandWonderCard ? (
-					<View style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, left: 15}}>
-						{this.state.expandedWonderCard}
-						<TouchableOpacity 
-							onPress={this.unExpandWonderCard.bind(this)}
-							style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
-						/>
-						<TouchableOpacity
-							style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
-						/>
-						<TouchableOpacity
-							style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
-						/>
-
-						<View style={{
-							position: 'absolute', 
-							right: -150,
-							left: (cardWidth),
-							// top: 30,
-							justifyContent: 'flex-start',
-							height: '100%',
-							// backgroundColor: '#0f3'
-						}}>
-							
-							{
-								(
-									!this.state.player.claimedWonder
-									&& this.state.player.claimedWonder !== this.state.expandedWonderCard.props.props.name
-									&& this.state.expandedWonderCard.props.props.claimedBy[this.state.player.flag] == undefined
-								)
-
-								? <TouchableOpacity 
-										style={{
-											alignSelf: 'flex-start',
-											backgroundColor: '#f0f',
-											borderRadius: 50,
-											padding: 20,
-											marginBottom: 5,
-										}}
-										onPress={this.placeFlag.bind(this, this.state.expandedWonderCard)}
-									>
-										<Text>Place Your Flag</Text>
-									</TouchableOpacity>
-								: undefined
-							}
-
-
-							{
-								this.state.expandedWonderCard.props.props.cost.gold > 0 
-								? 
-									<View style={styles.sideBubblesCon}>
-										<LinearGradient 
-											colors={['#fff', '#f27']}
-											style={styles.sideBubbles}
-										>
-											<Image 
-												source={require('../../assets/symbols/actions/Gold.png')}
-												style={{
-													width: '100%', 
-													height: '100%', 
-												}} 
-											/>
-										</LinearGradient>
-									</View>
-								: undefined
-							}
-							{
-								this.state.expandedWonderCard.props.props.cost.science > 0 
-								? 
-									<View style={styles.sideBubblesCon}>
-										<LinearGradient 
-											colors={['#fff', '#f27']}
-											style={styles.sideBubbles}
-										>
-											<Image 
-												source={require('../../assets/symbols/actions/Science.png')}
-												style={{
-													width: '100%', 
-													height: '100%', 
-												}} 
-											/>
-										</LinearGradient>
-									</View>
-								: undefined
-							}
-							{
-								this.state.expandedWonderCard.props.props.cost.influence > 0 
-								? 
-									<View style={styles.sideBubblesCon}>
-										<LinearGradient 
-											colors={['#fff', '#f27']}
-											style={styles.sideBubbles}
-										>
-											<Image 
-												source={require('../../assets/symbols/actions/Influence.png')}
-												style={{
-													width: '100%', 
-													height: '100%', 
-												}} 
-											/>
-										</LinearGradient>
-									</View>
-								: undefined
-							}
-
-							
-						</View>
-							
-					</View>
-				) : undefined}
-
-				{this.state.expandHandCard ? (
-					<View pointerEvents='box-none' style={{width: '100%', height: '100%', position: 'absolute'}}>
-						<View style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, left: ((screenWidth/2) - (cardWidth/2)), top: 25}}>
-							{this.state.expandedHandCard}
-							<TouchableOpacity 
-								style={{
-									position: 'absolute', 
-									height: '50%', 
-									width: '100%', 
-									top: 0
-								}}
-								onPress={this.unExpandHandCard.bind(this)} 
-							/>
-							<TouchableOpacity
-								style={{
-									position: 'absolute', 
-									height: '50%', 
-									width: '50%', 
-									bottom: 0, 
-									left: 0, 
-									backgroundColor: 'rgba(150, 50, 0, 0.7)' 
-								}}
-								onPress={this.chooseOption.bind(this, 1, this.state.expandedHandCard)}
-							/>
-							<TouchableOpacity
-								style={{
-									position: 'absolute', 
-									height: '50%', 
-									width: '50%', 
-									bottom: 0, 
-									right: 0, 
-									backgroundColor: 'rgba(150, 50, 0, 0.7)' 
-								}}
-								onPress={this.chooseOption.bind(this, 2, this.state.expandedHandCard)}
-							/>
-						</View>
-							
-							{
-								(
-								(this.state.expandedHandCard.props.props.type === 'worker' 
-								&& this.state.player.capital.workers.length < this.state.player.natural_wonders.length + 1
-								)
-								|| 
-								(this.state.expandedHandCard.props.props.type === 'army' 
-								&& this.state.player.capital.armies.length < this.state.player.natural_wonders.length + 1
-								) 
-								)
-								? 
-									<View style={{
-										position: 'absolute', 
-										right: -150,
-										left: ((screenWidth/2) - (cardWidth/2) + cardWidth),
-										top: 30,
-										justifyContent: 'flex-start',
-										height: '100%',
-										backgroundColor: '#0f3'
-									}}>
-										<TouchableOpacity 
-											style={{
-												// width: 150,
-												// height: 30,
-												alignSelf: 'flex-start',
-												backgroundColor: '#f0f',
-												borderRadius: 50,
-												padding: 20,
-											}}
-											onPress={this.putOnCapital.bind(this, this.state.expandedHandCard)}
-										>
-											<Text>Put on Capital</Text>
-										</TouchableOpacity>
-									</View>
-								: undefined
-							}
-					</View>
-				) : undefined}
-
+{/*
+EXPANDED CAPITAL
+*/}
 				{
 					this.state.expandedCapital ? 
 						(
@@ -1565,18 +1303,21 @@ EXPANDED CARDS
 						)
 					: undefined
 				}
-
 {/*
-
 SLIDER
-
 */}
-
 				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
+					<Ionicons 
+						style={{position: 'absolute', top: 10, left: 20}} 
+						name="md-close" 
+						size={32} 
+						color="white" 
+						onPress={this._toggleSideBar.bind(this, true)}
+					/>
 					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
 					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
 					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>State</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>Print Gamestate to Console</Text></TouchableOpacity>
 					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
 				</Animated.View>
 			
@@ -1629,18 +1370,18 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	sideBubbles: {
-		width: 50, 
-		height: 50, 
-		borderRadius: 25, 
-		backgroundColor: '#555', 
-		padding: 8,
-		alignSelf: 'flex-start'
-	},
-	sideBubblesCon: {
-		width: 150,
-		marginBottom: 10
-	},
+	// sideBubbles: {
+	// 	width: 50, 
+	// 	height: 50, 
+	// 	borderRadius: 25, 
+	// 	backgroundColor: '#555', 
+	// 	padding: 8,
+	// 	alignSelf: 'flex-start'
+	// },
+	// sideBubblesCon: {
+	// 	// width: 150,
+	// 	marginBottom: 10
+	// },
 	decks: {
 		backgroundColor: '#57f', 
 		justifyContent: 'center',
