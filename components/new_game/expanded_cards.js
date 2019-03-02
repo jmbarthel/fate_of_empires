@@ -232,11 +232,15 @@ class ExpandedCards1 extends React.Component {
                                 ? 
                                     <View>
                                         <View
-                                            style={{
-                                                height: '100%',
-                                                width: 50, 
-                                                backgroundColor: "#84d"
-                                            }}>
+                                            style={styles.flagContainer}>
+
+                                            {Object.keys(this.props.expandedWonderCard.props.props.claimedBy).map((flag, i) => {
+                                                return (
+                                                    <View >
+
+                                                    </View>
+                                                );
+                                            })}
                                         </View>
                                     </View>
                                 : undefined
@@ -347,7 +351,12 @@ const styles = StyleSheet.create({
 	sideBubblesCon: {
 		// width: 150,
 		marginBottom: 10
-	},
+    },
+    flagContainer: {
+        height: '100%',
+        // width: 50, 
+        backgroundColor: "rgba(123,59,23,0.5)"
+    }
 });
   
 export default ExpandedCards = connect(mapStateToProps)(ExpandedCards1);
