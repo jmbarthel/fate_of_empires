@@ -20,6 +20,7 @@ import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
 
 import { shuffle } from './utilities.js';
+import Coricancha from '../game/cards/wonders/ancients/Coricancha.js';
 
 const mapStateToProps = state => {
     return { 
@@ -101,6 +102,22 @@ class NewGame1 extends React.Component {
 					card: wonderSupply.pop()
 				});
 		}
+
+		wondersRevealed.push(
+			{	
+				claimedBy: {
+					'japan': true,
+					'rome': true,
+				},
+				progress: {
+					 japan: {
+							gold: 12, 
+							science: 8, 
+							influence: 8,
+					 },
+				},
+				card: Coricancha
+			});
 
 		// SET THE PLAYERS DECKS
 		let playerDeck = [], playerHand=[];
@@ -1158,8 +1175,8 @@ class NewGame1 extends React.Component {
 	}
 
 	render() {
-		let height = Dimensions.get('window').height - 50;
-		let cardHeight = height;
+		let screenHeight = Dimensions.get('window').height;
+		let cardHeight = screenHeight - 50;
 		let screenWidth = Dimensions.get('window').width;
 		let cardWidth = cardHeight / 1.56;
 
@@ -1265,7 +1282,7 @@ OPPONENTS
 EXPANDED CARDS
 */}
 				<ExpandedCards
-					height={height}
+					screenHeight={screenHeight}
 					cardHeight={cardHeight}
 					screenWidth={screenWidth}
 					cardWidth={cardWidth}

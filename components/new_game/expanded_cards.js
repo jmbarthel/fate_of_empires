@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
+import Calculus from '../game/cards/technology/Calculus';
 
 
 const mapStateToProps = state => {
@@ -10,15 +11,37 @@ const mapStateToProps = state => {
 
 class ExpandedCards1 extends React.Component {
 	constructor(props) {
-		super(props);
+        super(props);
 		this.state = {};
-	}
+    }
+    
+    getImage(flag){
+        if(flag === 'japan'){
+            return require('../../assets/symbols/flags/japanflag.png');
+        } else if(flag === 'uk'){
+            return require('../../assets/symbols/flags/ukflag.png');
+        } else if(flag === 'usa'){
+            return require('../../assets/symbols/flags/usaflag.png');
+        } else if(flag === 'greece'){
+            return require('../../assets/symbols/flags/greeceflag.png');
+        } else if(flag === 'germany'){
+            return require('../../assets/symbols/flags/germanyflag.png');
+        } else if(flag === 'india'){
+            return require('../../assets/symbols/flags/indiaflag.png');
+        } else if(flag === 'france'){
+            return require('../../assets/symbols/flags/franceflag.png');
+        } else if(flag === 'china'){
+            return require('../../assets/symbols/flags/chinaflag.png');
+        } else if(flag === 'rome'){
+            return require('../../assets/symbols/flags/romeflag.png');
+        }
+    }
 
 	render() {
-        let height = this.props.height;
-		let cardHeight = this.props.cardHeight;
-		let screenWidth = this.props.screenWidth;
-        let cardWidth = this.props.cardWidth;
+        let screenHeight = this.props.screenHeight,
+		    cardHeight = this.props.cardHeight,
+		    screenWidth = this.props.screenWidth,
+            cardWidth = this.props.cardWidth;
         
         if(this.props.expandSupplyCard){
             // SUPPLY CARD
@@ -231,27 +254,160 @@ class ExpandedCards1 extends React.Component {
                                 Object.keys(this.props.expandedWonderCard.props.props.claimedBy).length > 0
                                 ? 
                                     <View>
-                                        <View
-                                            style={styles.flagContainer}>
-
+                                        <View style={styles.flagGroupContainer}>
                                             {Object.keys(this.props.expandedWonderCard.props.props.claimedBy).map((flag, i) => {
-                                                return (
-                                                    <View >
 
+                                                let resources = this.props.expandedWonderCard.props.props.claimedBy[flag];
+                                                let progress = this.props.expandedWonderCard.props.props.progress;
+
+                                                console.log('flag', flag);
+
+                                                let flagImage = this.getImage(flag);
+
+                                                let goldTicks = [], scienceTicks = [], influenceTicks = [];
+
+                                                let scienceSpacing = ((cardHeight - 50) / this.props.expandedWonderCard.props.props.cost.science); 
+                                                let influenceSpacing = ((cardHeight - 50) / this.props.expandedWonderCard.props.props.cost.influence); 
+                                                let goldSpacing = ((cardHeight - 50) / this.props.expandedWonderCard.props.props.cost.gold); 
+
+                                                if(this.props.expandedWonderCard.props.props.cost.gold > 0){
+                                                    for(let i = 0; i < this.props.expandedWonderCard.props.props.cost.gold; i++){
+                                                        goldTicks.push(
+                                                            <View key={i}
+                                                                style={{
+                                                                    backgroundColor: 'rgb(255, 255, 255)',
+                                                                }}
+                                                            ><Text style={{fontSize: 10}}>{i+1}</Text></View>
+                                                        );
+                                                    }
+                                                }
+                                                
+                                                if(this.props.expandedWonderCard.props.props.cost.science > 0){
+                                                    for(let i = 0; i < this.props.expandedWonderCard.props.props.cost.science; i++){
+                                                        scienceTicks.push(
+                                                            <View key={i}
+                                                                style={{
+                                                                    width: '100%', 
+                                                                    backgroundColor: 'rgb(255, 255, 255)',
+                                                                }}
+                                                            ><Text style={{fontSize: 10}}>{i+1}</Text></View>
+                                                        );
+                                                    }
+                                                }
+
+                                                if(this.props.expandedWonderCard.props.props.cost.influence > 0){
+                                                    for(let i = 0; i < this.props.expandedWonderCard.props.props.cost.influence; i++){
+                                                        influenceTicks.push(
+                                                            <View key={i}
+                                                                style={{
+                                                                    width: '100%', 
+                                                                    backgroundColor: 'rgb(255, 255, 255)',
+                                                                }}
+                                                            ><Text style={{fontSize: 10}}>{i+1}</Text></View>
+                                                        );
+                                                    }
+                                                }
+
+                                                return (
+                                                    <View key={i} style={styles.flagContainer}> 
+                                                        <Image 
+                                                            source={flagImage}
+                                                            resizeMode='contain'
+                                                            style={{
+                                                                position: 'absolute',
+                                                                height: 50,
+                                                                maxWidth: 75
+                                                            }}
+                                                        />
+
+                                                        {
+                                                            this.props.expandedWonderCard.props.props.cost.gold > 0
+                                                            ? 
+                                                                <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
+                                                                    {goldTicks}
+                                                                    {
+                                                                        progress[flag]
+                                                                        ? 
+                                                                            <Image 
+                                                                                source={require('../../assets/symbols/actions/Gold.png')}
+                                                                                resizeMode='contain'
+                                                                                style={{
+                                                                                    position: 'absolute', 
+                                                                                    width: 25,
+                                                                                    height: 25,
+                                                                                    borderRadius: 10,
+                                                                                    bottom: (progress[flag].gold === 1 ? 0 : progress[flag].gold*goldSpacing-30), 
+                                                                                    backgroundColor: '#f4f'
+                                                                                }}
+                                                                            />
+                                                                        : undefined
+                                                                    }
+                                                                </View>
+                                                            : undefined
+                                                        }
+
+                                                        {
+                                                            this.props.expandedWonderCard.props.props.cost.science > 0
+                                                            ?   
+                                                                <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
+                                                                    {scienceTicks}
+                                                                    {
+                                                                        progress[flag]
+                                                                        ? 
+                                                                            <Image 
+                                                                                source={require('../../assets/symbols/actions/Science.png')}
+                                                                                resizeMode='contain'
+                                                                                style={{
+                                                                                    position: 'absolute', 
+                                                                                    width: 25,
+                                                                                    height: 25,
+                                                                                    borderRadius: 10,
+                                                                                    bottom: (progress[flag].science === 1 ? 0 : progress[flag].science*scienceSpacing-30), 
+                                                                                    backgroundColor: '#f4f'
+                                                                                }}
+                                                                            />
+                                                                        : undefined
+                                                                    }
+                                                                </View>
+                                                            : undefined
+                                                        }
+
+                                                        {
+                                                            this.props.expandedWonderCard.props.props.cost.influence > 0
+                                                            ? 
+                                                                <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
+                                                                    {influenceTicks}
+                                                                    {
+                                                                        progress[flag]
+                                                                        ? 
+                                                                            <Image 
+                                                                                source={require('../../assets/symbols/actions/Influence.png')}
+                                                                                resizeMode='contain'
+                                                                                style={{
+                                                                                    position: 'absolute', 
+                                                                                    width: 25,
+                                                                                    height: 25,
+                                                                                    borderRadius: 10,
+                                                                                    bottom: (progress[flag].influence === 1 ? 0 : progress[flag].influence*influenceSpacing-30), 
+                                                                                    backgroundColor: '#f4f'
+                                                                                }}
+                                                                            />
+                                                                        : undefined
+                                                                    }
+                                                                </View>
+                                                            : undefined
+                                                        }
+                                                        
                                                     </View>
                                                 );
                                             })}
                                         </View>
                                     </View>
                                 : undefined
-                            
-                            
                             }
                         </View>
-
                     </View>
                 </View>
-                    
             </View>
         } else if(this.props.expandHandCard){
             // HAND CARD
@@ -352,10 +508,25 @@ const styles = StyleSheet.create({
 		// width: 150,
 		marginBottom: 10
     },
-    flagContainer: {
+    flagGroupContainer: {
         height: '100%',
-        // width: 50, 
-        backgroundColor: "rgba(123,59,23,0.5)"
+        flexDirection: 'row',
+        // backgroundColor: "rgba(123,59,23,0.5)"
+    }, 
+    flagContainer: {
+        height: '100%', 
+        width: 75, 
+        justifyContent: 'center',
+        flexDirection: 'row',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        // margin: 5,
+    },
+    progressBarCon: { 
+        flexDirection: 'column-reverse', 
+        width: 25, 
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        justifyContent: 'space-between', 
+        marginTop: 50
     }
 });
   

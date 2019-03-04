@@ -7,9 +7,9 @@ export default Coricancha = (props) => {
         type: 'ancient_wonder', 
         name: 'Coricancha', 
         cost: {
-            gold: 0,
-            influence: 0, 
-            science: 4,
+            gold: 12,
+            influence: 10, 
+            science: 8,
         },
     }
         
