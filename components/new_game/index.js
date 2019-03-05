@@ -20,7 +20,6 @@ import assembleSupplyDeck from './assemble_supply_cards.js';
 import assembleWonderDeck from './assemble_wonder_cards.js';
 
 import { shuffle } from './utilities.js';
-import Coricancha from '../game/cards/wonders/ancients/Coricancha.js';
 
 const mapStateToProps = state => {
     return { 
@@ -110,11 +109,11 @@ class NewGame1 extends React.Component {
 					'rome': true,
 				},
 				progress: {
-					 japan: {
-							gold: 12, 
-							science: 8, 
-							influence: 8,
-					 },
+					japan: {
+							gold: 1, 
+							science: 4, 
+							influence: 6,
+					},
 				},
 				card: Coricancha
 			});
@@ -1028,7 +1027,9 @@ class NewGame1 extends React.Component {
 		this.setState(prevState => {
 			let wondersRevealed = prevState.wondersRevealed;
 
-			wondersRevealed[card.props.props.num].claimedBy[prevState.player.flag] = {
+			wondersRevealed[card.props.props.num].claimedBy[prevState.player.flag] = true;
+
+			wondersRevealed[card.props.props.num].progress[prevState.player.flag] = {
 				gold: 0, 
 				science: 0,
 				influence: 0, 
