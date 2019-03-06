@@ -18,13 +18,17 @@ class ExpandedCards1 extends React.Component {
 
         this.state = {screenHeight, cardHeight, screenWidth, cardWidth};
 
-        this.goldProgressAnimation = null;
-        this.scienceProgressAnimation = null;
-        this.influenceProgressAnimation = null;
+        this.goldProgressAnimation = false;
+        this.scienceProgressAnimation = false;
+        this.influenceProgressAnimation = false;
 
         this.goldSpacing = null;
         this.scienceSpacing = null;
         this.influenceSpacing = null;
+        
+        this.tempScience = 0;
+        this.tempGold = 0;
+        this.tempInfluence = 0;
     }
     
     getImage(flag){
@@ -50,52 +54,90 @@ class ExpandedCards1 extends React.Component {
     }
 
     componentWillUpdate(nextProps){
-        console.log('willupdate');
+console.log('willupdate', 
+          (nextProps && nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name)));
+
         if(nextProps && nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name)){
 
-            if(nextProps.expandedWonderCard.props.props.cost.gold >= 0){
+            console.log('updating');
+
+            if(nextProps.expandedWonderCard.props.props.cost.gold >= 0 && nextProps.expandedWonderCard.props.props.progress['japan'].gold >= 0){
+
                 this.goldSpacing = ((this.state.cardHeight - 50) / (nextProps.expandedWonderCard.props.props.cost.gold));
+
                 let y = ((nextProps.expandedWonderCard.props.props.progress['japan'].gold === 1)
                     ? (this.state.cardHeight-50) 
-                    : ((this.state.cardHeight-50) - (nextProps.expandedWonderCard.props.props.progress['japan'].gold * this.goldSpacing)))            
+                    : ((this.state.cardHeight-50) - (nextProps.expandedWonderCard.props.props.progress['japan'].gold * this.goldSpacing)))  
+
                 this.goldProgressAnimation = new Animated.ValueXY({ x: 0, y: y });
+
+                console.log('gold');
             }
-            if(nextProps.expandedWonderCard.props.props.cost.science >= 0){
+            if(nextProps.expandedWonderCard.props.props.cost.science >= 0 && nextProps.expandedWonderCard.props.props.progress['japan'].science >= 0){
+
                 this.scienceSpacing = ((this.state.cardHeight - 50) / (nextProps.expandedWonderCard.props.props.cost.science));
+
                 let y = (nextProps.expandedWonderCard.props.props.progress['japan'].science === 1 
                     ? this.state.cardHeight-50 
                     : (this.state.cardHeight-50) - (nextProps.expandedWonderCard.props.props.progress['japan'].science * this.scienceSpacing))
-                    console.log(y, this.state.cardHeight, this.state.scienceSpacing)
+
                 this.scienceProgressAnimation = new Animated.ValueXY({ x: 0, y: y });
+                console.log('sci');
             }
-            if(nextProps.expandedWonderCard.props.props.cost.influence >= 0){
+            if(nextProps.expandedWonderCard.props.props.cost.influence >= 0 && nextProps.expandedWonderCard.props.props.progress['japan'].influence >= 0){
+
                 this.influenceSpacing = ((this.state.cardHeight - 50) / (nextProps.expandedWonderCard.props.props.cost.influence));
+
                 let y = (nextProps.expandedWonderCard.props.props.progress['japan'].influence === 1 
                     ? this.state.cardHeight-50 
                     : (this.state.cardHeight-50) - (nextProps.expandedWonderCard.props.props.progress['japan'].influence * this.influenceSpacing))
+                
                 this.influenceProgressAnimation = new Animated.ValueXY({ x: 0, y: y });
+                console.log('inf');
             }
+
+            console.log(this.goldProgressAnimation, this.scienceProgressAnimation, this.influenceProgressAnimation);
+
             return true;
-        } else if(nextProps && !nextProps.expandedWonderCard){
-            this.goldProgressAnimation = null;
-            this.scienceProgressAnimation = null;
-            this.influenceProgressAnimation = null;
+        } else if(nextProps && (nextProps.expandHandCard || nextProps.expandSupplyCard || !nextProps.expandWonderCard)){
+
+            console.log('setting false');
+
+            this.goldProgressAnimation = false;
+            this.scienceProgressAnimation = false;
+            this.influenceProgressAnimation = false;
             this.goldSpacing = null;
             this.scienceSpacing = null;
             this.influenceSpacing = null;
+            this.tempGold = 0;
+            this.tempScience = 0;
+            this.tempInfluence = 0;
             return true;
         } else{
+
+            console.log(this.goldProgressAnimation, this.scienceProgressAnimation, this.influenceProgressAnimation);
+
             return true;
         }
     }
 
     addResourceToWonder(resource){
-        this.setState(this.state);
         
-        Animated.spring(this.scienceProgressAnimation, {
-            toValue: { x: 0, y: 10 },
-            friction: 2,
-        }).start();
+        if(true){
+            this.tempScience ++;
+
+            let y = (this.props.expandedWonderCard.props.props.progress['japan'].science === 1 
+                ? this.state.cardHeight-50 
+                : (this.state.cardHeight-50) - ((this.props.expandedWonderCard.props.props.progress['japan'].science + this.tempScience) * (this.scienceSpacing)))
+
+            console.log( 'adding ', this.scienceProgressAnimation);
+
+            Animated.spring(this.scienceProgressAnimation, {
+                toValue: { x: 0, y },
+                friction: 6,
+            }).start();
+            
+        }
     }
 
 	render() {
@@ -420,9 +462,10 @@ class ExpandedCards1 extends React.Component {
                                                                                     width: 25,
                                                                                     height: 25,
                                                                                     borderRadius: 10,
-                                                                                    // bottom: (progress[flag].gold === 1 ? 0 : progress[flag].gold*goldSpacing-30), 
                                                                                     backgroundColor: '#f4f'
-                                                                                }, player.flag === flag ? this.goldProgressAnimation.getLayout() : null]}
+                                                                                }, player.flag === flag && this.goldProgressAnimation 
+                                                                                    ? this.goldProgressAnimation.getLayout() 
+                                                                                    : {bottom: (progress[flag].gold === 1 ? 0 : progress[flag].gold * goldSpacing-30)}]}
                                                                             />
                                                                         : undefined
                                                                     }
@@ -446,9 +489,10 @@ class ExpandedCards1 extends React.Component {
                                                                                     width: 25,
                                                                                     height: 25,
                                                                                     borderRadius: 10,
-                                                                                    // bottom: (progress[flag].science === 1 ? 0 : progress[flag].science*scienceSpacing-30), 
                                                                                     backgroundColor: '#f4f'
-                                                                                }, player.flag === flag ? this.scienceProgressAnimation.getLayout() : null]}
+                                                                                }, player.flag === flag && this.scienceProgressAnimation
+                                                                                    ? this.scienceProgressAnimation.getLayout() 
+                                                                                    : {bottom: progress[flag].science === 1 ? 0 : progress[flag].science*scienceSpacing-30}]}
                                                                             />
                                                                         : undefined
                                                                     }
@@ -472,9 +516,10 @@ class ExpandedCards1 extends React.Component {
                                                                                     width: 25,
                                                                                     height: 25,
                                                                                     borderRadius: 10,
-                                                                                    // bottom: (progress[flag].influence === 1 ? 0 : progress[flag].influence*influenceSpacing-30), 
                                                                                     backgroundColor: '#f4f'
-                                                                                }, player.flag === flag ? this.influenceProgressAnimation.getLayout() : null ]}
+                                                                                }, player.flag === flag && this.influenceProgressAnimation 
+                                                                                    ? this.influenceProgressAnimation.getLayout() 
+                                                                                    : {bottom: (progress[flag].influence === 1 ? 0 : progress[flag].influence*influenceSpacing-30)} ]}
                                                                             />
                                                                         : undefined
                                                                     }

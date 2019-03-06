@@ -114,6 +114,11 @@ class NewGame1 extends React.Component {
 							science: 4, 
 							influence: 6,
 					},
+					rome: {
+							gold: 10, 
+							science: 6, 
+							influence: 2,
+					},
 				},
 				card: Coricancha
 			});
@@ -1023,7 +1028,7 @@ class NewGame1 extends React.Component {
 	}
 
 	placeFlag(card){
-		console.log('placing flag on ', card);
+		// console.log('placing flag on ', card);
 		this.setState(prevState => {
 			let wondersRevealed = prevState.wondersRevealed;
 
@@ -1282,29 +1287,34 @@ OPPONENTS
 {/*
 EXPANDED CARDS
 */}
-				<ExpandedCards
-					screenHeight={screenHeight}
-					cardHeight={cardHeight}
-					screenWidth={screenWidth}
-					cardWidth={cardWidth}
-
-					player={this.state.player}
-					expandHandCard={this.state.expandHandCard}
-					expandedHandCard={this.state.expandedHandCard}
-					expandSupplyCard={this.state.expandSupplyCard}
-					expandedSupplyCard={this.state.expandedSupplyCard}
-					expandWonderCard={this.state.expandWonderCard}
-					expandedWonderCard={this.state.expandedWonderCard}
-					wondersRevealed={this.state.wondersRevealed}
-
-					putOnCapital={this.putOnCapital.bind(this)}
-					placeFlag={this.placeFlag.bind(this)}
-					chooseOption={this.chooseOption.bind(this)}
-					buySupplyCard={this.buySupplyCard.bind(this)}
-					unExpandHandCard={this.unExpandHandCard.bind(this)}
-					unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
-					unExpandWonderCard={this.unExpandWonderCard.bind(this)}
-				/>
+				{/* {
+					this.state.expandHandCard || this.state.expandSupplyCard || this.state.expandWonderCard
+					?  */}
+						<ExpandedCards
+							screenHeight={screenHeight}
+							cardHeight={cardHeight}
+							screenWidth={screenWidth}
+							cardWidth={cardWidth}
+		
+							player={this.state.player}
+							expandHandCard={this.state.expandHandCard}
+							expandedHandCard={this.state.expandedHandCard}
+							expandSupplyCard={this.state.expandSupplyCard}
+							expandedSupplyCard={this.state.expandedSupplyCard}
+							expandWonderCard={this.state.expandWonderCard}
+							expandedWonderCard={this.state.expandedWonderCard}
+							wondersRevealed={this.state.wondersRevealed}
+		
+							putOnCapital={this.putOnCapital.bind(this)}
+							placeFlag={this.placeFlag.bind(this)}
+							chooseOption={this.chooseOption.bind(this)}
+							buySupplyCard={this.buySupplyCard.bind(this)}
+							unExpandHandCard={this.unExpandHandCard.bind(this)}
+							unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
+							unExpandWonderCard={this.unExpandWonderCard.bind(this)}
+						/>
+					{/* : undefined
+				} */}
 
 {/*
 EXPANDED CAPITAL
