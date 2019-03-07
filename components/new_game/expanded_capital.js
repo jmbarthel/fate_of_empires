@@ -59,13 +59,13 @@ class ExpandedCapital1 extends React.Component {
                     : undefined
                 }
 
-                <Ionicons 
+                {/* <Ionicons 
 					style={styles.close} 
 					name="md-close" 
 					size={32} 
 					color="white" 
 					onPress={this.props.closeCapital}
-				/>
+				/> */}
 
 			</TouchableOpacity>
 		);

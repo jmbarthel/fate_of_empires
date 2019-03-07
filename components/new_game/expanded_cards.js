@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, Animated } from "react-native";
 import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
 
 const mapStateToProps = state => {
     return { ...state };
@@ -16,7 +17,12 @@ class ExpandedCards1 extends React.Component {
 		    screenWidth = this.props.screenWidth,
             cardWidth = this.props.cardWidth;
 
-        this.state = {screenHeight, cardHeight, screenWidth, cardWidth};
+        this.state = {
+            screenHeight, 
+            cardHeight, 
+            screenWidth, 
+            cardWidth,
+        };
 
         this.goldProgressAnimation = false;
         this.scienceProgressAnimation = false;
@@ -26,12 +32,14 @@ class ExpandedCards1 extends React.Component {
         this.scienceSpacing = null;
         this.influenceSpacing = null;
         
-        this.tempScience = 0;
-        this.tempGold = 0;
-        this.tempInfluence = 0;
+        this.tempscience = 0;
+        this.tempgold = 0;
+        this.tempinfluence = 0;
     }
     
     getImage(flag){
+        // This kind of sucks because you cannot dynamically require img files, the 
+        // location needs to be a literal string, no variable evaluation.
         if(flag === 'japan'){
             return require('../../assets/symbols/flags/japanflag.png');
         } else if(flag === 'uk'){
@@ -54,49 +62,49 @@ class ExpandedCards1 extends React.Component {
     }
 
     componentWillUpdate(nextProps){
-console.log('willupdate', 
-          (nextProps && nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name)));
+        console.log('willupdate', (nextProps && nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name)));
 
-        if(nextProps && nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name)){
+        if(nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name) && nextProps.expandedWonderCard.props.props.claimedBy[this.props.player.flag]){
+            let card = nextProps.expandedWonderCard.props.props,
+                flag = this.props.player.flag,
+                cardHeight = this.state.cardHeight - 50;
 
             console.log('updating');
 
-            if(nextProps.expandedWonderCard.props.props.cost.gold >= 0 && nextProps.expandedWonderCard.props.props.progress['japan'].gold >= 0){
+            if(card.cost.gold >= 0 && card.progress[flag].gold >= 0){
 
-                this.goldSpacing = ((this.state.cardHeight - 50) / (nextProps.expandedWonderCard.props.props.cost.gold));
+                this.goldSpacing = ((cardHeight) / (card.cost.gold));
 
-                let y = ((nextProps.expandedWonderCard.props.props.progress['japan'].gold === 1)
-                    ? (this.state.cardHeight-50) 
-                    : ((this.state.cardHeight-50) - (nextProps.expandedWonderCard.props.props.progress['japan'].gold * this.goldSpacing)))  
+                let y = ((card.progress[flag].gold === 1)
+                    ? (cardHeight) 
+                    : ((cardHeight) - (card.progress[flag].gold * this.goldSpacing)))  
 
                 this.goldProgressAnimation = new Animated.ValueXY({ x: 0, y: y });
 
                 console.log('gold');
             }
-            if(nextProps.expandedWonderCard.props.props.cost.science >= 0 && nextProps.expandedWonderCard.props.props.progress['japan'].science >= 0){
+            if(card.cost.science >= 0 && card.progress[flag].science >= 0){
 
-                this.scienceSpacing = ((this.state.cardHeight - 50) / (nextProps.expandedWonderCard.props.props.cost.science));
+                this.scienceSpacing = ((cardHeight) / (card.cost.science));
 
-                let y = (nextProps.expandedWonderCard.props.props.progress['japan'].science === 1 
-                    ? this.state.cardHeight-50 
-                    : (this.state.cardHeight-50) - (nextProps.expandedWonderCard.props.props.progress['japan'].science * this.scienceSpacing))
+                let y = (card.progress[flag].science === 1 
+                    ? cardHeight 
+                    : (cardHeight) - (card.progress[flag].science * this.scienceSpacing))
 
                 this.scienceProgressAnimation = new Animated.ValueXY({ x: 0, y: y });
                 console.log('sci');
             }
-            if(nextProps.expandedWonderCard.props.props.cost.influence >= 0 && nextProps.expandedWonderCard.props.props.progress['japan'].influence >= 0){
+            if(card.cost.influence >= 0 && card.progress[flag].influence >= 0){
 
-                this.influenceSpacing = ((this.state.cardHeight - 50) / (nextProps.expandedWonderCard.props.props.cost.influence));
+                this.influenceSpacing = ((cardHeight) / (card.cost.influence));
 
-                let y = (nextProps.expandedWonderCard.props.props.progress['japan'].influence === 1 
-                    ? this.state.cardHeight-50 
-                    : (this.state.cardHeight-50) - (nextProps.expandedWonderCard.props.props.progress['japan'].influence * this.influenceSpacing))
+                let y = (card.progress[flag].influence === 1 
+                    ? cardHeight 
+                    : (cardHeight) - (card.progress[flag].influence * this.influenceSpacing))
                 
                 this.influenceProgressAnimation = new Animated.ValueXY({ x: 0, y: y });
                 console.log('inf');
             }
-
-            console.log(this.goldProgressAnimation, this.scienceProgressAnimation, this.influenceProgressAnimation);
 
             return true;
         } else if(nextProps && (nextProps.expandHandCard || nextProps.expandSupplyCard || !nextProps.expandWonderCard)){
@@ -109,10 +117,11 @@ console.log('willupdate',
             this.goldSpacing = null;
             this.scienceSpacing = null;
             this.influenceSpacing = null;
-            this.tempGold = 0;
-            this.tempScience = 0;
-            this.tempInfluence = 0;
+            this.tempgold = 0;
+            this.tempscience = 0;
+            this.tempinfluence = 0;
             return true;
+
         } else{
 
             console.log(this.goldProgressAnimation, this.scienceProgressAnimation, this.influenceProgressAnimation);
@@ -123,21 +132,32 @@ console.log('willupdate',
 
     addResourceToWonder(resource){
         
-        if(true){
-            this.tempScience ++;
+            if(this.props.player.resources[resource] - this['temp'+resource] - 1 < 0){
+                return false;
+            }
 
-            let y = (this.props.expandedWonderCard.props.props.progress['japan'].science === 1 
-                ? this.state.cardHeight-50 
-                : (this.state.cardHeight-50) - ((this.props.expandedWonderCard.props.props.progress['japan'].science + this.tempScience) * (this.scienceSpacing)))
+            let _this = this,
+                card = card,
+                spacing = this[resource+'Spacing'], 
+                tempResource = 'temp'+resource,
+                flag = this.props.player.flag,
+                cardHeight = this.state.cardHeight-50;
 
-            console.log( 'adding ', this.scienceProgressAnimation);
+            _this['temp'+resource]++;
 
-            Animated.spring(this.scienceProgressAnimation, {
-                toValue: { x: 0, y },
-                friction: 6,
-            }).start();
-            
-        }
+            this.setState(prevState => {
+                return prevState;
+            }, () => {
+                
+                let y = (((card.progress[flag][resource] + _this[tempResource]) === 1 )
+                    ? cardHeight 
+                    : (cardHeight) - ((card.progress[flag][resource] + _this[tempResource]) * (_this[spacing])));
+    
+                Animated.spring(_this[resource+'ProgressAnimation'], {
+                    toValue: { x: 0, y },
+                    friction: 6,
+                }).start();
+            });
     }
 
 	render() {
@@ -254,7 +274,6 @@ console.log('willupdate',
                 ></TouchableOpacity>
                 <TouchableOpacity
                     style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
-                    onPress={this.addResourceToWonder.bind(this)}
                 ></TouchableOpacity>
                 <TouchableOpacity
                     style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
@@ -308,8 +327,29 @@ console.log('willupdate',
                                                     position: 'absolute',
                                                 }} 
                                             />
-                                            <Text style={styles.sideBubblesLabel}>{this.props.player.resources.gold}</Text>
+                                            <Text style={styles.sideBubblesLabel}>{this.props.player.resources.gold - this.tempgold}</Text>
                                         </View>
+                                        
+                                        {
+                                            this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+
+                                            ? 
+                                                <View style={styles.sideBubbles}>
+                                                    <Ionicons 
+                                                        style={{
+                                                            width: '100%', 
+                                                            height: '100%', 
+                                                            position: 'absolute',
+                                                        }} 
+                                                        name="ios-add-circle" 
+                                                        size={32} 
+                                                        color="white" 
+                                                        onPress={this.addResourceToWonder.bind(this, 'gold')}
+                                                    />
+                                                </View>
+
+                                            : undefined
+                                        }
 
                                     </View>
                                 : undefined
@@ -337,8 +377,28 @@ console.log('willupdate',
                                                     position: 'absolute',
                                                 }} 
                                             />
-                                            <Text style={styles.sideBubblesLabel}>{this.props.player.resources.science}</Text>
+                                            <Text style={styles.sideBubblesLabel}>{this.props.player.resources.science - this.tempscience}</Text>
                                         </View>
+                                        
+                                        {
+                                            this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+
+                                            ? 
+                                                <View style={styles.sideBubbles}>
+                                                    <Ionicons 
+                                                        style={{
+                                                            width: '100%', 
+                                                            height: '100%', 
+                                                            position: 'absolute',
+                                                        }} 
+                                                        name="ios-add-circle" 
+                                                        size={32} 
+                                                        color="white" 
+                                                        onPress={this.addResourceToWonder.bind(this, 'science')}
+                                                    />
+                                                </View>
+                                            : undefined
+                                        }
 
                                     </View>
                                     
@@ -367,8 +427,29 @@ console.log('willupdate',
                                             position: 'absolute',
                                         }} 
                                     />
-                                    <Text style={styles.sideBubblesLabel}>{this.props.player.resources.influence}</Text>
+                                    <Text style={styles.sideBubblesLabel}>{this.props.player.resources.influence - this.tempinfluence}</Text>
                                 </View>
+
+                                {
+                                    this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+
+                                    ? 
+                                    <View style={styles.sideBubbles}>
+                                        <Ionicons 
+                                            style={{
+                                                width: '100%', 
+                                                height: '100%', 
+                                                position: 'absolute',
+                                            }} 
+                                            name="ios-add-circle" 
+                                            size={32} 
+                                            color="white" 
+                                            onPress={this.addResourceToWonder.bind(this, 'influence')}
+                                        />
+                                    </View>
+
+                                    : undefined
+                                }
 
                             </View>
                                 : undefined
@@ -635,6 +716,7 @@ const styles = StyleSheet.create({
         right: -150,
         justifyContent: 'flex-start',
         height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
     },
     sideBubbles: {
 		width: 50, 
@@ -642,13 +724,12 @@ const styles = StyleSheet.create({
         borderRadius: 25, 
         justifyContent: 'center', 
         alignItems: 'center',
-		// backgroundColor: '#555', 
 		padding: 8,
 		alignSelf: 'flex-start'
 	},
 	sideBubblesCon: {
-		// width: 150,
         marginBottom: 10,
+        marginLeft: 5,
         flexDirection: 'row',
     },
     sideBubblesLabel: {
@@ -665,15 +746,16 @@ const styles = StyleSheet.create({
     flagGroupContainer: {
         height: '100%',
         flexDirection: 'row',
-        // backgroundColor: "rgba(123,59,23,0.5)"
+        backgroundColor: "rgba(0,0,0,0.5)"
     }, 
     flagContainer: {
         height: '100%', 
         width: 75, 
         justifyContent: 'center',
         flexDirection: 'row',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        // margin: 5,
+        backgroundColor: 'rgba(150, 0, 0, 0.5)',
+        marginRight: 10,
+        marginLeft: 10,
     },
     progressBarCon: { 
         flexDirection: 'column-reverse', 
