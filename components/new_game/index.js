@@ -110,9 +110,9 @@ class NewGame1 extends React.Component {
 				},
 				progress: {
 					japan: {
-							gold: 1, 
-							science: 4, 
-							influence: 6,
+							gold: 0, 
+							science: 0, 
+							influence: 0,
 					},
 					rome: {
 							gold: 10, 
@@ -229,9 +229,9 @@ class NewGame1 extends React.Component {
 				modern_wonders: [], 
 
 				resources: {
-					gold: 0, 
-					science: 0, 
-					influence: 0,
+					gold: 10, 
+					science: 10, 
+					influence: 10,
 					any: 0,
 					toward: {
 						person: {

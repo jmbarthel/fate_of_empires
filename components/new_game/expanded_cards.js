@@ -124,41 +124,46 @@ class ExpandedCards1 extends React.Component {
 
         } else{
 
-            console.log(this.goldProgressAnimation, this.scienceProgressAnimation, this.influenceProgressAnimation);
-
             return true;
         }
     }
 
     addResourceToWonder(resource){
         
-            if(this.props.player.resources[resource] - this['temp'+resource] - 1 < 0){
-                return false;
-            }
+        if(this.props.player.resources[resource] - this['temp'+resource] - 1 < 0){
+            return false;
+        }
 
-            let _this = this,
-                card = card,
-                spacing = this[resource+'Spacing'], 
-                tempResource = 'temp'+resource,
-                flag = this.props.player.flag,
-                cardHeight = this.state.cardHeight-50;
+        let _this = this,
+            card = this.props.expandedWonderCard.props.props,
+            spacing = this[resource+'Spacing'], 
+            tempResource = 'temp'+resource,
+            flag = this.props.player.flag,
+            cardHeight = this.state.cardHeight - 50;
 
-            _this['temp'+resource]++;
+        _this[tempResource]++;
 
-            this.setState(prevState => {
-                return prevState;
-            }, () => {
-                
-                let y = (((card.progress[flag][resource] + _this[tempResource]) === 1 )
-                    ? cardHeight 
-                    : (cardHeight) - ((card.progress[flag][resource] + _this[tempResource]) * (_this[spacing])));
-    
-                Animated.spring(_this[resource+'ProgressAnimation'], {
-                    toValue: { x: 0, y },
-                    friction: 6,
-                }).start();
-            });
+        this.setState(prevState => {
+            return prevState;
+        }, () => {
+
+            let amountOfResource = card.progress[flag][resource] + _this[tempResource];
+
+            let y = ((amountOfResource === 1 )
+                ? (cardHeight - 20) 
+                : ((cardHeight) - (amountOfResource * (spacing))));
+
+            Animated.spring(_this[resource+'ProgressAnimation'], {
+                toValue: { x: 0, y: y },
+                friction: 6,
+            }).start();
+
+        });
     }
+
+    // confirmResourceAdd(){
+    //     console.log('Confirming');
+    // }
 
 	render() {
         let screenHeight = this.props.screenHeight,
@@ -279,6 +284,17 @@ class ExpandedCards1 extends React.Component {
                     style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
                 ></TouchableOpacity>
 
+                {
+                    this.tempgold > 0 || this.tempscience > 0 || this.tempinfluence > 0
+                    ? 
+                        <TouchableOpacity
+                            style={{position: 'absolute', width: '50%', backgroundColor: '#f04', borderRadius: 15}}
+                        >
+                            <Text style={{textAlign: 'center'}}>Confirm Resources</Text>
+                        </TouchableOpacity>
+                    : undefined
+                }
+
                 <View style={[{left: (cardWidth)}, styles.sideCon]}>
                     <View style={{flexDirection: 'row'}}>
                         <View>
@@ -287,7 +303,7 @@ class ExpandedCards1 extends React.Component {
                                 (
                                     !this.props.player.claimedWonder
                                     && this.props.player.claimedWonder !== this.props.expandedWonderCard.props.props.name
-                                    && this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag] == undefined
+                                    && !this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
                                 )
 
                                 ? <TouchableOpacity 
@@ -334,7 +350,7 @@ class ExpandedCards1 extends React.Component {
                                             this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
 
                                             ? 
-                                                <View style={styles.sideBubbles}>
+                                                <TouchableOpacity style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'gold')}>
                                                     <Ionicons 
                                                         style={{
                                                             width: '100%', 
@@ -344,14 +360,14 @@ class ExpandedCards1 extends React.Component {
                                                         name="ios-add-circle" 
                                                         size={32} 
                                                         color="white" 
-                                                        onPress={this.addResourceToWonder.bind(this, 'gold')}
                                                     />
-                                                </View>
+                                                </TouchableOpacity>
 
                                             : undefined
                                         }
 
                                     </View>
+
                                 : undefined
                             }
                             {
@@ -384,7 +400,7 @@ class ExpandedCards1 extends React.Component {
                                             this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
 
                                             ? 
-                                                <View style={styles.sideBubbles}>
+                                                <TouchableOpacity style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'science')}>
                                                     <Ionicons 
                                                         style={{
                                                             width: '100%', 
@@ -394,9 +410,8 @@ class ExpandedCards1 extends React.Component {
                                                         name="ios-add-circle" 
                                                         size={32} 
                                                         color="white" 
-                                                        onPress={this.addResourceToWonder.bind(this, 'science')}
                                                     />
-                                                </View>
+                                                </TouchableOpacity>
                                             : undefined
                                         }
 
@@ -434,7 +449,7 @@ class ExpandedCards1 extends React.Component {
                                     this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
 
                                     ? 
-                                    <View style={styles.sideBubbles}>
+                                    <TouchableOpacity style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'influence')}>
                                         <Ionicons 
                                             style={{
                                                 width: '100%', 
@@ -444,9 +459,8 @@ class ExpandedCards1 extends React.Component {
                                             name="ios-add-circle" 
                                             size={32} 
                                             color="white" 
-                                            onPress={this.addResourceToWonder.bind(this, 'influence')}
                                         />
-                                    </View>
+                                    </TouchableOpacity>
 
                                     : undefined
                                 }
@@ -482,9 +496,11 @@ class ExpandedCards1 extends React.Component {
                                                         goldTicks.push(
                                                             <View key={i}
                                                                 style={{
-                                                                    backgroundColor: 'rgb(255, 255, 255)',
+                                                                    width: '100%',
+                                                                    borderRadius: 15,
+                                                                    backgroundColor: 'rgb(150, 150, 150)',
                                                                 }}
-                                                            ><Text style={{fontSize: 10}}>{i+1}</Text></View>
+                                                            ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
                                                         );
                                                     }
                                                 }
@@ -494,10 +510,11 @@ class ExpandedCards1 extends React.Component {
                                                         scienceTicks.push(
                                                             <View key={i}
                                                                 style={{
-                                                                    width: '100%', 
-                                                                    backgroundColor: 'rgb(255, 255, 255)',
+                                                                    width: '100%',
+                                                                    borderRadius: 15, 
+                                                                    backgroundColor: 'rgb(150, 150, 150)',
                                                                 }}
-                                                            ><Text style={{fontSize: 10}}>{i+1}</Text></View>
+                                                            ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
                                                         );
                                                     }
                                                 }
@@ -507,10 +524,11 @@ class ExpandedCards1 extends React.Component {
                                                         influenceTicks.push(
                                                             <View key={i}
                                                                 style={{
-                                                                    width: '100%', 
-                                                                    backgroundColor: 'rgb(255, 255, 255)',
+                                                                    width: '100%',
+                                                                    borderRadius: 15, 
+                                                                    backgroundColor: 'rgb(150, 150, 150)',
                                                                 }}
-                                                            ><Text style={{fontSize: 10}}>{i+1}</Text></View>
+                                                            ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
                                                         );
                                                     }
                                                 }
@@ -709,7 +727,9 @@ const styles = StyleSheet.create({
     containerCon: {
         backgroundColor: '#000', 
         position:'absolute', 
-        left: 15
+        left: 15,
+        alignItems: 'center', 
+        justifyContent: 'center',
     },
     sideCon: {
         position: 'absolute', 
@@ -755,7 +775,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: 'rgba(150, 0, 0, 0.5)',
         marginRight: 10,
-        marginLeft: 10,
+        marginLeft: 5,
     },
     progressBarCon: { 
         flexDirection: 'column-reverse', 
