@@ -16,10 +16,10 @@ import Peasant from '../game/cards/starters/Peasant.js';
 import HumanitarianAid from '../game/cards/starters/HumanitarianAid.js';
 
 // Setup
-import assembleSupplyDeck from './assemble_supply_cards.js';
-import assembleWonderDeck from './assemble_wonder_cards.js';
+import assembleSupplyDeck from '../utils/assemble_supply_cards.js';
+import assembleWonderDeck from '../utils/assemble_wonder_cards.js';
 
-import { shuffle } from './utilities.js';
+import { shuffle } from '../utils/utilities.js';
 
 const mapStateToProps = state => {
     return { 
@@ -1398,18 +1398,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	// sideBubbles: {
-	// 	width: 50, 
-	// 	height: 50, 
-	// 	borderRadius: 25, 
-	// 	backgroundColor: '#555', 
-	// 	padding: 8,
-	// 	alignSelf: 'flex-start'
-	// },
-	// sideBubblesCon: {
-	// 	// width: 150,
-	// 	marginBottom: 10
-	// },
 	decks: {
 		backgroundColor: '#57f', 
 		justifyContent: 'center',
