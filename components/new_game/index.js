@@ -209,6 +209,8 @@ class NewGame1 extends React.Component {
 
 			expandedCapital: false,
 
+			previousState: null,
+
 			player: {
 				id: 0, 
 				name: 'Player', 
@@ -1180,6 +1182,10 @@ class NewGame1 extends React.Component {
 
 	}
 
+	undoLastAction = () => {
+		
+	}
+
 	render() {
 		let screenHeight = Dimensions.get('window').height;
 		let cardHeight = screenHeight - 50;
@@ -1343,7 +1349,7 @@ SLIDER
 						onPress={this._toggleSideBar.bind(this, true)}
 					/>
 					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity onPress={this.undoLastAction.bind(this)} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
 					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
 					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>Print Gamestate to Console</Text></TouchableOpacity>
 					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
