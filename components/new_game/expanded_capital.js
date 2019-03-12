@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Animated } from "react-native";
 import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
 
 
 const mapStateToProps = state => {
@@ -11,8 +10,42 @@ const mapStateToProps = state => {
 class ExpandedCapital1 extends React.Component {
 	constructor() {
 		super();
-		this.state = {};
-	}
+        this.state = {};
+
+        this.goldAnimation = new Animated.ValueXY({ x: 50, y: 0 });
+        this.scienceAnimation = new Animated.ValueXY({ x: 50, y: 0 });
+        this.influenceAnimation = new Animated.ValueXY({ x: 50, y: 0 });
+        this.textAnimation = new Animated.ValueXY({ x: 50, y: 0 });
+        this.errorTextAnimation = new Animated.ValueXY({ x: 50, y: 0 });
+
+    }
+    
+    expandResources = () => {
+        Animated.spring(this.goldAnimation, {
+            toValue: { x: 0, y: 55 },
+            friction: 6,
+        }).start();
+
+        Animated.spring(this.scienceAnimation, {
+            toValue: { x: 40, y: 55 },
+            friction: 6,
+        }).start();
+
+        Animated.spring(this.influenceAnimation, {
+            toValue: { x: 80, y: 55 },
+            friction: 6,
+        }).start();
+        
+        Animated.spring(this.textAnimation, {
+            toValue: { x: 0, y: 75 },
+            friction: 6,
+        }).start();
+        
+        // Animated.spring(this.errorTextAnimation, {
+        //     toValue: { x: 0, y: 75 },
+        //     friction: 6,
+        // }).start();
+    }
 
 	render() {
 		return (
@@ -59,13 +92,17 @@ class ExpandedCapital1 extends React.Component {
                     : undefined
                 }
 
-                {/* <Ionicons 
-					style={styles.close} 
-					name="md-close" 
-					size={32} 
-					color="white" 
-					onPress={this.props.closeCapital}
-				/> */}
+                <TouchableOpacity 
+					style={styles.buyGovt} 
+					onPress={this.expandResources.bind(this)}
+				>
+                    <Animated.View style={[styles.resourceOrb, this.goldAnimation.getLayout(), {backgroundColor: 'yellow'}]}></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.scienceAnimation.getLayout(), {backgroundColor: 'blue'}]}></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.influenceAnimation.getLayout(), {backgroundColor: 'purple'}]}></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.textAnimation.getLayout()]}><Text style={{color: 'white'}}>A government costs 10 of any one resource. Excess will be taken from your 'Any Mix'.</Text></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.errorTextAnimation.getLayout()]}><Text style={{color: 'white'}}>Something something</Text></Animated.View>
+                    <View style={styles.govtTextCon}><Text style={styles.govtText}>Form a government!</Text></View>
+                </TouchableOpacity>
 
 			</TouchableOpacity>
 		);
@@ -109,17 +146,16 @@ const styles = StyleSheet.create({
         textShadowOffset:{
             width: 1,
             height: 1
-        },
-        textAlign: 'center',
-        textShadowRadius: 1,
-        height: 20,
+        }, 
+        textAlign: 'center', 
+        textShadowRadius: 1, 
+        height: 20, 
         top: 50
     },
-    close: {
-        top: 10, 
-        right: 10,
-        position: 'absolute'
-    }
+    buyGovt: {top: 10, right: 10, position: 'absolute', backgroundColor: '#f83', borderRadius: 15},
+    govtTextCon: {width: '100%', height: '100%', backgroundColor: '#ff3', padding: 15, borderRadius: 15} ,
+    govtText: {width: '100%', height: '100%'},
+    resourceOrb: {left: 50, position: 'absolute', padding: 15, borderRadius: 15}
 });
   
 export default ExpandedCapital = connect(mapStateToProps)(ExpandedCapital1);

@@ -1183,7 +1183,29 @@ class NewGame1 extends React.Component {
 	}
 
 	undoLastAction = () => {
-		
+
+	}
+
+	buyGovernment = (resource) => {
+		let any = this.state.player.resources.any, 
+			gold = this.state.player.resources.gold, 
+			science = this.state.player.resources.science, 
+			influence = this.state.player.resources.influence;
+
+		let pass = (any + gold === 10 || any + science === 10 || any + influence === 10 || any === 10);
+
+		if(pass){
+			
+
+
+
+		} else{
+			return;
+		}
+
+		if(pass){
+			this.setState(prevState => {return prevState});
+		}
 	}
 
 	render() {
