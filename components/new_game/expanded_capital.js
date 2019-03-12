@@ -16,8 +16,10 @@ class ExpandedCapital1 extends React.Component {
         this.scienceAnimation = new Animated.ValueXY({ x: 50, y: 0 });
         this.influenceAnimation = new Animated.ValueXY({ x: 50, y: 0 });
         this.textAnimation = new Animated.ValueXY({ x: 50, y: 0 });
+        this.textSizeAnimation = new Animated.Value(-1);
         this.errorTextAnimation = new Animated.ValueXY({ x: 50, y: 0 });
-
+        this.errorTextSizeAnimation = new Animated.Value(-1);
+        this.govtWidth = 0;
     }
     
     expandResources = () => {
@@ -27,27 +29,32 @@ class ExpandedCapital1 extends React.Component {
         }).start();
 
         Animated.spring(this.scienceAnimation, {
-            toValue: { x: 40, y: 55 },
+            toValue: { x: (this.govtWidth/3) + 7, y: 55 },
             friction: 6,
         }).start();
 
         Animated.spring(this.influenceAnimation, {
-            toValue: { x: 80, y: 55 },
+            toValue: { x: (2 * (this.govtWidth/3)) + 15, y: 55 },
             friction: 6,
         }).start();
         
         Animated.spring(this.textAnimation, {
-            toValue: { x: 0, y: 75 },
+            toValue: { x: 0, y: 95 },
             friction: 6,
         }).start();
+
+        Animated.timing(this.textSizeAnimation, {
+            toValue: 15, 
+            duration: 100
+        }).start();
         
-        // Animated.spring(this.errorTextAnimation, {
+        // Animated.timing(this.errorTextSizeAnimation, {
         //     toValue: { x: 0, y: 75 },
         //     friction: 6,
         // }).start();
     }
 
-	render() {
+	render(){
 		return (
 			<TouchableOpacity style={styles.container} onPress={this.props.closeCapital}>
 
@@ -96,12 +103,12 @@ class ExpandedCapital1 extends React.Component {
 					style={styles.buyGovt} 
 					onPress={this.expandResources.bind(this)}
 				>
-                    <Animated.View style={[styles.resourceOrb, this.goldAnimation.getLayout(), {backgroundColor: 'yellow'}]}></Animated.View>
-                    <Animated.View style={[styles.resourceOrb, this.scienceAnimation.getLayout(), {backgroundColor: 'blue'}]}></Animated.View>
-                    <Animated.View style={[styles.resourceOrb, this.influenceAnimation.getLayout(), {backgroundColor: 'purple'}]}></Animated.View>
-                    <Animated.View style={[styles.resourceOrb, this.textAnimation.getLayout()]}><Text style={{color: 'white'}}>A government costs 10 of any one resource. Excess will be taken from your 'Any Mix'.</Text></Animated.View>
-                    <Animated.View style={[styles.resourceOrb, this.errorTextAnimation.getLayout()]}><Text style={{color: 'white'}}>Something something</Text></Animated.View>
-                    <View style={styles.govtTextCon}><Text style={styles.govtText}>Form a government!</Text></View>
+                    <Animated.View style={[styles.resourceOrb, this.goldAnimation.getLayout(), {backgroundColor: 'yellow'}]}><TouchableOpacity style={{width: 15, height: 15}}><Text style={{textAlign: 'center'}}>G</Text></TouchableOpacity></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.scienceAnimation.getLayout(), {backgroundColor: 'blue'}]}><TouchableOpacity style={{width: 15, height: 15}}><Text style={{textAlign: 'center'}}>S</Text></TouchableOpacity></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.influenceAnimation.getLayout(), {backgroundColor: 'purple'}]}><TouchableOpacity style={{width: 15, height: 15}}><Text style={{textAlign: 'center'}}>I</Text></TouchableOpacity></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.textAnimation.getLayout()]}><Animated.Text style={{color: 'white', fontSize: (this.textSizeAnimation)}}>A government costs 10 of any one resource. Excess will be taken from your 'Any Mix'.</Animated.Text></Animated.View>
+                    <Animated.View style={[styles.resourceOrb, this.errorTextAnimation.getLayout()]}><Animated.Text style={{color: 'white', fontSize: (this.errorTextSizeAnimation)}}>Something something</Animated.Text></Animated.View>
+                    <View style={styles.govtTextCon} onLayout={(e) => {this.govtWidth = e.nativeEvent.layout.width;}}><Text style={styles.govtText}>Form a government!</Text></View>
                 </TouchableOpacity>
 
 			</TouchableOpacity>
@@ -152,8 +159,8 @@ const styles = StyleSheet.create({
         height: 20, 
         top: 50
     },
-    buyGovt: {top: 10, right: 10, position: 'absolute', backgroundColor: '#f83', borderRadius: 15},
-    govtTextCon: {width: '100%', height: '100%', backgroundColor: '#ff3', padding: 15, borderRadius: 15} ,
+    buyGovt: {top: 10, right: 10, position: 'absolute', borderRadius: 15},
+    govtTextCon: {width: '100%', height: '100%', backgroundColor: '#fff', padding: 15, borderRadius: 15} ,
     govtText: {width: '100%', height: '100%'},
     resourceOrb: {left: 50, position: 'absolute', padding: 15, borderRadius: 15}
 });
