@@ -224,7 +224,7 @@ class NewGame1 extends React.Component {
 				discard: [], 
 				played_cards: [],
 
-				centralized_government: 0,
+				centralized_government: false,
 
 				natural_wonders: [],
 				ancient_wonders: [],
@@ -1097,10 +1097,35 @@ class NewGame1 extends React.Component {
 			let x = this;
 	
 			this.setState(prevState => {
+				let wondersRevealed, wonderSupply;
+
+				if(prevState.ageOfEnlightenment){
+					wondersRevealed = JSON.parse(JSON.stringify(prevState.wondersRevealed));
+					wonderSupply = JSON.parse(JSON.stringify(prevState.wonderSupply));
+
+					// cycle the wonders
+					let wonderToPopIdx;
+					for(let i = 0; i < prevState.wondersRevealed.length; i++){
+						if(Object.keys(prevState.wondersRevealed[i].claimedBy).length <= 0){
+							wonderToPopIdx = i;
+							break;
+						}
+					}
+	
+					wondersRevealed.splice(i, 1);
+					wondersRevealed.push(wonderSupply.pop());
+
+				} else{
+					wondersRevealed = prevState.wondersRevealed;
+					wonderSupply = prevState.wonderSupply;
+				}
+
 				return {
 					...prevState, 
 					player: {
 						...prevState.player, 
+						wondersRevealed, 
+						wonderSupply,
 						hand, 
 						deck,
 						played_cards, 
@@ -1188,15 +1213,13 @@ class NewGame1 extends React.Component {
 
 	buyGovernment = (resource) => {
 		let any = this.state.player.resources.any, 
-			gold = this.state.player.resources.gold, 
-			science = this.state.player.resources.science, 
-			influence = this.state.player.resources.influence;
+			resourceAmount = this.state.player.resources[resource];
 
-		let pass = (any + gold === 10 || any + science === 10 || any + influence === 10 || any === 10);
+		let pass = (any + resourceAmount >= 10);
 
 		if(pass){
 			
-
+			console.log('buying a government');
 
 
 		} else{
@@ -1204,7 +1227,16 @@ class NewGame1 extends React.Component {
 		}
 
 		if(pass){
-			this.setState(prevState => {return prevState});
+			this.setState(prevState => {
+				return {
+					...prevState, 
+					ageOfEnlightenment: true,
+					player: {
+						...prevState.player, 
+						centralized_government: true,
+					}
+				}
+			});
 		}
 	}
 
