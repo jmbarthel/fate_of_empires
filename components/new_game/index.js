@@ -181,6 +181,8 @@ class NewGame1 extends React.Component {
 			playerHand.push(playerDeck.pop());
 		}
 
+		playerHand = shuffle(playerHand);
+
 		let idx = 2;
 
 		Object.keys(enemyArr).forEach(enemyId => {
