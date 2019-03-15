@@ -299,7 +299,9 @@ class NewGame1 extends React.Component {
 			num_of_enemies: num_of_enemies,
 			num_of_players: num_of_players,
 
+			governmentPurchased: false,
 			ageOfEnlightenment: false, 
+			resolvingAgeOfEnlightenment: false,
 
 			wondersRevealed,
 			wonderSupply,
@@ -1099,9 +1101,9 @@ class NewGame1 extends React.Component {
 			let x = this;
 	
 			this.setState(prevState => {
-				let wondersRevealed, wonderSupply;
+				let wondersRevealed, wonderSupply, ageOfEnlightenment, resolvingAgeOfEnlightenment;
 
-				if(prevState.ageOfEnlightenment){
+				if(prevState.governmentPurchased){
 					wondersRevealed = JSON.parse(JSON.stringify(prevState.wondersRevealed));
 					wonderSupply = JSON.parse(JSON.stringify(prevState.wonderSupply));
 
@@ -1113,13 +1115,21 @@ class NewGame1 extends React.Component {
 							break;
 						}
 					}
+
+					let newWonder = wonderSupply.pop();
+					if(newWonder.card.props.props.name === 'ageOfEnlightenment'){
+						ageOfEnlightenment = true;
+						resolvingAgeOfEnlightenment = true;
+					}
 	
-					wondersRevealed.splice(i, 1);
+					wondersRevealed.splice(wonderToPopIdx, 1);
 					wondersRevealed.push(wonderSupply.pop());
 
 				} else{
 					wondersRevealed = prevState.wondersRevealed;
 					wonderSupply = prevState.wonderSupply;
+					ageOfEnlightenment = false;
+					resolvingAgeOfEnlightenment = false;
 				}
 
 				return {
@@ -1128,6 +1138,7 @@ class NewGame1 extends React.Component {
 						...prevState.player, 
 						wondersRevealed, 
 						wonderSupply,
+						ageOfEnlightenment,
 						hand, 
 						deck,
 						played_cards, 
@@ -1222,7 +1233,6 @@ class NewGame1 extends React.Component {
 		if(pass){
 			
 			console.log('buying a government');
-
 
 		} else{
 			return;
