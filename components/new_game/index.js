@@ -1057,6 +1057,21 @@ class NewGame1 extends React.Component {
 		});
 	}
 
+	applyCostReduction(card){
+		// This takes a card and returns the cost of the card after all reductions are applied
+		return card.props.props.cost;
+	}
+
+	checkStartOfTurn(){
+		// This is called at the start of each turn, and places cost reductions/other static card effects into state
+		this.setState(prevState => {
+			return {
+				...prevState,
+				startOfTurnQueue: false
+			}
+		})
+	}
+
 	endTurn = () => {
 		if(this.props.turn === 1){
 
@@ -1143,6 +1158,7 @@ class NewGame1 extends React.Component {
 						deck,
 						played_cards, 
 						discard, 
+						startOfTurnQueue: true,
 						resources: {
 							gold: 0, 
 							science: 0, 
@@ -1252,82 +1268,74 @@ class NewGame1 extends React.Component {
 		}
 	}
 
-	render() {
+	render(){
 		let screenHeight = Dimensions.get('window').height;
 		let cardHeight = screenHeight - 50;
 		let screenWidth = Dimensions.get('window').width;
 		let cardWidth = cardHeight / 1.56;
 
-		return (
-			<View style={styles.container}>
-
-				<View style={[styles.areasContainer, {height: '70%'}]}>
-					<SupplyArea 
-						supplyDeck={this.state.supplyDeck}
-						supplyRevealed={this.state.supplyRevealed}
-						expandSupplyCard={this.expandSupplyCard.bind(this)}
-						unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
-					/>
-					<View style={{width: '50%', flexDirection: 'column'}}>
-						<View style={{height: '30%', width: '100%'}}>
-							<WonderArea 
-								players_to_wonders={this.state.players_to_wonders}
-								wondersRevealed={this.state.wondersRevealed}
-								wonderSupply={this.state.wonderSupply}
-								num_of_players={this.state.num_of_players}
-								expandWonderCard={this.expandWonderCard.bind(this)}
-							/>
-						</View>
-{/* 
-DECKS 
-*/}
-						<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
-							<View style={styles.decksCon}>
-								<View style={[styles.decks, {marginBottom: 5}]}><Text>Natural</Text><Text>{this.state.naturalWonders.length}</Text></View>
-								<View style={[styles.decks, {marginBottom: 5}]}><Text>A/M</Text><Text>{this.state.wonderSupply.length}</Text></View>
-								<View style={styles.decks}><Text>Supply</Text><Text>{this.state.supplyDeck.length}</Text></View>
-							</View> 
+		if(this.state.startOfTurnQueue){
+			this.checkStartOfTurn();
+			return <View></View>
+		} else{
+			return (
+				<View style={styles.container}>
+	
+					<View style={[styles.areasContainer, {height: '70%'}]}>
+						<SupplyArea 
+							supplyDeck={this.state.supplyDeck}
+							supplyRevealed={this.state.supplyRevealed}
+							expandSupplyCard={this.expandSupplyCard.bind(this)}
+							unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
+						/>
+						<View style={{width: '50%', flexDirection: 'column'}}>
+							<View style={{height: '30%', width: '100%'}}>
+								<WonderArea 
+									players_to_wonders={this.state.players_to_wonders}
+									wondersRevealed={this.state.wondersRevealed}
+									wonderSupply={this.state.wonderSupply}
+									num_of_players={this.state.num_of_players}
+									expandWonderCard={this.expandWonderCard.bind(this)}
+								/>
+							</View>
+	{/* 
+	DECKS 
+	*/}
+							<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
+								<View style={styles.decksCon}>
+									<View style={[styles.decks, {marginBottom: 5}]}><Text>Natural</Text><Text>{this.state.naturalWonders.length}</Text></View>
+									<View style={[styles.decks, {marginBottom: 5}]}><Text>A/M</Text><Text>{this.state.wonderSupply.length}</Text></View>
+									<View style={styles.decks}><Text>Supply</Text><Text>{this.state.supplyDeck.length}</Text></View>
+								</View> 
+							</View>
 						</View>
 					</View>
-				</View>
-
-				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
-					<PlayerArea 
-						player={this.state.player} 
-						toggleDim={this.toggleDim.bind(this)}
-						expandHandCard={this.expandHandCard.bind(this)}
-						expandCapital={this.expandCapital.bind(this)}
-					/>
-				</View>
-
-				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
-
-{/* 
-OPPONENTS
-*/}
-
-				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
-					{	this.state.dim ? 
-						Object.keys(this.state.enemies).map(enemyId => {
-						let enemy = this.state.enemies[enemyId],
-							func = !enemy.expanded ? this.expandEnemy.bind(this, enemy.id) : ()=>null,
-							style = enemy.expanded ? {width: '100%'} : {}
-
-						if(enemy.expanded){
-							return (
-								<View style={style} key={enemy.id}>
-									<Opponent 
-										expanded={enemy.expanded} 
-										num_of_enemies={this.state.num_of_enemies}
-										dim={this.state.dim}
-										enemy={enemy}
-										goToNextEnemy={this.goToNextEnemy.bind(this)}
-									/>
-								</View>);
-						} else{
-							return (
-								<View style={style} key={enemy.id}>
-									<TouchableOpacity onPress={func}>
+	
+					<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
+						<PlayerArea 
+							player={this.state.player} 
+							toggleDim={this.toggleDim.bind(this)}
+							expandHandCard={this.expandHandCard.bind(this)}
+							expandCapital={this.expandCapital.bind(this)}
+						/>
+					</View>
+	
+					{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
+	
+	{/* 
+	OPPONENTS
+	*/}
+	
+					<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
+						{	this.state.dim ? 
+							Object.keys(this.state.enemies).map(enemyId => {
+							let enemy = this.state.enemies[enemyId],
+								func = !enemy.expanded ? this.expandEnemy.bind(this, enemy.id) : ()=>null,
+								style = enemy.expanded ? {width: '100%'} : {}
+	
+							if(enemy.expanded){
+								return (
+									<View style={style} key={enemy.id}>
 										<Opponent 
 											expanded={enemy.expanded} 
 											num_of_enemies={this.state.num_of_enemies}
@@ -1335,94 +1343,107 @@ OPPONENTS
 											enemy={enemy}
 											goToNextEnemy={this.goToNextEnemy.bind(this)}
 										/>
-									</TouchableOpacity>
-								</View>);
-						}
-					})
-					: <TouchableOpacity 
-						style={{
-							backgroundColor: '#0aa',
-							margin: 10,
-							alignItems: 'center'
-						}} 
-						onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
-				</View>
-
-				<Ionicons 
-					style={styles.goBack} 
-					name="md-settings" 
-					size={32} 
-					color="white" 
-					onPress={this._toggleSideBar.bind(this)}
-				/>
-
-{/*
-EXPANDED CARDS
-*/}
-				{/* {
-					this.state.expandHandCard || this.state.expandSupplyCard || this.state.expandWonderCard
-					?  */}
-						<ExpandedCards
-							screenHeight={screenHeight}
-							cardHeight={cardHeight}
-							screenWidth={screenWidth}
-							cardWidth={cardWidth}
-		
-							player={this.state.player}
-							expandHandCard={this.state.expandHandCard}
-							expandedHandCard={this.state.expandedHandCard}
-							expandSupplyCard={this.state.expandSupplyCard}
-							expandedSupplyCard={this.state.expandedSupplyCard}
-							expandWonderCard={this.state.expandWonderCard}
-							expandedWonderCard={this.state.expandedWonderCard}
-							wondersRevealed={this.state.wondersRevealed}
-		
-							putOnCapital={this.putOnCapital.bind(this)}
-							placeFlag={this.placeFlag.bind(this)}
-							chooseOption={this.chooseOption.bind(this)}
-							buySupplyCard={this.buySupplyCard.bind(this)}
-							unExpandHandCard={this.unExpandHandCard.bind(this)}
-							unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
-							unExpandWonderCard={this.unExpandWonderCard.bind(this)}
-						/>
-					{/* : undefined
-				} */}
-
-{/*
-EXPANDED CAPITAL
-*/}
-				{
-					this.state.expandedCapital ? 
-						(
-							<ExpandedCapital 
-								capital={this.state.player.capital} 
-								chooseOption={this.chooseOption.bind(this)}
-								expandHandCard={this.expandHandCard.bind(this)}
-								closeCapital={this.closeCapital.bind(this)}
-							/>
-						)
-					: undefined
-				}
-{/*
-SLIDER
-*/}
-				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
+									</View>);
+							} else{
+								return (
+									<View style={style} key={enemy.id}>
+										<TouchableOpacity onPress={func}>
+											<Opponent 
+												expanded={enemy.expanded} 
+												num_of_enemies={this.state.num_of_enemies}
+												dim={this.state.dim}
+												enemy={enemy}
+												goToNextEnemy={this.goToNextEnemy.bind(this)}
+											/>
+										</TouchableOpacity>
+									</View>);
+							}
+						})
+						: <TouchableOpacity 
+							style={{
+								backgroundColor: '#0aa',
+								margin: 10,
+								alignItems: 'center'
+							}} 
+							onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
+					</View>
+	
 					<Ionicons 
-						style={{position: 'absolute', top: 10, left: 20}} 
-						name="md-close" 
+						style={styles.goBack} 
+						name="md-settings" 
 						size={32} 
 						color="white" 
-						onPress={this._toggleSideBar.bind(this, true)}
+						onPress={this._toggleSideBar.bind(this)}
 					/>
-					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
-					<TouchableOpacity onPress={this.undoLastAction.bind(this)} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
-					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>Print Gamestate to Console</Text></TouchableOpacity>
-					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
-				</Animated.View>
+	
+	{/*
+	EXPANDED CARDS
+	*/}
+					{/* {
+						this.state.expandHandCard || this.state.expandSupplyCard || this.state.expandWonderCard
+						?  */}
+							<ExpandedCards
+								screenHeight={screenHeight}
+								cardHeight={cardHeight}
+								screenWidth={screenWidth}
+								cardWidth={cardWidth}
 			
-			</View>
-		);
+								player={this.state.player}
+								expandHandCard={this.state.expandHandCard}
+								expandedHandCard={this.state.expandedHandCard}
+								expandSupplyCard={this.state.expandSupplyCard}
+								expandedSupplyCard={this.state.expandedSupplyCard}
+								expandWonderCard={this.state.expandWonderCard}
+								expandedWonderCard={this.state.expandedWonderCard}
+								wondersRevealed={this.state.wondersRevealed}
+			
+								putOnCapital={this.putOnCapital.bind(this)}
+								placeFlag={this.placeFlag.bind(this)}
+								chooseOption={this.chooseOption.bind(this)}
+								buySupplyCard={this.buySupplyCard.bind(this)}
+								unExpandHandCard={this.unExpandHandCard.bind(this)}
+								unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
+								unExpandWonderCard={this.unExpandWonderCard.bind(this)}
+							/>
+						{/* : undefined
+					} */}
+	
+	{/*
+	EXPANDED CAPITAL
+	*/}
+					{
+						this.state.expandedCapital ? 
+							(
+								<ExpandedCapital 
+									capital={this.state.player.capital} 
+									chooseOption={this.chooseOption.bind(this)}
+									expandHandCard={this.expandHandCard.bind(this)}
+									closeCapital={this.closeCapital.bind(this)}
+								/>
+							)
+						: undefined
+					}
+	{/*
+	SLIDER
+	*/}
+					<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
+						<Ionicons 
+							style={{position: 'absolute', top: 10, left: 20}} 
+							name="md-close" 
+							size={32} 
+							color="white" 
+							onPress={this._toggleSideBar.bind(this, true)}
+						/>
+						<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
+						<TouchableOpacity onPress={this.undoLastAction.bind(this)} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
+						<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
+						<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>Print Gamestate to Console</Text></TouchableOpacity>
+						<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
+					</Animated.View>
+				
+				</View>
+			);
+		}
 	}
 }
 
