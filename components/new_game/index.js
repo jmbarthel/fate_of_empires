@@ -602,6 +602,7 @@ class NewGame1 extends React.Component {
 		console.log(chosenOption);
 
 		// Check if it has advance time, if so, interrupt the setstate with a transition state to choose the card. Then resume this function here.
+		// Replace 'choices' in each card with functions, called below.
 
 		this.setState((prevState) => {
 			let played_cards;
