@@ -8,3 +8,14 @@ export const shuffle = a => {
     }
     return a;
 }
+
+export const countTypeInHand = (type, hand) => {
+    // @type = 'technology', 'city', 'person', 'army', 'worker'
+    console.log('you have', hand.filter(card => {
+        return card().props.props.type === type;
+    }).length, type, 'in hand');
+
+    return hand.filter(card => {
+        return card().props.props.type === type;
+    }).length;
+}

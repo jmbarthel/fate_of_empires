@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities.js';
 
 export default Antioch = (props) => {
     props = {
@@ -13,18 +14,8 @@ export default Antioch = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 3,
-                }
-            },
-            2: {
-                produceResource: {
-                    eachWorkerOnCapital: {
-                        any: 1
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 3})],
+            2: [gainResourcesPer.bind(this, 1, 'any', 'eachWorkerOnCapital')],
         }
     }
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities.js';
 
 export default Auckland = (props) => {
     props = {
@@ -13,18 +14,8 @@ export default Auckland = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 2,
-                }
-            },
-            2: {
-                produceResource: {
-                    eachWorkerOnCapital: {
-                        any: 1
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 2})],
+            2: [gainResourcesPer.bind(this, 1, 'any', 'eachWorkerOnCapital')],
         }
     }
     

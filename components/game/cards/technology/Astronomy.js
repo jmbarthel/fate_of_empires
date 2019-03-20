@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { drawCard } from '../cardEffectFuncs/utilities';
 
 export default Astronomy = (props) => {
     props = {
@@ -15,9 +16,7 @@ export default Astronomy = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                draw: 1
-            },
+            1: [drawCard, ],
         }
     }
     

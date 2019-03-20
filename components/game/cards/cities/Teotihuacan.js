@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities.js';
 
 export default Teotihuacan = (props) => {
     props = {
@@ -13,18 +14,20 @@ export default Teotihuacan = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 5,
-                }
-            },
-            2: {
-                produceResource: {
-                    eachWorkerOnCapital: {
-                        any: 1
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 5})],
+            2: [gainResourcesPer.bind(this, 1, 'any', 'eachWorkerOnCapital')],
+            // 1: {
+            //     produceResource: {
+            //         influence: 5,
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         eachWorkerOnCapital: {
+            //             any: 1
+            //         }
+            //     }
+            // }
         }
     }
     

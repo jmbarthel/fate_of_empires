@@ -577,17 +577,6 @@ class NewGame1 extends React.Component {
 		this.setState({expandedCapital: false});
 	}
 
-	countInHand(type){
-		// @type = 'technology', 'city', 'person', 'army', 'worker'
-		console.log('you have', this.state.player.hand.filter(card => {
-			return card().props.props.type === type;
-		}).length, type, 'in hand');
-
-		return this.state.player.hand.filter(card => {
-			return card().props.props.type === type;
-		}).length;
-	}
-
 	chooseOption(choice, card){
 		let { choiceCount, choices } = card.props.props;
 
