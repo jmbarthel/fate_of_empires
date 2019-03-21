@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities.js';
 
 export default Banker = (props) => {
 	props = {
@@ -15,14 +16,15 @@ export default Banker = (props) => {
 		},
 		choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 3,
-                    science: 0, 
-					influence: 0,
-					any: 0,
-                }
-            }
+            1: [gainResources.bind(this, {gold: 3})],
+            // 1: {
+            //     produceResource: {
+            //         gold: 3,
+            //         science: 0, 
+			// 		influence: 0,
+			// 		any: 0,
+            //     }
+            // }
         }
 	}
     

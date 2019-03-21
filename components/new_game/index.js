@@ -149,7 +149,7 @@ class NewGame1 extends React.Component {
 		}
 
 		// Adding humanitarian aid
-		playerDeck.push(HumanitarianAid);
+		// playerDeck.push(HumanitarianAid);
 
 		playerDeck = shuffle(playerDeck);
 
@@ -201,6 +201,7 @@ class NewGame1 extends React.Component {
 		}
 
 		this.state = {
+			playerNumber: 0,
 			dim: false,
 			expandSupplyCard: false, 
 			expandedSupplyCard: false,
@@ -212,87 +213,88 @@ class NewGame1 extends React.Component {
 			expandedCapital: false,
 
 			previousState: null,
-
-			player: {
-				id: 0, 
-				name: 'Player', 
-				region: 'blue', 
-				trait: null,
-				flag: 'japan',
-
-				claimedWonder: false,
-				hand: playerHand, 
-				deck: playerDeck,
-				discard: [], 
-				played_cards: [],
-
-				centralized_government: false,
-
-				natural_wonders: [],
-				ancient_wonders: [],
-				modern_wonders: [], 
-
-				resources: {
-					gold: 10, 
-					science: 10, 
-					influence: 10,
-					any: 0,
-					toward: {
-						person: {
-							gold: 0, 
-							science: 0, 
-							influence: 0,
-							any: 0,
-						}, 
-						technology: {
-							gold: 0, 
-							science: 0, 
-							influence: 0,
-							any: 0,
-						}, 
-						city: {
-							gold: 0, 
-							science: 0, 
-							influence: 0,
-							any: 0,
-						}, 
-						A_M_wonders: {
-							gold: 0, 
-							science: 0, 
-							influence: 0,
-							any: 0,
-						}, 
-						N_wonders: {
-							gold: 0, 
-							science: 0, 
-							influence: 0,
-							any: 0,
-						}, 
-						allWonders: {
-							gold: 0, 
-							science: 0, 
-							influence: 0,
-							any: 0,
-						},
-						yourRegion: {
-							gold: 0, 
-							science: 0, 
-							influence: 0, 
-							any: 0
-						},
-						otherRegion: {
-							gold: 0, 
-							science: 0, 
-							influence: 0, 
-							any: 0
+			players: {
+				0: {
+					id: 0, 
+					name: 'Player', 
+					region: 'blue', 
+					trait: null,
+					flag: 'japan',
+	
+					claimedWonder: false,
+					hand: playerHand, 
+					deck: playerDeck,
+					discard: [], 
+					played_cards: [],
+	
+					centralized_government: false,
+	
+					natural_wonders: [],
+					ancient_wonders: [],
+					modern_wonders: [], 
+	
+					resources: {
+						gold: 10, 
+						science: 10, 
+						influence: 10,
+						any: 0,
+						toward: {
+							person: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+								any: 0,
+							}, 
+							technology: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+								any: 0,
+							}, 
+							city: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+								any: 0,
+							}, 
+							A_M_wonders: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+								any: 0,
+							}, 
+							N_wonders: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+								any: 0,
+							}, 
+							allWonders: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+								any: 0,
+							},
+							yourRegion: {
+								gold: 0, 
+								science: 0, 
+								influence: 0, 
+								any: 0
+							},
+							otherRegion: {
+								gold: 0, 
+								science: 0, 
+								influence: 0, 
+								any: 0
+							}
 						}
-					}
-				},
-				capital: {
-					workers: [], 
-					armies: [],
-					other: [],
-				},
+					},
+					capital: {
+						workers: [], 
+						armies: [],
+						other: [],
+					},
+				}
 			},
 
 			enemies: enemyArr, 
@@ -577,7 +579,7 @@ class NewGame1 extends React.Component {
 		this.setState({expandedCapital: false});
 	}
 
-	chooseOption(choice, card){
+	chooseOption(choice, card, player){
 		let { choiceCount, choices } = card.props.props;
 
 		console.log('you chose: ', choice, 'choicecount: ', choiceCount);
@@ -594,160 +596,60 @@ class NewGame1 extends React.Component {
 		// Replace 'choices' in each card with functions, called below.
 
 		this.setState((prevState) => {
+			let num = chosenOption.length;
+
+			for(let i = 0; i < num; i++){
+				let func = chosenOption[i];
+
+				prevState = func(player, prevState);
+			}
+			
+			// Remove the card from your hand
 			let played_cards;
+
 			if(!card.props.props.capital){
 				// Playing from your hand
-				played_cards = prevState.player.played_cards.concat(prevState.player.hand.splice(card.props.props.num, 1));
+				played_cards = prevState.players[player].played_cards.concat(prevState.players[player].hand.splice(card.props.props.num, 1));
 			} else{
 				// Playing from the capital
 				if(card.props.props.type === 'worker'){
-					played_cards = prevState.player.played_cards.concat(prevState.player.capital.workers.splice(card.props.props.num, 1));
+					played_cards = prevState.players[player].played_cards.concat(prevState.players[player].capital.workers.splice(card.props.props.num, 1));
 				} else if(card.props.props.type === 'army'){
-					played_cards = prevState.player.played_cards.concat(prevState.player.capital.armies.splice(card.props.props.num, 1));
+					played_cards = prevState.players[player].played_cards.concat(prevState.players[player].capital.armies.splice(card.props.props.num, 1));
 				} else{
-					played_cards = prevState.player.played_cards.concat(prevState.player.capital.other.splice(card.props.props.num, 1));
+					played_cards = prevState.players[player].played_cards.concat(prevState.players[player].capital.other.splice(card.props.props.num, 1));
 				}
-			}
-
-			let resources = {
-				any: prevState.player.resources.any,
-				gold: prevState.player.resources.gold,
-				science: prevState.player.resources.science,
-				influence: prevState.player.resources.influence,
-				toward: prevState.player.resources.toward,
-			};
-
-			for(let type in chosenOption){
-
-				if(type === 'draw'){
-					for(let i = 0; i < chosenOption[type]; i++){
-						prevState.player.hand.push(prevState.player.deck.pop());
-					}
-				}
-
-				if(type === 'produceResource'){
-
-					for(let resource in chosenOption[type]){
-
-						if((['any', 'gold', 'influence', 'science']).indexOf(resource) > -1){
-							console.log('adding: ', resource);
-							resources[resource] = resources[resource] + chosenOption[type][resource];
-						}
-
-						if(resource === 'toward'){
-							console.log('produce resource toward something');
-							//'[A_M_wonders, N_wonders, allWonders, city, technology, person]'
-							Object.keys(chosenOption[type].toward).forEach(typeToward => {
-								Object.values(chosenOption[type].toward[typeToward]).forEach(typeResourceToward => {
-									resources.toward[typeToward][typeResourceToward] = 
-										resources.toward[typeToward][typeResourceToward] + chosenOption[type].toward[typeToward][typeResourceToward];
-								});
-							});
-						}
-
-						if(resource === 'eachWorkerOnCapital'){
-							console.log('produce resource per worker on capital')
-							resources['any'] = resources['any'] + (prevState.player.capital.workers.length);
-						}
-
-						//eachPersonInHand
-						if(resource === 'eachPersonInHand'){
-							console.log('evaluating each person in hand');
-
-							let count = this.countInHand('person');
-							
-							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
-								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
-							});
-						}
-
-						//eachTechInHand
-						if(resource === 'eachTechInHand'){
-							console.log('evaluating each tech in hand');
-							let count = this.countInHand('technology');
-							
-							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
-								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
-							});
-						}
-
-						//eachWorkerInHand
-						if(resource === 'eachWorkerInHand'){
-							console.log('evaluating each worker in hand');
-
-							let count = this.countInHand('worker');
-							
-							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
-								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
-							});
-						}
-
-						//eachCityInHand
-						if(resource === 'eachCityInHand'){
-							console.log('evaluating each city in hand');
-
-							let count = this.countInHand('city');
-
-							Object.keys(chosenOption[type][resource]).forEach(typeOfResource => {
-								resources[typeOfResource] += (count) * chosenOption[type][resource][typeOfResource];
-							});
-						}
-					}
-				}
-
-			// 	if(type === 'produceResourceCondition'){
-			// 		console.log('produceresourcecondition');
-			// 		// inHand: {
-            //             // person: {
-            //                 // gold: 1
-            //             // }
-            //         // }
-
-			// 		// produceResourceCondition: {
-			// 		// 	inHand: {
-			// 		// 		city: {
-			// 		// 			gold: 4
-			// 		// 		}
-			// 		// 	}
-			// 		// }
-
-			// 		// produceResourceCondition: {
-			// 		// 	onCapital: {
-			// 		// 		scientist: {
-			// 		// 			science: 2
-			// 		// 		}
-			// 		// 	}
-			// 		// }
-			// 	}
 			}
 
 			return {
 				...prevState, 
 				expandHandCard: false, 
-				expandedHandCard: false,
-				player: {
-					...prevState.player, 
-					played_cards,
-					resources
+				expandedHandCard: false, 
+				players: {
+					...prevState.players, 
+					[player]: {
+						...prevState.players[player], 
+						played_cards
+					}
 				}
 			}
 		})
 	}
 
-	buySupplyCard(card){
+	buySupplyCard(card, player){
 		let { cost, type, region } = card.props.props;
 
 		let yourResources = { 
-			gold: this.state.player.resources.gold, 
-			influence: this.state.player.resources.influence, 
-			science: this.state.player.resources.science, 
-			any: this.state.player.resources.any, 
-			toward: this.state.player.resources.toward,
+			gold: this.state.players[player].resources.gold, 
+			influence: this.state.players[player].resources.influence, 
+			science: this.state.players[player].resources.science, 
+			any: this.state.players[player].resources.any, 
+			toward: this.state.players[player].resources.toward,
 		};
 
 		let regionalTowards; 
 
-		if(region === this.state.player.region){
+		if(region === this.state.players[player].region){
 			regionalTowards = 'yourRegion';
 		} else{
 			regionalTowards = 'otherRegion';
@@ -755,7 +657,8 @@ class NewGame1 extends React.Component {
 
 		let error = false;
 
-		let options = ['gold', 'science', 'influence']
+		let options = ['gold', 'science', 'influence'];
+
 		for(let index = 0; index < options.length; index++){
 			let resourceType = options[index];
 
@@ -878,16 +781,19 @@ class NewGame1 extends React.Component {
 
 				returnState = {
 					...prevState, 
-					player: {
-						discard: prevState.player.discard.concat(cardFunc),
-						...prevState.player, 
-						resources: {
-							gold: yourResources.gold,
-							influence: yourResources.influence,
-							science: yourResources.science,
-							any: yourResources.any,
-							toward: yourResources.toward
-						}
+					players: {
+						...prevState.players, 
+						[player]: {
+							...prevState.players[player], 
+							discard: prevState.players[player].discard.concat(cardFunc),
+							resources: {
+								gold: yourResources.gold,
+								influence: yourResources.influence,
+								science: yourResources.science,
+								any: yourResources.any,
+								toward: yourResources.toward
+							}
+						}						
 					},
 					wondersRevealed: prevState.wondersRevealed
 				}
@@ -902,16 +808,19 @@ class NewGame1 extends React.Component {
 
 				returnState = {
 					...prevState, 
-					player: {
-						...prevState.player, 
-						discard: prevState.player.discard.concat(cardFunc),
-						resources: {
-							gold: yourResources.gold,
-							influence: yourResources.influence,
-							science: yourResources.science,
-							any: yourResources.any,
-							toward: yourResources.toward
-						}
+					players: {
+						...prevState.players,
+						[player]: {
+							...prevState.players[player],
+							discard: prevState.players[player].discard.concat(cardFunc),
+							resources: {
+								gold: yourResources.gold,
+								influence: yourResources.influence,
+								science: yourResources.science,
+								any: yourResources.any,
+								toward: yourResources.toward
+							}
+						} 
 					},
 					supplyRevealed: prevState.supplyRevealed
 				}
@@ -931,15 +840,18 @@ class NewGame1 extends React.Component {
 
 				returnState = {
 					...prevState, 
-					player: {
-						...prevState.player,
-						discard: prevState.player.discard.concat(cardFunc),
-						resources: {
-							gold: yourResources.gold,
-							influence: yourResources.influence,
-							science: yourResources.science,
-							any: yourResources.any,
-							toward: yourResources.toward
+					players: {
+						...prevState.players, 
+						[player]:{
+							...prevState.players[player],
+							discard: prevState.players[player].discard.concat(cardFunc),
+							resources: {
+								gold: yourResources.gold,
+								influence: yourResources.influence,
+								science: yourResources.science,
+								any: yourResources.any,
+								toward: yourResources.toward
+							}
 						}
 					},
 				}
@@ -973,7 +885,7 @@ class NewGame1 extends React.Component {
 		});
 	}
 
-	putOnCapital(card){
+	putOnCapital(card, player){
 
 		console.log('putting on capital', card.props.props);
 
@@ -981,32 +893,34 @@ class NewGame1 extends React.Component {
 			(
 				card.props.props.type === 'worker' 
 				&& 
-				this.state.player.capital.workers.length >= this.state.player.natural_wonders.length + 1
+				this.state.players[player].capital.workers.length >= this.state.players[player].natural_wonders.length + 1
 				&& 
-				this.state.player.capital.workers.length <= 4
+				this.state.players[player].capital.workers.length <= 4
 			) 
 			|| 
 			(
 				card.props.props.type === 'army' 
 				&& 
-				this.state.player.capital.armies.length >= this.state.player.natural_wonders.length + 1 
+				this.state.players[player].capital.armies.length >= this.state.players[player].natural_wonders.length + 1 
 				&&
-				this.state.player.capital.armies.length <= 4
+				this.state.players[player].capital.armies.length <= 4
 			)
 		){
 			alert('You have the maximum number of '+card.props.props.type+' cards on your capital.');
 		} else{
 			this.setState(prevState => {
+
 				let capital;
+
 				if(card.props.props.type === 'worker'){
 					capital = {
-						...prevState.player.capital, 
-						workers: prevState.player.capital.workers.concat(prevState.player.hand.splice(card.props.props.num, 1))
+						...prevState.players[player].capital, 
+						workers: prevState.players[player].capital.workers.concat(prevState.players[player].hand.splice(card.props.props.num, 1))
 					}
 				} else if(card.props.props.type === 'army'){
 					capital = {
-						...prevState.player.capital, 
-						armies: prevState.player.capital.armies.concat(prevState.player.hand.splice(card.props.props.num, 1))
+						...prevState.players[player].capital, 
+						armies: prevState.players[player].capital.armies.concat(prevState.players[player].hand.splice(card.props.props.num, 1))
 					}
 				}
 	
@@ -1014,25 +928,27 @@ class NewGame1 extends React.Component {
 					...prevState, 
 					expandHandCard: false,
 					expandedHandCard: false, 
-					player: {
-						...prevState.player,
-						hand: prevState.player.hand, 
-						capital: capital
-	
+					players: {
+						...prevState.players, 
+						[player]: {
+							...prevState.players[player],
+							hand: prevState.players[player].hand, 
+							capital: capital
+						}
 					}
 				}
 			});
 		}
 	}
 
-	placeFlag(card){
+	placeFlag(card, player){
 		// console.log('placing flag on ', card);
 		this.setState(prevState => {
 			let wondersRevealed = prevState.wondersRevealed;
 
-			wondersRevealed[card.props.props.num].claimedBy[prevState.player.flag] = true;
+			wondersRevealed[card.props.props.num].claimedBy[prevState.players[player].flag] = true;
 
-			wondersRevealed[card.props.props.num].progress[prevState.player.flag] = {
+			wondersRevealed[card.props.props.num].progress[prevState.players[player].flag] = {
 				gold: 0, 
 				science: 0,
 				influence: 0, 
@@ -1040,9 +956,12 @@ class NewGame1 extends React.Component {
 
 			return {
 				...prevState, 
-				player: {
-					...prevState.player, 
-					claimedWonder: card.props.props.name,
+				players: {
+					...prevState.players,
+					[player]: {
+						...prevState.players[player], 
+						claimedWonder: card.props.props.name,
+					}
 				},
 				wondersRevealed
 			}
@@ -1064,10 +983,9 @@ class NewGame1 extends React.Component {
 		})
 	}
 
-	endTurn = () => {
-		if(this.props.turn === 1){
-
-			let { player } = this.state, 
+	endTurn = (playerNum) => {
+		if(this.props.turn === playerNum){
+			let player = this.state.players[playerNum],
 				hand = player.hand,
 				discard = player.discard, 
 				deck = player.deck
@@ -1116,6 +1034,7 @@ class NewGame1 extends React.Component {
 
 					// cycle the wonders
 					let wonderToPopIdx;
+
 					for(let i = 0; i < prevState.wondersRevealed.length; i++){
 						if(Object.keys(prevState.wondersRevealed[i].claimedBy).length <= 0){
 							wonderToPopIdx = i;
@@ -1141,87 +1060,92 @@ class NewGame1 extends React.Component {
 
 				return {
 					...prevState, 
-					player: {
-						...prevState.player, 
-						wondersRevealed, 
-						wonderSupply,
-						ageOfEnlightenment,
-						hand, 
-						deck,
-						played_cards, 
-						discard, 
-						startOfTurnQueue: true,
-						resources: {
-							gold: 0, 
-							science: 0, 
-							influence: 0,
-							any: 0,
-							toward: {
-								person: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
-								}, 
-								technology: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
-								}, 
-								city: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
-								}, 
-								A_M_wonders: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
-								}, 
-								N_wonders: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
-								}, 
-								allWonders: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
-								}, 
-								yourRegion: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
-								},
-								otherRegion: {
-									gold: 0, 
-									science: 0, 
-									influence: 0,
-									any: 0,
+					wondersRevealed, 
+					wonderSupply,
+					ageOfEnlightenment,
+					startOfTurnQueue: true,
+					expandedCapital: false,
+					expandHandCard: false,
+					expandedHandCard: false,
+					expandSupplyCard: false,
+					expandedSupplyCard: false,
+					expandWonderCard: false,
+					expandedWonderCard: false,
+					players: {
+						...prevState.players,
+						[playerNum]: {
+							...prevState.players[playerNum],
+							hand, 
+							deck, 
+							played_cards, 
+							discard, 
+							resources: {
+								gold: 0, 
+								science: 0, 
+								influence: 0,
+								any: 0,
+								toward: {
+									person: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									}, 
+									technology: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									}, 
+									city: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									}, 
+									A_M_wonders: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									}, 
+									N_wonders: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									}, 
+									allWonders: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									}, 
+									yourRegion: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									},
+									otherRegion: {
+										gold: 0, 
+										science: 0, 
+										influence: 0,
+										any: 0,
+									}
 								}
-							}
+							},
 						},
-						expandedCapital: false,
-						expandHandCard: false,
-						expandedHandCard: false,
-						expandSupplyCard: false,
-						expandedSupplyCard: false,
-						expandWonderCard: false,
-						expandedWonderCard: false,
 					}
 				}
 			}, () => {
+				// Close the sidebar
 				x._toggleSideBar();
+				// End the turn, advance to the next turn or roll back to zero if at max turn
 				x.props.changeTurn(11);
 				setTimeout(() => {
 					alert('Your turn.');
-					x.props.changeTurn(1);
+					x.props.changeTurn(0);
 				}, 500);
 			});
 		}
@@ -1232,9 +1156,9 @@ class NewGame1 extends React.Component {
 
 	}
 
-	buyGovernment = (resource) => {
-		let any = this.state.player.resources.any, 
-			resourceAmount = this.state.player.resources[resource];
+	buyGovernment = (resource, player) => {
+		let any = this.state.players[player].resources.any, 
+			resourceAmount = this.state.players[player].resources[resource];
 
 		let pass = (any + resourceAmount >= 10);
 
@@ -1251,10 +1175,13 @@ class NewGame1 extends React.Component {
 				return {
 					...prevState, 
 					ageOfEnlightenment: true,
-					player: {
-						...prevState.player, 
-						centralized_government: true,
-					}
+					players: {
+						...prevState.players, 
+						[player]: {
+							...prevState.players[player],
+							centralized_government: true,
+						}
+					},
 				}
 			});
 		}
@@ -1267,67 +1194,85 @@ class NewGame1 extends React.Component {
 		let cardWidth = cardHeight / 1.56;
 
 		if(this.state.startOfTurnQueue){
-			this.checkStartOfTurn();
-			return <View></View>
-		} else{
-			return (
-				<View style={styles.container}>
-	
-					<View style={[styles.areasContainer, {height: '70%'}]}>
-						<SupplyArea 
-							supplyDeck={this.state.supplyDeck}
-							supplyRevealed={this.state.supplyRevealed}
-							expandSupplyCard={this.expandSupplyCard.bind(this)}
-							unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
-						/>
-						<View style={{width: '50%', flexDirection: 'column'}}>
-							<View style={{height: '30%', width: '100%'}}>
-								<WonderArea 
-									players_to_wonders={this.state.players_to_wonders}
-									wondersRevealed={this.state.wondersRevealed}
-									wonderSupply={this.state.wonderSupply}
-									num_of_players={this.state.num_of_players}
-									expandWonderCard={this.expandWonderCard.bind(this)}
-								/>
-							</View>
-	{/* 
-	DECKS 
-	*/}
-							<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
-								<View style={styles.decksCon}>
-									<View style={[styles.decks, {marginBottom: 5}]}><Text>Natural</Text><Text>{this.state.naturalWonders.length}</Text></View>
-									<View style={[styles.decks, {marginBottom: 5}]}><Text>A/M</Text><Text>{this.state.wonderSupply.length}</Text></View>
-									<View style={styles.decks}><Text>Supply</Text><Text>{this.state.supplyDeck.length}</Text></View>
-								</View> 
-							</View>
+			// If we are starting a turn, check the start of turn and apply cost reductions to cards
+			setTimeout(() => {
+				this.checkStartOfTurn();
+			});
+		} 
+
+		return (
+			<View style={styles.container}>
+
+				<View style={[styles.areasContainer, {height: '70%'}]}>
+					<SupplyArea 
+						supplyDeck={this.state.supplyDeck}
+						supplyRevealed={this.state.supplyRevealed}
+						expandSupplyCard={this.expandSupplyCard.bind(this)}
+						unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
+						playerNumber={this.state.playerNumber}
+					/>
+					<View style={{width: '50%', flexDirection: 'column'}}>
+						<View style={{height: '30%', width: '100%'}}>
+							<WonderArea 
+								players_to_wonders={this.state.players_to_wonders}
+								wondersRevealed={this.state.wondersRevealed}
+								wonderSupply={this.state.wonderSupply}
+								num_of_players={this.state.num_of_players}
+								expandWonderCard={this.expandWonderCard.bind(this)}
+								playerNumber={this.state.playerNumber}
+							/>
+						</View>
+{/* 
+DECKS 
+*/}
+						<View style={{backgroundColor: '#111', height: '70%', width: '100%'}}>
+							<View style={styles.decksCon}>
+								<View style={[styles.decks, {marginBottom: 5}]}><Text>Natural</Text><Text>{this.state.naturalWonders.length}</Text></View>
+								<View style={[styles.decks, {marginBottom: 5}]}><Text>A/M</Text><Text>{this.state.wonderSupply.length}</Text></View>
+								<View style={styles.decks}><Text>Supply</Text><Text>{this.state.supplyDeck.length}</Text></View>
+							</View> 
 						</View>
 					</View>
-	
-					<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
-						<PlayerArea 
-							player={this.state.player} 
-							toggleDim={this.toggleDim.bind(this)}
-							expandHandCard={this.expandHandCard.bind(this)}
-							expandCapital={this.expandCapital.bind(this)}
-						/>
-					</View>
-	
-					{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
-	
-	{/* 
-	OPPONENTS
-	*/}
-	
-					<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
-						{	this.state.dim ? 
-							Object.keys(this.state.enemies).map(enemyId => {
-							let enemy = this.state.enemies[enemyId],
-								func = !enemy.expanded ? this.expandEnemy.bind(this, enemy.id) : ()=>null,
-								style = enemy.expanded ? {width: '100%'} : {}
-	
-							if(enemy.expanded){
-								return (
-									<View style={style} key={enemy.id}>
+				</View>
+
+				<View style={[styles.areasContainer, {height: '30%', alignItems: 'center'}]}>
+					<PlayerArea 
+						player={this.state.players[this.state.playerNumber]} 
+						toggleDim={this.toggleDim.bind(this)}
+						expandHandCard={this.expandHandCard.bind(this)}
+						expandCapital={this.expandCapital.bind(this)}
+						playerNumber={this.state.playerNumber}
+					/>
+				</View>
+
+				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
+
+{/* 
+OPPONENTS
+*/}
+
+				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
+					{	this.state.dim ? 
+						Object.keys(this.state.enemies).map(enemyId => {
+						let enemy = this.state.enemies[enemyId],
+							func = !enemy.expanded ? this.expandEnemy.bind(this, enemy.id) : ()=>null,
+							style = enemy.expanded ? {width: '100%'} : {}
+
+						if(enemy.expanded){
+							return (
+								<View style={style} key={enemy.id}>
+									<Opponent 
+										expanded={enemy.expanded} 
+										num_of_enemies={this.state.num_of_enemies}
+										dim={this.state.dim}
+										enemy={enemy}
+										goToNextEnemy={this.goToNextEnemy.bind(this)}
+									/>
+								</View>);
+						} else{
+							return (
+								<View style={style} key={enemy.id}>
+									<TouchableOpacity onPress={func}>
 										<Opponent 
 											expanded={enemy.expanded} 
 											num_of_enemies={this.state.num_of_enemies}
@@ -1335,107 +1280,95 @@ class NewGame1 extends React.Component {
 											enemy={enemy}
 											goToNextEnemy={this.goToNextEnemy.bind(this)}
 										/>
-									</View>);
-							} else{
-								return (
-									<View style={style} key={enemy.id}>
-										<TouchableOpacity onPress={func}>
-											<Opponent 
-												expanded={enemy.expanded} 
-												num_of_enemies={this.state.num_of_enemies}
-												dim={this.state.dim}
-												enemy={enemy}
-												goToNextEnemy={this.goToNextEnemy.bind(this)}
-											/>
-										</TouchableOpacity>
-									</View>);
-							}
-						})
-						: <TouchableOpacity 
-							style={{
-								backgroundColor: '#0aa',
-								margin: 10,
-								alignItems: 'center'
-							}} 
-							onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
-					</View>
-	
+									</TouchableOpacity>
+								</View>);
+						}
+					})
+					: <TouchableOpacity 
+						style={{
+							backgroundColor: '#0aa',
+							margin: 10,
+							alignItems: 'center'
+						}} 
+						onPress={this.expandEnemy.bind(this, 1)}><Text>Opponents</Text></TouchableOpacity>}
+				</View>
+
+				<Ionicons 
+					style={styles.goBack} 
+					name="md-settings" 
+					size={32} 
+					color="white" 
+					onPress={this._toggleSideBar.bind(this)}
+				/>
+
+{/*
+EXPANDED CARDS
+*/}
+				{/* {
+					this.state.expandHandCard || this.state.expandSupplyCard || this.state.expandWonderCard
+					?  */}
+						<ExpandedCards
+							screenHeight={screenHeight}
+							cardHeight={cardHeight}
+							screenWidth={screenWidth}
+							cardWidth={cardWidth}
+		
+							player={this.state.players[this.state.playerNumber]}
+							playerNumber={this.state.playerNumber}
+							expandHandCard={this.state.expandHandCard}
+							expandedHandCard={this.state.expandedHandCard}
+							expandSupplyCard={this.state.expandSupplyCard}
+							expandedSupplyCard={this.state.expandedSupplyCard}
+							expandWonderCard={this.state.expandWonderCard}
+							expandedWonderCard={this.state.expandedWonderCard}
+							wondersRevealed={this.state.wondersRevealed}
+		
+							putOnCapital={this.putOnCapital.bind(this)}
+							placeFlag={this.placeFlag.bind(this)}
+							chooseOption={this.chooseOption.bind(this)}
+							buySupplyCard={this.buySupplyCard.bind(this)}
+							unExpandHandCard={this.unExpandHandCard.bind(this)}
+							unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
+							unExpandWonderCard={this.unExpandWonderCard.bind(this)}
+						/>
+					{/* : undefined
+				} */}
+
+{/*
+EXPANDED CAPITAL
+*/}
+				{
+					this.state.expandedCapital ? 
+						(
+							<ExpandedCapital 
+								capital={this.state.players[this.state.playerNumber].capital} 
+								chooseOption={this.chooseOption.bind(this)}
+								expandHandCard={this.expandHandCard.bind(this)}
+								closeCapital={this.closeCapital.bind(this)}
+							/>
+						)
+					: undefined
+				}
+{/*
+SLIDER
+*/}
+				<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
 					<Ionicons 
-						style={styles.goBack} 
-						name="md-settings" 
+						style={{position: 'absolute', top: 10, left: 20}} 
+						name="md-close" 
 						size={32} 
 						color="white" 
-						onPress={this._toggleSideBar.bind(this)}
+						onPress={this._toggleSideBar.bind(this, true)}
 					/>
-	
-	{/*
-	EXPANDED CARDS
-	*/}
-					{/* {
-						this.state.expandHandCard || this.state.expandSupplyCard || this.state.expandWonderCard
-						?  */}
-							<ExpandedCards
-								screenHeight={screenHeight}
-								cardHeight={cardHeight}
-								screenWidth={screenWidth}
-								cardWidth={cardWidth}
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity onPress={this.undoLastAction.bind(this)} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={this.endTurn.bind(this, this.state.playerNumber)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
+					<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>Print Gamestate to Console</Text></TouchableOpacity>
+					<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
+				</Animated.View>
 			
-								player={this.state.player}
-								expandHandCard={this.state.expandHandCard}
-								expandedHandCard={this.state.expandedHandCard}
-								expandSupplyCard={this.state.expandSupplyCard}
-								expandedSupplyCard={this.state.expandedSupplyCard}
-								expandWonderCard={this.state.expandWonderCard}
-								expandedWonderCard={this.state.expandedWonderCard}
-								wondersRevealed={this.state.wondersRevealed}
-			
-								putOnCapital={this.putOnCapital.bind(this)}
-								placeFlag={this.placeFlag.bind(this)}
-								chooseOption={this.chooseOption.bind(this)}
-								buySupplyCard={this.buySupplyCard.bind(this)}
-								unExpandHandCard={this.unExpandHandCard.bind(this)}
-								unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
-								unExpandWonderCard={this.unExpandWonderCard.bind(this)}
-							/>
-						{/* : undefined
-					} */}
-	
-	{/*
-	EXPANDED CAPITAL
-	*/}
-					{
-						this.state.expandedCapital ? 
-							(
-								<ExpandedCapital 
-									capital={this.state.player.capital} 
-									chooseOption={this.chooseOption.bind(this)}
-									expandHandCard={this.expandHandCard.bind(this)}
-									closeCapital={this.closeCapital.bind(this)}
-								/>
-							)
-						: undefined
-					}
-	{/*
-	SLIDER
-	*/}
-					<Animated.View style={[styles.slider, this.sidebarAnimation.getLayout()]}>
-						<Ionicons 
-							style={{position: 'absolute', top: 10, left: 20}} 
-							name="md-close" 
-							size={32} 
-							color="white" 
-							onPress={this._toggleSideBar.bind(this, true)}
-						/>
-						<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>RULES (work in prog)</Text></TouchableOpacity>
-						<TouchableOpacity onPress={this.undoLastAction.bind(this)} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>UNDO (work in prog)</Text></TouchableOpacity>
-						<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={this.endTurn.bind(this)}><Text style={{color: '#fff', textAlign: 'center'}}>END TURN</Text></TouchableOpacity>
-						<TouchableOpacity style={{width: '100%', height: '10%', justifyContent: 'center'}} onPress={() => {console.log(this.state)}}><Text style={{color: '#fff', textAlign: 'center'}}>Print Gamestate to Console</Text></TouchableOpacity>
-						<TouchableOpacity onPress={this.props.goBack} style={{width: '100%', height: '10%', justifyContent: 'center'}}><Text style={{color: '#fff', textAlign: 'center'}}>QUIT</Text></TouchableOpacity>
-					</Animated.View>
-				
-				</View>
-			);
-		}
+			</View>
+		);
 	}
 }
 

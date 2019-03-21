@@ -22,15 +22,22 @@ class SupplyArea1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<View style={styles.resourceContainer}>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} real={true} card={Banker}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} real={true} card={Artist}/>
-					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} real={true} card={Scientist}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} playerNumber={this.props.playerNumber} real={true} card={Banker}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} playerNumber={this.props.playerNumber} real={true} card={Artist}/>
+					<SupplyCard expandSupplyCard={this.props.expandSupplyCard} playerNumber={this.props.playerNumber} real={true} card={Scientist}/>
 				</View>
 
 				<View style={styles.resourceContainer}>
 					{
 						this.props.supplyRevealed.map((card, i) => {
-							return <SupplyCard key={i} num={i} expandSupplyCard={this.props.expandSupplyCard} real={true} card={card}/>
+							return <SupplyCard 
+									key={i} 
+									num={i} 
+									expandSupplyCard={this.props.expandSupplyCard} 
+									real={true} 
+									card={card}
+									playerNumber={this.props.playerNumber}
+							/>
 						})
 					}
 				</View>

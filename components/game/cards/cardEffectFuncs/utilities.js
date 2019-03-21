@@ -176,7 +176,7 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerN
     //eachworkeroncapital
     if(perWhat === 'eachWorkerOnCapital'){
         console.log('produce resource per worker on capital')
-        resource = numResourcesPer * prevState.player[playerNumber].capital.workers.length;
+        resource = numResourcesPer * state.player[playerNumber].capital.workers.length;
     }
 
     //eachPersonInHand

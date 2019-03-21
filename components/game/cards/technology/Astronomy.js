@@ -20,7 +20,6 @@ export default Astronomy = (props) => {
         }
     }
     
-    // return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../assets/technology/Astronomy.jpg')} />
     if(props.expanded){
         return <Image 
             style={{width: '100%', height: '100%'}} props={props} source={require('../../../../assets/technology/Astronomy.jpg')} />

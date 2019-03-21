@@ -19,7 +19,7 @@ class Card1 extends React.Component {
 
     enlarge = () => {
         console.log('this.props.turn', this.props.turn);
-        if(this.props.turn === 1){
+        if(this.props.turn === this.props.playerNumber){
             this.props.expandHandCard(this.props.card({ num: this.props.num, expanded: true }));
         } else{
             alert('Not your turn.');

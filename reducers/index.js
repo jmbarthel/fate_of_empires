@@ -3,7 +3,7 @@ import {
 } from "../constants/action-types";
 
 const initialState = {
-    turn: 1
+    turn: 0
 };
 
 const rootReducer = (state = initialState, action) => {

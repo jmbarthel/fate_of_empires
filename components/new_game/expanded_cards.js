@@ -181,7 +181,7 @@ class ExpandedCards1 extends React.Component {
                         />
                         <TouchableOpacity
                             style={{position: 'absolute', height: '20%', width: '50%', bottom: 0, right: 0 }}
-                            onPress={() => {this.props.buySupplyCard(this.props.expandedSupplyCard)}}
+                            onPress={() => {this.props.buySupplyCard(this.props.expandedSupplyCard, this.props.playerNumber)}}
                         />
                         <View style={{
                             position: 'absolute', 
@@ -660,7 +660,7 @@ class ExpandedCards1 extends React.Component {
                             left: 0, 
                             backgroundColor: 'rgba(150, 50, 0, 0.7)' 
                         }}
-                        onPress={() => {this.props.chooseOption(1, this.props.expandedHandCard)}}
+                        onPress={() => {this.props.chooseOption(1, this.props.expandedHandCard, this.props.playerNumber)}}
                     />
                     <TouchableOpacity
                         style={{
@@ -671,7 +671,7 @@ class ExpandedCards1 extends React.Component {
                             right: 0, 
                             backgroundColor: 'rgba(150, 50, 0, 0.7)' 
                         }}
-                        onPress={() => {this.props.chooseOption(2, this.props.expandedHandCard)}}
+                        onPress={() => {this.props.chooseOption(2, this.props.expandedHandCard, this.props.playerNumber)}}
                     />
                 </View>
                     
@@ -708,7 +708,7 @@ class ExpandedCards1 extends React.Component {
                                         borderRadius: 50,
                                         padding: 20,
                                     }}
-                                    onPress={() => {this.props.putOnCapital(this.props.expandedHandCard)}}
+                                    onPress={() => {this.props.putOnCapital(this.props.expandedHandCard, this.props.playerNumber)}}
                                 >
                                     <Text>Put on Capital</Text>
                                 </TouchableOpacity>

@@ -20,7 +20,7 @@ class Wonder1 extends React.Component {
     }
     
     onPress(){
-        if(this.props.turn === 1){
+        if(this.props.turn === this.props.playerNumber){
             this.props.expandWonderCard(this.props.card.card({num: this.props.num, expanded: true, progress: this.props.card.progress, claimedBy: this.props.card.claimedBy}));
         } else{
             alert('Not your turn.');
