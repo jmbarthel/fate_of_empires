@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default MansaMusa = (props) => {
     props = {
@@ -15,14 +16,16 @@ export default MansaMusa = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 4
-                }
-            },
-            2: {
-                spendAsAny: 'gold'
-            }
+            1: [gainResources.bind(this, {gold: 4})],
+            2: [spendAsAny.bind(this, 'gold')]
+            // 1: {
+            //     produceResource: {
+            //         gold: 4
+            //     }
+            // },
+            // 2: {
+            //     spendAsAny: 'gold'
+            // }
         }
     }
     

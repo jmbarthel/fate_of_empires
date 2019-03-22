@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default EmmyNoether = (props) => {
     props = {
@@ -15,24 +16,26 @@ export default EmmyNoether = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 0, 
-                    science: 5, 
-                    influence: 0, 
-                    any: 0,
-                }
-            }, 
-            2: {
-                produceResource: {
-                    eachTechInHand: {
-                        gold: 0, 
-                        science: 0, 
-                        influence: 0,
-                        any: 2
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {science: 5})],
+            2: [gainResourcesPer.bind(this, 2, 'any', 'eachTechInHand')]
+            // 1: {
+            //     produceResource: {
+            //         gold: 0, 
+            //         science: 5, 
+            //         influence: 0, 
+            //         any: 0,
+            //     }
+            // }, 
+            // 2: {
+            //     produceResource: {
+            //         eachTechInHand: {
+            //             gold: 0, 
+            //             science: 0, 
+            //             influence: 0,
+            //             any: 2
+            //         }
+            //     }
+            // }
         }
     }
     

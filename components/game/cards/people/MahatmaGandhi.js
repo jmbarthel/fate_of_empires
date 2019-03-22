@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default MahatmaGandhi = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default MahatmaGandhi = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 5
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-                        person: {
-                            gold: 5
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 5})],
+            2: [gainResources.bind(this, {toward: {person: {gold: 5}}})]
+            // 1: {
+            //     produceResource: {
+            //         influence: 5
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             person: {
+            //                 gold: 5
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

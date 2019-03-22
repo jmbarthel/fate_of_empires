@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, reduceCost } from '../cardEffectFuncs/utilities';
 
 export default Pocahontas = (props) => {
     props = {
@@ -15,18 +16,20 @@ export default Pocahontas = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    any: 2
-                }
-            },
-            2: {
-                reduceCost: {
-                    person: {
-                        gold: 3
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {any: 2})],
+            2: [reduceCost.bind(this, 'person', 'gold', 3)]
+            // 1: {
+            //     produceResource: {
+            //         any: 2
+            //     }
+            // },
+            // 2: {
+            //     reduceCost: {
+            //         person: {
+            //             gold: 3
+            //         }
+            //     }
+            // }
         }
     }
         

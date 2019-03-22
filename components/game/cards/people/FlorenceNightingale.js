@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default FlorenceNightingale = (props) => {
     props = {
@@ -15,18 +16,20 @@ export default FlorenceNightingale = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 4, 
-                }
-            },
-            2: {
-                produceResource: {
-                    eachWorkerInHand: {
-                        any: 1
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {science: 4})],
+            2: [gainResourcesPer.bind(this, 1, 'any', 'eachWorkerInHand')]
+            // 1: {
+            //     produceResource: {
+            //         science: 4, 
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         eachWorkerInHand: {
+            //             any: 1
+            //         }
+            //     }
+            // }
         }
     }
     

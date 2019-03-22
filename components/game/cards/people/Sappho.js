@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default Sappho = (props) => {
     props = {
@@ -15,18 +16,20 @@ export default Sappho = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 5,
-                }
-            },
-            2: {
-                produceResource: {
-                    eachPersonInHand: {
-                        any: 3
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 5})],
+            2: [gainResourcesPer.bind(this, 3, 'any', 'eachPersonInHand')]
+            // 1: {
+            //     produceResource: {
+            //         influence: 5,
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         eachPersonInHand: {
+            //             any: 3
+            //         }
+            //     }
+            // }
         }
     }
     

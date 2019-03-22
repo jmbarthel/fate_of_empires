@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default BenjaminFranklin = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default BenjaminFranklin = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    any: 2,
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-						technology: {
-							science: 4, 
-						}, 
-					}
-                },
-            }
+            1: [gainResources.bind(this, {any: 2})],
+            2: [gainResources.bind(this, {toward: {technology: {science: 4}}})]
+            // 1: {
+            //     produceResource: {
+            //         any: 2,
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+			// 			technology: {
+			// 				science: 4, 
+			// 			}, 
+			// 		}
+            //     },
+            // }
         }
     }
     

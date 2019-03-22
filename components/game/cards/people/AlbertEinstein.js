@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default AlbertEinstein = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default AlbertEinstein = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 6, 
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-						A_M_wonders: {
-							science: 9, 
-						}, 
-					}
-                },
-            }
+            1: [gainResources.bind(this, {science: 6})],
+            2: [gainResources.bind(this, {toward: {A_M_wonders: {science: 9}}})]
+            // 1: {
+            //     produceResource: {
+            //         science: 6, 
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+			// 			A_M_wonders: {
+			// 				science: 9, 
+			// 			}, 
+			// 		}
+            //     },
+            // }
         }
     }
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, exileCard } from '../cardEffectFuncs/utilities';
 
 export default AnastasiaNikolaevna = (props) => {
     props = {
@@ -15,25 +16,27 @@ export default AnastasiaNikolaevna = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 0,
-                    science: 0, 
-                    influence: 4,
-                    any: 0,
-                }
-            },
-            2: {
-                exile: {
-                    this: {
-                        produceResource: {
-                            gold: 0, 
-                            science: 0,
-                            influence: 10, 
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 4})],
+            2: [exileCard.bind(this, 'thisCard', {influence: 10})]
+            // 1: {
+            //     produceResource: {
+            //         gold: 0,
+            //         science: 0, 
+            //         influence: 4,
+            //         any: 0,
+            //     }
+            // },
+            // 2: {
+            //     exile: {
+            //         this: {
+            //             produceResource: {
+            //                 gold: 0, 
+            //                 science: 0,
+            //                 influence: 10, 
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

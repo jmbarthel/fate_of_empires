@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, reduceCost } from '../cardEffectFuncs/utilities';
 
 export default NapoleonBonaparte = (props) => {
     props = {
@@ -15,25 +16,27 @@ export default NapoleonBonaparte = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 3
-                },
-                reduceCost: {
-                    city: {
-                        influence: 1
-                    }
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-                        yourRegion: {
-                            any: 3
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 3}), reduceCost.bind(this, 'city', 'influence', 1)],
+            2: [gainResources.bind(this, {toward: {yourRegion: {any: 3}}})]
+            // 1: {
+            //     produceResource: {
+            //         influence: 3
+            //     },
+            //     reduceCost: {
+            //         city: {
+            //             influence: 1
+            //         }
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             yourRegion: {
+            //                 any: 3
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

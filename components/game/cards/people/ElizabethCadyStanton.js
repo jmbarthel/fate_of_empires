@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default ElizabethCadyStanton = (props) => {
     props = {
@@ -15,22 +16,24 @@ export default ElizabethCadyStanton = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    toward: {
-                        person: {
-                            gold: 5, 
-                        }
-                    }
-                }
-            },
-            2: {
-                produceResource: {
-                    eachPersonInHand: {
-                        influence: 4
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {toward: {person: {gold: 5}}})],
+            2: [gainResourcesPer.bind(this, 4, 'influence', 'eachPersonInHand')]
+            // 1: {
+            //     produceResource: {
+            //         toward: {
+            //             person: {
+            //                 gold: 5, 
+            //             }
+            //         }
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         eachPersonInHand: {
+            //             influence: 4
+            //         }
+            //     }
+            // }
         }
     }
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default MurasakiShikibu = (props) => {
     props = {
@@ -15,18 +16,20 @@ export default MurasakiShikibu = (props) => {
         },
         choiceCount: 0, 
         choices: {
-            1: {
-                produceResource: {
-                    any: 2
-                }
-            }, 
-            2: {
-                produceResource: {
-                    eachPersonInHand: {
-                        any: 2
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {any: 2})],
+            2: [gainResourcesPer.bind(this, 2, 'any', 'eachPersonInHand')]
+            // 1: {
+            //     produceResource: {
+            //         any: 2
+            //     }
+            // }, 
+            // 2: {
+            //     produceResource: {
+            //         eachPersonInHand: {
+            //             any: 2
+            //         }
+            //     }
+            // }
         }
     }
     

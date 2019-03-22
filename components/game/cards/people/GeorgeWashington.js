@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources, placeOnCapital } from '../cardEffectFuncs/utilities';
 
 export default GeorgeWashington = (props) => {
     props = {
@@ -15,14 +16,16 @@ export default GeorgeWashington = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 5
-                }
-            },
-            2: {
-                placeOnCapital: true
-            }
+            1: [gainResources.bind(this, {influence: 5})],
+            2: [placeOnCapital]
+            // 1: {
+            //     produceResource: {
+            //         influence: 5
+            //     }
+            // },
+            // 2: {
+            //     placeOnCapital: true
+            // }
         },
         onCapital: {
             reduceCost: {

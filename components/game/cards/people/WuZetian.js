@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default WuZetian = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default WuZetian = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 4
-                }
-            }, 
-            2: {
-                produceResource: {
-                    toward: {
-                        A_M_wonders: {
-                            any: 3
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {gold: 4})],
+            2: [gainResources.bind(this, {toward: {A_M_wonders: {any: 3}}})]
+            // 1: {
+            //     produceResource: {
+            //         gold: 4
+            //     }
+            // }, 
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             A_M_wonders: {
+            //                 any: 3
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

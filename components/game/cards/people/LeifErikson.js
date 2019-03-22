@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default LeifErikson = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default LeifErikson = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 3
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-                        N_wonders: {
-                            any: 5
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {gold: 3})],
+            2: [gainResources.bind(this, {toward: {N_wonders: {any: 5}}})]
+            // 1: {
+            //     produceResource: {
+            //         gold: 3
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             N_wonders: {
+            //                 any: 5
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

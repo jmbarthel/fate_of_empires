@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, reduceCost } from '../cardEffectFuncs/utilities';
 
 export default Aristotle = (props) => {
     props = {
@@ -15,21 +16,23 @@ export default Aristotle = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 0,
-                    science: 4, 
-                    influence: 0,
-                    any: 0,
-                }
-            },
-            2: {
-                reduceCost: {
-                    city: {
-                        gold: 3, 
-                    },
-                }
-            }
+            1: [gainResources.bind(this, {science: 4})],
+            2: [reduceCost.bind('city', 'gold', 3)]
+            // 1: {
+            //     produceResource: {
+            //         gold: 0,
+            //         science: 4, 
+            //         influence: 0,
+            //         any: 0,
+            //     }
+            // },
+            // 2: {
+            //     reduceCost: {
+            //         city: {
+            //             gold: 3, 
+            //         },
+            //     }
+            // }
         }
     }
     

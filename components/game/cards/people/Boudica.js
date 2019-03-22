@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default Boudica = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default Boudica = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 4,
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-                        yourRegion: {
-                            any: 3, 
-                        }
-					}
-                },
-            }
+            1: [gainResources.bind(this, {influence: 4})],
+            2: [gainResources.bind(this, {toward: {yourRegion: {any: 3}}})]
+            // 1: {
+            //     produceResource: {
+            //         influence: 4,
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             yourRegion: {
+            //                 any: 3, 
+            //             }
+			// 		}
+            //     },
+            // }
         }
     }
     

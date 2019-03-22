@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesCondition } from '../cardEffectFuncs/utilities';
 
 export default HuaMulan = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default HuaMulan = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 4
-                }
-            },
-            2: {
-                produceResourceCondition: {
-                    inHand: {
-                        city: {
-                            gold: 4
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 4})],
+            2: [gainResourcesCondition.bind(this, 'city', 'inHand', {gold: 4})]
+            // 1: {
+            //     produceResource: {
+            //         influence: 4
+            //     }
+            // },
+            // 2: {
+            //     produceResourceCondition: {
+            //         inHand: {
+            //             city: {
+            //                 gold: 4
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

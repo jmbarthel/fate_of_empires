@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default WrightBrothers = (props) => {
     props = {
@@ -15,23 +16,25 @@ export default WrightBrothers = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 4,
-                    eachTechInHand: {
-                        science: 1
-                    }
-                }, 
-            },
-            2: {
-                produceResource: {
-                    toward: {
-                        person: {
-                            gold: 4
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {science: 4}), gainResourcesPer.bind(this, 1, 'science', 'eachTechInHand')],
+            2: [gainResources.bind(this, {toward: {person: {gold: 4}}})]
+            // 1: {
+            //     produceResource: {
+            //         science: 4,
+            //         eachTechInHand: {
+            //             science: 1
+            //         }
+            //     }, 
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             person: {
+            //                 gold: 4
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

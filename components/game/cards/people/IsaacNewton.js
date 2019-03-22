@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources, spendAsAny } from '../cardEffectFuncs/utilities';
 
 export default IsaacNewton = (props) => {
     props = {
@@ -15,14 +16,16 @@ export default IsaacNewton = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 5
-                }
-            },
-            2: {
-                spendAsAny: 'science'
-            }
+            1: [gainResources.bind(this, {science: 5})],
+            2: [spendAsAny.bind(this, 'science')]
+            // 1: {
+            //     produceResource: {
+            //         science: 5
+            //     }
+            // },
+            // 2: {
+            //     spendAsAny: 'science'
+            // }
         }
     }
     

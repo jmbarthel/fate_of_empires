@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources, drawCard } from '../cardEffectFuncs/utilities';
 
 export default MarieCurie = (props) => {
     props = {
@@ -15,17 +16,19 @@ export default MarieCurie = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 4
-                }
-            },
-            2: {
-                produceResource: {
-                    influence: 1
-                },
-                draw: 1
-            }
+            1: [gainResources.bind(this, {science: 4})],
+            2: [drawCard, gainResources.bind(this, {influence: 1})]
+            // 1: {
+            //     produceResource: {
+            //         science: 4
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         influence: 1
+            //     },
+            //     draw: 1
+            // }
         }
     }
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default Hatshepsut = (props) => {
     props = {
@@ -15,22 +16,24 @@ export default Hatshepsut = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 2, 
-                    science: 2, 
-                    influence: 2
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-                        anyWonder: {
-                            influence: 8
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {gold: 2, science: 2, influence: 2})],
+            2: [gainResources.bind(this, {toward: {anyWonder: {influence: 8}}})]
+            // 1: {
+            //     produceResource: {
+            //         gold: 2, 
+            //         science: 2, 
+            //         influence: 2
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             anyWonder: {
+            //                 influence: 8
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default SunTzu = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default SunTzu = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 6
-                }
-            },
-            2: {
-                produceResource: {
-                    toward: {
-                        otherRegion: {
-                            any: 4, 
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 6})],
+            2: [gainResources.bind(this, {toward: {otherRegion: {any: 4}}})]
+            // 1: {
+            //     produceResource: {
+            //         influence: 6
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         toward: {
+            //             otherRegion: {
+            //                 any: 4, 
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesPer, spendAsAny } from '../cardEffectFuncs/utilities';
 
 export default QueenVictoria = (props) => {
     props = {
@@ -15,17 +16,19 @@ export default QueenVictoria = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 2,
-                    eachWorkerOnCapital: {
-                        gold: 1
-                    }
-                },
-            },
-            2: {
-                spendAsAny: 'influence'
-            }
+            1: [gainResources.bind(this, {gold: 2}), gainResourcesPer.bind(this, 1, 'gold', 'eachWorkerOnCapital')],
+            2: [spendAsAny.bind(this, 'gold')]
+            // 1: {
+            //     produceResource: {
+            //         gold: 2,
+            //         eachWorkerOnCapital: {
+            //             gold: 1
+            //         }
+            //     },
+            // },
+            // 2: {
+            //     spendAsAny: 'influence'
+            // }
         }
     }
     

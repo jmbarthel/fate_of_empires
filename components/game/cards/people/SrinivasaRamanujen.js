@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesCondition } from '../cardEffectFuncs/utilities';
 
 export default SrinivasaRamanujen = (props) => {
     props = {
@@ -15,22 +16,24 @@ export default SrinivasaRamanujen = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 3
-                },
-                produceResourceCondition: {
-                    onCapital: {
-                        scientist: {
-                            science: 2
-                        }
-                    }
-                }
-            },
-            2: {
-                // This case will need to be handled on a case by case basis
-                srinivasaramanujen: true
-            }
+            1: [gainResources.bind(this, {science: 3})],
+            2: [gainResourcesCondition.bind(this, 'srinivasa')]
+            // 1: {
+            //     produceResource: {
+            //         science: 3
+            //     },
+            //     produceResourceCondition: {
+            //         onCapital: {
+            //             scientist: {
+            //                 science: 2
+            //             }
+            //         }
+            //     }
+            // },
+            // 2: {
+            //     // This case will need to be handled on a case by case basis
+            //     srinivasaramanujen: true
+            // }
         }
     }
     

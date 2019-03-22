@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, exileCard } from '../cardEffectFuncs/utilities';
 
 export default HarrietTubman = (props) => {
     props = {
@@ -15,20 +16,22 @@ export default HarrietTubman = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    influence: 4
-                }
-            }, 
-            2: {
-                exile: {
-                    cards: {
-                        handorcapital: {
-                            get: 'worker'
-                        }
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {influence: 4})],
+            2: [exileCard.bind(this, 'handOrCapital')]
+            // 1: {
+            //     produceResource: {
+            //         influence: 4
+            //     }
+            // }, 
+            // 2: {
+            //     exile: {
+            //         cards: {
+            //             handorcapital: {
+            //                 get: 'worker'
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

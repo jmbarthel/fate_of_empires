@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources, reduceCost, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default KarlMarx = (props) => {
     props = {
@@ -15,23 +16,25 @@ export default KarlMarx = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 3
-                },
-                reduceCost: {
-                    worker: {
-                        any: 1
-                    }
-                }
-            },
-            2: {
-                produceResource: {
-                    eachWorkerOnCapital: {
-                        any: 1
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {gold: 3}), reduceCost.bind('worker', 'any', 1)],
+            2: [gainResourcesPer.bind(this, 1, 'any', 'eachWorkerOnCapital')]
+            // 1: {
+            //     produceResource: {
+            //         gold: 3
+            //     },
+            //     reduceCost: {
+            //         worker: {
+            //             any: 1
+            //         }
+            //     }
+            // },
+            // 2: {
+            //     produceResource: {
+            //         eachWorkerOnCapital: {
+            //             any: 1
+            //         }
+            //     }
+            // }
         }
     }
     

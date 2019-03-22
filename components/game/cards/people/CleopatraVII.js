@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesCondition } from '../cardEffectFuncs/utilities';
 
 export default CleopatraVII = (props) => {
     props = {
@@ -15,31 +16,33 @@ export default CleopatraVII = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 3,
-                },
-                produceResourceCondition: {
-                    inHand: {
-                        person: {
-                            gold: 1
-                        }
-                    }
-                }
-            },
-            2: {
-                exile: {
-                    this: {
-                        produceResource: {
-                            toward: {
-                                allWonders: {
-                                    influence: 10,
-                                }
-                            }
-                        }
-                    },
-                }
-            }
+            1: [gainResources.bind(this, {gold: 3})],
+            2: [gainResourcesCondition.bind(this, 'person', 'inHand', {gold: 1})]
+            // 1: {
+            //     produceResource: {
+            //         gold: 3,
+            //     },
+            //     produceResourceCondition: {
+            //         inHand: {
+            //             person: {
+            //                 gold: 1
+            //             }
+            //         }
+            //     }
+            // },
+            // 2: {
+            //     exile: {
+            //         this: {
+            //             produceResource: {
+            //                 toward: {
+            //                     allWonders: {
+            //                         influence: 10,
+            //                     }
+            //                 }
+            //             }
+            //         },
+            //     }
+            // }
         }
     }
     

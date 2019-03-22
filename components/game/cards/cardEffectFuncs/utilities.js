@@ -175,6 +175,14 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerN
     }
 }
 
+export const gainResourcesCondition = (typeOfCard, whereIsCard, resourceObj, playerNumber, state) => {
+    // Cleopatra: 'person', 'inHand', {gold: 1})
+
+    // SRINIVASA
+
+    // HuaMulan
+}
+
 export const drawCard = (playerNumber, state) => {
     /*
         This function draws a card from the designated player's deck and adds it to their hand.
@@ -230,6 +238,27 @@ export const revealFromTopandDrawOne = (playerNumber, state) => {
 
 export const exileCard = (location, playerNumber, state) => {
 
+    // ANASTASIA
+
+    // Genghis KHAN
+
+    // hARRIET TUBMAN
+
+    // Nelson Mandela
+    
+}
+
+export const placeOnCapital = (playerNumber, state) => {
+
+    // GEORGE WASHINGTON
+    
+}
+
+export const reduceCost = (type, resource, amount, playerNumber, state) => {
+
+    // Aristotle
+
+    // Pocahontas
 
 }
 
@@ -241,6 +270,10 @@ export const pickACard = (fromOptions, playerNumber, state) => {
 
     // SANITATION: discard or exile a card from hand or capital: 7 science
 
+    // ADA LOVELACE: swap a science in your hand for one in the supply
 
+}
 
+export const spendAsAny = (type, playerNumber, state) => {
+    // Queen Victoria
 }
