@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { drawCard, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default Pasteurization = (props) => {
     props = {
@@ -15,14 +16,15 @@ export default Pasteurization = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                draw: 1,
-                produceResource: {
-                    eachWorkerOnCapital: {
-                        any: 1
-                    } 
-                }
-            }
+            1: [drawCard, gainResourcesPer.bind(this, 1, 'any', 'eachWorkerOnCapital')]
+            // 1: {
+            //     draw: 1,
+            //     produceResource: {
+            //         eachWorkerOnCapital: {
+            //             any: 1
+            //         } 
+            //     }
+            // }
         }
     }
     

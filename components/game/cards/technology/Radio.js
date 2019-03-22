@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { drawCard, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default Radio = (props) => {
     props = {
@@ -15,14 +16,15 @@ export default Radio = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                draw: 1,
-                produceResource: {
-                    eachTechInHand: {
-                        science: 1
-                    }
-                }
-            }
+            1: [drawCard, gainResourcesPer.bind(this, 1, 'science', 'eachTechInHand')]
+            // 1: {
+            //     draw: 1,
+            //     produceResource: {
+            //         eachTechInHand: {
+            //             science: 1
+            //         }
+            //     }
+            // }
         }
     }
     

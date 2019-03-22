@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { pickACard } from '../cardEffectFuncs/utilities';
 
 export default TheoryofEvolution = (props) => {
     props = {
@@ -15,10 +16,11 @@ export default TheoryofEvolution = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                // You may exile this or a card you played this turn 
-                // To buy a card from the supply area that shares the same type
-            }
+            1: [pickACard.bind(this, ['thisCard', 'cardPlayedThisTurn'])]
+            // 1: {
+            //     // You may exile this or a card you played this turn 
+            //     // To buy a card from the supply area that shares the same type
+            // }
         }
     }
     

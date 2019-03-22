@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default BronzeWorking = (props) => {
     props = {
@@ -15,12 +16,13 @@ export default BronzeWorking = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 1,
-                    science: 2, 
-                }
-            },
+            1: [gainResources.bind(this, {gold: 1, science: 2})]
+            // 1: {
+            //     produceResource: {
+            //         gold: 1,
+            //         science: 2, 
+            //     }
+            // },
         }
     }
     

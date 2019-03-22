@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { drawCard, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default Automobile = (props) => {
     props = {
@@ -15,14 +16,15 @@ export default Automobile = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                draw: 1, 
-                produceResource: {
-                    eachCityInHand: {
-                        science: 2
-                    }
-                }
-            }
+            1: [drawCard, gainResourcesPer.bind(this, 2, 'science', 'eachCityInHand')],
+            // 1: {
+            //     draw: 1, 
+            //     produceResource: {
+            //         eachCityInHand: {
+            //             science: 2
+            //         }
+            //     }
+            // }
         }
     }
     

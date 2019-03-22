@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { drawCard, gainResources } from '../cardEffectFuncs/utilities';
 
 export default Refrigeration = (props) => {
     props = {
@@ -15,16 +16,17 @@ export default Refrigeration = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                draw: 1,
-                produceResource: {
-                    toward: {
-                        city: {
-                            influence: 3
-                        }
-                    }
-                }
-            }
+            1: [drawCard, gainResources.bind(this, {toward: {city: {influence: 3}}})]
+            // 1: {
+            //     draw: 1,
+            //     produceResource: {
+            //         toward: {
+            //             city: {
+            //                 influence: 3
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

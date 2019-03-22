@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default Railroad = (props) => {
     props = {
@@ -15,12 +16,13 @@ export default Railroad = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 3, 
-                    gold: 2
-                }
-            }
+            1: [gainResources.bind(this, {science: 3, gold: 2})]
+            // 1: {
+            //     produceResource: {
+            //         science: 3, 
+            //         gold: 2
+            //     }
+            // }
         }
     }
     

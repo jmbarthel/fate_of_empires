@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities';
 
 export default Construction = (props) => {
     props = {
@@ -15,15 +16,24 @@ export default Construction = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
+            1: [
+                gainResources.bind(this, {
                     toward: {
                         allWonders: {
                             any: 4
                         }
                     }
-                }
-            }
+                })
+            ]
+            // 1: {
+            //     produceResource: {
+            //         toward: {
+            //             allWonders: {
+            //                 any: 4
+            //             }
+            //         }
+            //     }
+            // }
         }
     }
     

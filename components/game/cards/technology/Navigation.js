@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { advanceTime, gainResources } from '../cardEffectFuncs/utilities';
 
 export default Navigation = (props) => {
     props = {
@@ -15,12 +16,13 @@ export default Navigation = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                advanceTime: 1,
-                produceResource: {
-                    science: 2, 
-                }
-            }
+            1: [advanceTime.bind(this, 1), gainResources.bind(this, {science: 2})]
+            // 1: {
+            //     advanceTime: 1,
+            //     produceResource: {
+            //         science: 2, 
+            //     }
+            // }
         }
     }
     

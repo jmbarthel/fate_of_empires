@@ -113,52 +113,6 @@ export const gainResources = (resourceObj, playerNumber, state) => {
     }
 }
 
-export const drawCard = (playerNumber, state) => {
-    /*
-        This function draws a card from the designated player's deck and adds it to their hand.
-
-        playerNumber = integer between 0 and (number of players - 1)
-    */
-
-    let hand = state.players[playerNumber].hand;
-    let deck = state.players[playerNumber].deck;
-    let discard = state.players[playerNumber].discard;
-
-    if(deck.length === 0){
-        // Shuffle discard pile into deck first
-        deck = deck.concat(discard);
-	
-        discard = [];
-
-        deck = shuffle(deck);
-    }
-
-    if(deck.length > 0){
-        // After shuffling the discard if there are still no cards in the deck, don't draw at all
-        hand.push(deck.pop());
-    }
-
-    return {
-        ...state, 
-        players: {
-            ...state.players, 
-            [playerNumber]: {
-                ...state.players[playerNumber],
-                hand, 
-                deck, 
-                discard,
-            }
-        }
-    }
-}
-
-export const advanceTime = (playerNumber, state) => {
-    return {
-        ...state, 
-        advanceTimeInProgress: playerNumber, 
-    }
-}
-
 export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerNumber, state) => {
     /*
         This function multiplies the resources produced by the number of items fulfilling the perWhat
@@ -219,4 +173,74 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerN
             }
         }
     }
+}
+
+export const drawCard = (playerNumber, state) => {
+    /*
+        This function draws a card from the designated player's deck and adds it to their hand.
+
+        playerNumber = integer between 0 and (number of players - 1)
+    */
+
+    let hand = state.players[playerNumber].hand;
+    let deck = state.players[playerNumber].deck;
+    let discard = state.players[playerNumber].discard;
+
+    if(deck.length === 0){
+        // Shuffle discard pile into deck first
+        deck = deck.concat(discard);
+	
+        discard = [];
+
+        deck = shuffle(deck);
+    }
+
+    if(deck.length > 0){
+        // After shuffling the discard if there are still no cards in the deck, don't draw at all
+        hand.push(deck.pop());
+    }
+
+    return {
+        ...state, 
+        players: {
+            ...state.players, 
+            [playerNumber]: {
+                ...state.players[playerNumber],
+                hand, 
+                deck, 
+                discard,
+            }
+        }
+    }
+}
+
+export const advanceTime = (numberOfAdvanceTimes, playerNumber, state) => {
+    return {
+        ...state, 
+        advanceTimeInProgress: playerNumber, 
+    }
+}
+
+export const revealFromTopandDrawOne = (playerNumber, state) => {
+    return {
+        ...state, 
+        advanceTimeInProgress: playerNumber, 
+    }
+}
+
+export const exileCard = (location, playerNumber, state) => {
+
+
+}
+
+export const pickACard = (fromOptions, playerNumber, state) => {
+    // THEORY OF EVOLUTION: You may exile this or a card you played this turn 
+    // To buy a card from the supply area that shares the same type
+
+    // ASTRONOMY: Pick top card of supply - buy it for 4 fewer any mix this turn
+
+    // SANITATION: discard or exile a card from hand or capital: 7 science
+
+
+
 }

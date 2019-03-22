@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default SteamEngine = (props) => {
     props = {
@@ -15,14 +16,15 @@ export default SteamEngine = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 3, 
-                    eachTechInHand: {
-                        science: 3
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {science: 3}), gainResourcesPer.bind(this, 3, 'science', 'eachTechInHand')]
+            // 1: {
+            //     produceResource: {
+            //         science: 3, 
+            //         eachTechInHand: {
+            //             science: 3
+            //         }
+            //     }
+            // }
         }
     }
     

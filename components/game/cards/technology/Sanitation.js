@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { pickACard } from '../cardEffectFuncs/utilities';
 
 export default Sanitation = (props) => {
     props = {
@@ -15,9 +16,10 @@ export default Sanitation = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                //discard or exile a card from hand or capital: 7 science
-            }
+            1: [pickACard.bind(this, ['hand', 'capital'])]
+            // 1: {
+            //     //discard or exile a card from hand or capital: 7 science
+            // }
         }
     }
     

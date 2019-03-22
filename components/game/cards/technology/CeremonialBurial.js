@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources } from '../cardEffectFuncs/utilities.js';
 
 export default CeremonialBurial = (props) => {
     props = {
@@ -15,12 +16,13 @@ export default CeremonialBurial = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
-                    gold: 1,
-                    science: 2, 
-                }
-            }
+            1: [gainResources.bind(this, {science: 2, gold: 1})]
+            // 1: {
+            //     produceResource: {
+            //         gold: 1,
+            //         science: 2, 
+            //     }
+            // }
         }
     }
     

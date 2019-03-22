@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { drawCard, gainResources } from '../cardEffectFuncs/utilities';
 
 export default Printing = (props) => {
     props = {
@@ -15,12 +16,13 @@ export default Printing = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                draw: 1, 
-                produceResource: {
-                    science: 2, 
-                }
-            }
+            1: [drawCard, gainResources.bind(this, {science: 2})]
+            // 1: {
+            //     draw: 1, 
+            //     produceResource: {
+            //         science: 2, 
+            //     }
+            // }
         }
     }
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { drawCard, gainResources } from '../cardEffectFuncs/utilities';
 
 export default ClassicalMechanics = (props) => {
     props = {
@@ -15,16 +16,26 @@ export default ClassicalMechanics = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                draw: 1,
-                produceResouce: {
+            1: [
+                drawCard, 
+                gainResources.bind(this, {
                     toward: {
                         technology: {
                             science: 3
                         }
                     }
-                }
-            }
+                })
+            ]
+            
+            // 1: {
+                // draw: 1,
+                // produceResouce: {
+                //     toward: {
+                //         technology: {
+                //             science: 3
+                //         }
+                //     }
+                // }
         }
     }
     

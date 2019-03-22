@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { drawCard, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default Transistors = (props) => {
     props = {
@@ -15,12 +16,13 @@ export default Transistors = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                draw: 1,
-                produceResource: {
-                    eachTechInHand: 1
-                }
-            }
+            1: [drawCard, gainResourcesPer.bind(this, 1, 'science', 'eachTechInHand')]
+            // 1: {
+            //     draw: 1,
+            //     produceResource: {
+            //         eachTechInHand: 1
+            //     }
+            // }
         }
     }
     

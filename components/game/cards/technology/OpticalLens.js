@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
+import { gainResources, gainResourcesPer } from '../cardEffectFuncs/utilities';
 
 export default OpticalLens = (props) => {
     props = {
@@ -15,14 +16,15 @@ export default OpticalLens = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 5, 
-                    eachPersonInHand: {
-                        science: 2
-                    }
-                }
-            }
+            1: [gainResources.bind(this, {science: 5}), gainResourcesPer.bind(this, 2, 'science', 'eachPersonInHand')]
+            // 1: {
+            //     produceResource: {
+            //         science: 5, 
+            //         eachPersonInHand: {
+            //             science: 2
+            //         }
+            //     }
+            // }
         }
     }
     

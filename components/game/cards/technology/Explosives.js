@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from "react-native";
+import { gainResources, exileCard } from '../cardEffectFuncs/utilities';
 
 export default Explosives = (props) => {
     props = {
@@ -15,12 +16,13 @@ export default Explosives = (props) => {
         },
         choiceCount: 1, 
         choices: {
-            1: {
-                produceResource: {
-                    science: 3
-                },
-                // you may exile a card from your hand or capital
-            }
+            1: [gainResources.bind(this, {science: 3}), exileCard.bind(this, 'handOrCapital')]
+            // 1: {
+            //     produceResource: {
+            //         science: 3
+            //     },
+            //     // you may exile a card from your hand or capital
+            // }
         }
     }
     
