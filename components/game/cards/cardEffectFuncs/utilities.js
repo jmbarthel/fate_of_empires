@@ -262,16 +262,28 @@ export const reduceCost = (type, resource, amount, playerNumber, state) => {
 
 }
 
-export const pickACard = (fromOptions, playerNumber, state) => {
+export const validatePickedCard = (card, validationOptions, playerNumber, state) => {
+
+
+}
+
+export const pickACard = (fromOptions, callbacksArray, playerNumber, state) => {
     // THEORY OF EVOLUTION: You may exile this or a card you played this turn 
     // To buy a card from the supply area that shares the same type
+    // fromOptions: this or played cards
+    // callbacks array: [validatePickedCard, pickACard.bind(supply area, [buyCard])]
 
     // ASTRONOMY: Pick top card of supply - buy it for 4 fewer any mix this turn
+    // fromOptions: top card
+    // callbacks array: [validatePickedCard, pickACard.bind(supply area, [buyCard])]
 
     // SANITATION: discard or exile a card from hand or capital: 7 science
+    // fromOptions: hand, 
+    // callbacks : [pick option (discard or exile)]
 
     // ADA LOVELACE: swap a science in your hand for one in the supply
-
+    // from options : hand
+    // callbacks: [pickacard(supplyarea, [swap])]
 }
 
 export const spendAsAny = (type, playerNumber, state) => {
