@@ -177,10 +177,32 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerN
 
 export const gainResourcesCondition = (typeOfCard, whereIsCard, resourceObj, playerNumber, state) => {
     // Cleopatra: 'person', 'inHand', {gold: 1})
+    if(whereIsCard === 'inHand'){
+        if(countTypeInHand(typeOfCard, state.player[playerNumber].hand) > 0){
+            return {
+                ...state, 
+                players: {
+                    ...state.players, 
+                    [playerNumber]: {
+                        ...state.players[playerNumber], 
+                        resources: {
+                            ...state.players[playerNumber].resources, 
+                            gold: (resourceObj.gold ? state.players[playerNumber].resources.gold + resourceObj.gold : state.players[playerNumber].resources.gold),
+                            science: (resourceObj.science ? state.players[playerNumber].resources.science + resourceObj.science : state.players[playerNumber].resources.science),
+                            influence: (resourceObj.influence ? state.players[playerNumber].resources.influence + resourceObj.influence : state.players[playerNumber].resources.influence),
+                        }
+                    }
+                }
+            }
+        }
+        // HuaMulan
+    } else if(whereIsCard === 'srinivasa'){
+        // SRINIVASA
+        return state;
+    } else{
+        return state;
+    }
 
-    // SRINIVASA
-
-    // HuaMulan
 }
 
 export const drawCard = (playerNumber, state) => {
