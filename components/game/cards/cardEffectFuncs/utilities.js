@@ -252,9 +252,9 @@ export const advanceTime = (numberOfAdvanceTimes, playerNumber, state) => {
 }
 
 export const revealFromTopandDrawOne = (playerNumber, state) => {
+    // astronomy - draw a card, reveal the top card you may buy it for 4 less anymix
     return {
         ...state, 
-        advanceTimeInProgress: playerNumber, 
     }
 }
 
