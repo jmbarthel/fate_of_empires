@@ -1,5 +1,6 @@
 import { shuffle } from '../../../utils/utilities.js';
 import { countTypeInHand } from '../../../utils/utilities.js';
+import { State } from 'react-native-gesture-handler';
 
 // ALL Functions here should have playerNumber, state as the last two arguments, so that proper binding of arguments can occur
 
@@ -259,14 +260,17 @@ export const revealFromTopandDrawOne = (playerNumber, state) => {
 }
 
 export const exileCard = (location, playerNumber, state) => {
+    return {
+        ...state
+    };
 
-    // ANASTASIA
+    // ANASTASIA +10 inf and exile her
 
-    // Genghis KHAN
+    // Genghis KHAN  exile up to 2 cards from hand or capital and buy a worker for free
 
-    // hARRIET TUBMAN
+    // hARRIET TUBMAN - exile card from hand or capital to buy a worker for free
 
-    // Nelson Mandela
+    // Nelson Mandela - exile card from hand or capital to buy a worker for free
     
 }
 
