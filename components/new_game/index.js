@@ -579,7 +579,7 @@ class NewGame1 extends React.Component {
 		this.setState({expandedCapital: false});
 	}
 
-	chooseOption(choice, card, player){
+	chooseOption(choice, card, player, callbackArray){
 		let { choiceCount, choices } = card.props.props;
 
 		console.log('you chose: ', choice, 'choicecount: ', choiceCount);

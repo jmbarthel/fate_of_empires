@@ -259,24 +259,40 @@ export const revealFromTopandDrawOne = (playerNumber, state) => {
     }
 }
 
-export const exileCard = (location, playerNumber, state) => {
+export const exileCard = (location, numOfCards, playerNumber, callbackArray, state) => {
+    if(location === 'thisCard'){
+        // ANASTASIA +10 inf and exile her
+
+    } else if(location === 'handOrCapital'){
+        if(numOfCards === 1){
+            // hARRIET TUBMAN - exile card from hand or capital to buy a worker for free
+
+            // Nelson Mandela - exile card from hand or capital to buy a worker for free
+        } else if(numOfCards > 1){
+            // Genghis KHAN  exile up to 2 cards from hand or capital and buy a worker for free
+
+        }
+    }
+
     return {
         ...state
     };
 
-    // ANASTASIA +10 inf and exile her
 
-    // Genghis KHAN  exile up to 2 cards from hand or capital and buy a worker for free
 
-    // hARRIET TUBMAN - exile card from hand or capital to buy a worker for free
 
-    // Nelson Mandela - exile card from hand or capital to buy a worker for free
     
 }
 
 export const placeOnCapital = (playerNumber, state) => {
 
     // GEORGE WASHINGTON
+    console.log(this);
+    // state.players[playerNumber].capital.other.push(this);
+
+    return {
+        ...state
+    }
     
 }
 
