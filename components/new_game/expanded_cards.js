@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, Animated } from "react-native";
+import { View, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, Animated } from "react-native";
 import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
@@ -37,6 +37,28 @@ class ExpandedCards1 extends React.Component {
         this.tempinfluence = 0;
     }
     
+    compileResources = (type) => {
+        // ['person', 'technology', 'city', 'A_M_wonders', 'N_wonders', 'allWonders', 'yourRegion', 'otherRegion'];
+        let resources = this.props.player.resources;
+
+        switch(type){
+            case 'supply': 
+                return {
+                    gold: resources.gold,
+                    influence: resources.influence, 
+                    science: resources.science,
+                };
+            case 'wonder': 
+                return {
+                    gold: resources.gold,
+                    influence: resources.influence, 
+                    science: resources.science,
+                };
+            default: 
+                return 0;            
+        }
+    }
+
     getImage(flag){
         // This kind of sucks because you cannot dynamically require img files, the 
         // location needs to be a literal string, no variable evaluation.
@@ -129,6 +151,7 @@ class ExpandedCards1 extends React.Component {
     }
 
     addResourceToWonder(resource){
+        console.log('ADDING TO RESOURCE', resource);
         
         if(this.props.player.resources[resource] - this['temp'+resource] - 1 < 0){
             return false;
@@ -161,11 +184,17 @@ class ExpandedCards1 extends React.Component {
         });
     }
 
-    // confirmResourceAdd(){
-    //     console.log('Confirming');
-    // }
+    confirmResourceAdd(){
+        console.log('Confirming');
+        this.props.confirmAddToWonder(this.props.playerNumber, {
+            science: this.tempscience,
+            influence: this.tempinfluence,
+            gold: this.tempgold,
+        });
+    }
 
 	render() {
+        console.log('render');
         let screenHeight = this.props.screenHeight,
 		    cardHeight = this.props.cardHeight,
 		    screenWidth = this.props.screenWidth,
@@ -271,368 +300,371 @@ class ExpandedCards1 extends React.Component {
                     </View>
         } else if(this.props.expandWonderCard){
             // WONDER CARD
-            return <View pointerEvents='box-none' style={[styles.containerCon, {width: cardWidth, height: cardHeight}]}>
-                {this.props.expandedWonderCard}
-                <TouchableOpacity 
-                    onPress={this.props.unExpandWonderCard}
-                    style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
-                ></TouchableOpacity>
-                <TouchableOpacity
-                    style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
-                ></TouchableOpacity>
-                <TouchableOpacity
-                    style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
-                ></TouchableOpacity>
+            return <View pointerEvents='box-none' style={{top: 25, left: 25, width: '100%', height: '100%', position: 'absolute'}} >
+                    <View style={[styles.containerCon, {width: cardWidth, height: cardHeight}]}>
+                    {this.props.expandedWonderCard}
+                    <TouchableOpacity 
+                        onPress={this.props.unExpandWonderCard}
+                        style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+                    ></TouchableOpacity>
+                    <TouchableOpacity
+                        style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
+                    ></TouchableOpacity>
+                    <TouchableOpacity
+                        style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
+                    ></TouchableOpacity>
 
-                {
-                    this.tempgold > 0 || this.tempscience > 0 || this.tempinfluence > 0
-                    ? 
-                        <TouchableOpacity
-                            style={{position: 'absolute', width: '50%', backgroundColor: '#f04', borderRadius: 15}}
-                        >
-                            <Text style={{textAlign: 'center'}}>Confirm Resources</Text>
-                        </TouchableOpacity>
-                    : undefined
-                }
+                    {
+                        this.tempgold > 0 || this.tempscience > 0 || this.tempinfluence > 0
+                        ? 
+                            <TouchableOpacity
+                                style={{position: 'absolute', width: '50%', backgroundColor: '#f04', borderRadius: 15}}
+                                onPress={this.confirmResourceAdd.bind(this)}
+                            >
+                                <Text style={{textAlign: 'center'}}>Confirm Resources</Text>
+                            </TouchableOpacity>
+                        : undefined
+                    }
 
-                <View style={[{left: (cardWidth)}, styles.sideCon]}>
-                    <View style={{flexDirection: 'row'}}>
-                        <View>
-
-                            {
-                                (
-                                    !this.props.player.claimedWonder
-                                    && this.props.player.claimedWonder !== this.props.expandedWonderCard.props.props.name
-                                    && !this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
-                                )
-
-                                ? <TouchableOpacity 
-                                        style={{
-                                            alignSelf: 'flex-start',
-                                            backgroundColor: '#f0f',
-                                            borderRadius: 50,
-                                            padding: 20,
-                                            marginBottom: 5,
-                                        }}
-                                        onPress={() => {this.props.placeFlag(this.props.expandedWonderCard)}}
-                                    >
-                                        <Text>Place Your Flag</Text>
-                                    </TouchableOpacity>
-                                : undefined
-                            }
-                            {
-                                this.props.expandedWonderCard.props.props.cost.gold > 0 
-                                ? 
-                                    <View style={styles.sideBubblesCon}>
-                                                
-                                        <Image 
-                                            source={require('../../assets/symbols/goldResourceBack.png')}
-                                            style={{
-                                                position: 'absolute',
-                                                width: 50, 
-                                                height: 50
-                                            }}
-                                        />
-
-                                        <View style={styles.sideBubbles}>
-                                            <Image 
-                                                source={require('../../assets/symbols/actions/Gold.png')}
-                                                style={{
-                                                    width: '100%', 
-                                                    height: '100%', 
-                                                    position: 'absolute',
-                                                }} 
-                                            />
-                                            <Text style={styles.sideBubblesLabel}>{this.props.player.resources.gold - this.tempgold}</Text>
-                                        </View>
-                                        
-                                        {
-                                            this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
-
-                                            ? 
-                                                <TouchableOpacity style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'gold')}>
-                                                    <Ionicons 
-                                                        style={{
-                                                            width: '100%', 
-                                                            height: '100%', 
-                                                            position: 'absolute',
-                                                        }} 
-                                                        name="ios-add-circle" 
-                                                        size={32} 
-                                                        color="white" 
-                                                    />
-                                                </TouchableOpacity>
-
-                                            : undefined
-                                        }
-
-                                    </View>
-
-                                : undefined
-                            }
-                            {
-                                this.props.expandedWonderCard.props.props.cost.science > 0 
-                                ? 
-                                    <View style={styles.sideBubblesCon}>
-                                        
-                                        <Image 
-                                            source={require('../../assets/symbols/scienceResourceBack.png')}
-                                            style={{
-                                                position: 'absolute',
-                                                width: 50, 
-                                                height: 50
-                                            }}
-                                        />
-
-                                        <View style={styles.sideBubbles}>
-                                            <Image 
-                                                source={require('../../assets/symbols/actions/Science.png')}
-                                                style={{
-                                                    width: '100%', 
-                                                    height: '100%', 
-                                                    position: 'absolute',
-                                                }} 
-                                            />
-                                            <Text style={styles.sideBubblesLabel}>{this.props.player.resources.science - this.tempscience}</Text>
-                                        </View>
-                                        
-                                        {
-                                            this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
-
-                                            ? 
-                                                <TouchableOpacity style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'science')}>
-                                                    <Ionicons 
-                                                        style={{
-                                                            width: '100%', 
-                                                            height: '100%', 
-                                                            position: 'absolute',
-                                                        }} 
-                                                        name="ios-add-circle" 
-                                                        size={32} 
-                                                        color="white" 
-                                                    />
-                                                </TouchableOpacity>
-                                            : undefined
-                                        }
-
-                                    </View>
-                                    
-                                : undefined
-                            }
-                            {
-                                this.props.expandedWonderCard.props.props.cost.influence > 0 
-                                ? 
-                                <View style={styles.sideBubblesCon}>
-                                        
-                                <Image 
-                                    source={require('../../assets/symbols/influenceResourceBack.png')}
-                                    style={{
-                                        position: 'absolute',
-                                        width: 50, 
-                                        height: 50
-                                    }}
-                                />
-
-                                <View style={styles.sideBubbles}>
-                                    <Image 
-                                        source={require('../../assets/symbols/actions/Influence.png')}
-                                        style={{
-                                            width: '100%', 
-                                            height: '100%', 
-                                            position: 'absolute',
-                                        }} 
-                                    />
-                                    <Text style={styles.sideBubblesLabel}>{this.props.player.resources.influence - this.tempinfluence}</Text>
-                                </View>
+                    <View style={[{left: (cardWidth)}, styles.sideCon]}>
+                        <View style={{flexDirection: 'row'}}>
+                            <View>
 
                                 {
-                                    this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+                                    (
+                                        !this.props.player.claimedWonder
+                                        && this.props.player.claimedWonder !== this.props.expandedWonderCard.props.props.name
+                                        && !this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+                                    )
 
+                                    ? <TouchableOpacity 
+                                            style={{
+                                                alignSelf: 'flex-start',
+                                                backgroundColor: '#f0f',
+                                                borderRadius: 50,
+                                                padding: 20,
+                                                marginBottom: 5,
+                                            }}
+                                            onPress={() => {this.props.placeFlag(this.props.expandedWonderCard)}}
+                                        >
+                                            <Text>Place Your Flag</Text>
+                                        </TouchableOpacity>
+                                    : undefined
+                                }
+                                {
+                                    this.props.expandedWonderCard.props.props.cost.gold > 0 
                                     ? 
-                                    <TouchableOpacity style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'influence')}>
-                                        <Ionicons 
+                                        <View style={styles.sideBubblesCon}>
+                                                    
+                                            <Image 
+                                                source={require('../../assets/symbols/goldResourceBack.png')}
+                                                style={{
+                                                    position: 'absolute',
+                                                    width: 50, 
+                                                    height: 50
+                                                }}
+                                            />
+
+                                            <View style={styles.sideBubbles}>
+                                                <Image 
+                                                    source={require('../../assets/symbols/actions/Gold.png')}
+                                                    style={{
+                                                        width: '100%', 
+                                                        height: '100%', 
+                                                        position: 'absolute',
+                                                    }} 
+                                                />
+                                                <Text style={styles.sideBubblesLabel}>{this.props.player.resources.gold - this.tempgold}</Text>
+                                            </View>
+                                            
+                                            {
+                                                this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+
+                                                ? 
+                                                    <TouchableHighlight onPress={this.addResourceToWonder.bind(this, 'gold')} style={styles.sideBubbles}>
+                                                        <Ionicons 
+                                                            style={{
+                                                                width: '100%', 
+                                                                height: '100%', 
+                                                                position: 'absolute',
+                                                            }} 
+                                                            name="ios-add-circle" 
+                                                            size={32} 
+                                                            color="white" 
+                                                        />
+                                                    </TouchableHighlight>
+
+                                                : undefined
+                                            }
+
+                                        </View>
+
+                                    : undefined
+                                }
+                                {
+                                    this.props.expandedWonderCard.props.props.cost.science > 0 
+                                    ? 
+                                        <View style={styles.sideBubblesCon}>
+                                            
+                                            <Image 
+                                                source={require('../../assets/symbols/scienceResourceBack.png')}
+                                                style={{
+                                                    position: 'absolute',
+                                                    width: 50, 
+                                                    height: 50
+                                                }}
+                                            />
+
+                                            <View style={styles.sideBubbles}>
+                                                <Image 
+                                                    source={require('../../assets/symbols/actions/Science.png')}
+                                                    style={{
+                                                        width: '100%', 
+                                                        height: '100%', 
+                                                        position: 'absolute',
+                                                    }} 
+                                                />
+                                                <Text style={styles.sideBubblesLabel}>{this.props.player.resources.science - this.tempscience}</Text>
+                                            </View>
+                                            
+                                            {
+                                                this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+
+                                                ? 
+                                                    <TouchableHighlight style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'science')}>
+                                                        <Ionicons 
+                                                            style={{
+                                                                width: '100%', 
+                                                                height: '100%', 
+                                                                position: 'absolute',
+                                                            }} 
+                                                            name="ios-add-circle" 
+                                                            size={32} 
+                                                            color="white" 
+                                                        />
+                                                    </TouchableHighlight>
+                                                : undefined
+                                            }
+
+                                        </View>
+                                        
+                                    : undefined
+                                }
+                                {
+                                    this.props.expandedWonderCard.props.props.cost.influence > 0 
+                                    ? 
+                                    <View style={styles.sideBubblesCon}>
+                                            
+                                    <Image 
+                                        source={require('../../assets/symbols/influenceResourceBack.png')}
+                                        style={{
+                                            position: 'absolute',
+                                            width: 50, 
+                                            height: 50
+                                        }}
+                                    />
+
+                                    <View style={styles.sideBubbles}>
+                                        <Image 
+                                            source={require('../../assets/symbols/actions/Influence.png')}
                                             style={{
                                                 width: '100%', 
                                                 height: '100%', 
                                                 position: 'absolute',
                                             }} 
-                                            name="ios-add-circle" 
-                                            size={32} 
-                                            color="white" 
                                         />
-                                    </TouchableOpacity>
+                                        <Text style={styles.sideBubblesLabel}>{this.props.player.resources.influence - this.tempinfluence}</Text>
+                                    </View>
 
+                                    {
+                                        this.props.expandedWonderCard.props.props.claimedBy[this.props.player.flag]
+
+                                        ? 
+                                        <TouchableHighlight style={styles.sideBubbles} onPress={this.addResourceToWonder.bind(this, 'influence')}>
+                                            <Ionicons 
+                                                style={{
+                                                    width: '100%', 
+                                                    height: '100%', 
+                                                    position: 'absolute',
+                                                }} 
+                                                name="ios-add-circle" 
+                                                size={32} 
+                                                color="white" 
+                                            />
+                                        </TouchableHighlight>
+
+                                        : undefined
+                                    }
+
+                                </View>
                                     : undefined
                                 }
 
                             </View>
-                                : undefined
-                            }
 
-                        </View>
+                            <View>
+                                {
+                                    Object.keys(this.props.expandedWonderCard.props.props.claimedBy).length > 0
+                                    ? 
+                                        <View>
+                                            <View style={styles.flagGroupContainer}>
+                                                {Object.keys(this.props.expandedWonderCard.props.props.claimedBy).map((flag, i) => {
 
-                        <View>
-                            {
-                                Object.keys(this.props.expandedWonderCard.props.props.claimedBy).length > 0
-                                ? 
-                                    <View>
-                                        <View style={styles.flagGroupContainer}>
-                                            {Object.keys(this.props.expandedWonderCard.props.props.claimedBy).map((flag, i) => {
+                                                    let resources = this.props.expandedWonderCard.props.props.claimedBy[flag],
+                                                        progress = this.props.expandedWonderCard.props.props.progress,
+                                                        cost = this.props.expandedWonderCard.props.props.cost,
+                                                        player = this.props.player,
+                                                        flagImage = this.getImage(flag),
+                                                        goldTicks = [], 
+                                                        scienceTicks = [], 
+                                                        influenceTicks = [],
+                                                        scienceSpacing = this.scienceSpacing, 
+                                                        influenceSpacing = this.influenceSpacing, 
+                                                        goldSpacing = this.goldSpacing;
 
-                                                let resources = this.props.expandedWonderCard.props.props.claimedBy[flag],
-                                                    progress = this.props.expandedWonderCard.props.props.progress,
-                                                    cost = this.props.expandedWonderCard.props.props.cost,
-                                                    player = this.props.player,
-                                                    flagImage = this.getImage(flag),
-                                                    goldTicks = [], 
-                                                    scienceTicks = [], 
-                                                    influenceTicks = [],
-                                                    scienceSpacing = this.scienceSpacing, 
-                                                    influenceSpacing = this.influenceSpacing, 
-                                                    goldSpacing = this.goldSpacing;
-
-                                                if(cost.gold > 0){
-                                                    for(let i = 0; i < cost.gold; i++){
-                                                        goldTicks.push(
-                                                            <View key={i}
-                                                                style={{
-                                                                    width: '100%',
-                                                                    borderRadius: 15,
-                                                                    backgroundColor: 'rgb(150, 150, 150)',
-                                                                }}
-                                                            ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
-                                                        );
-                                                    }
-                                                }
-                                                
-                                                if(cost.science > 0){
-                                                    for(let i = 0; i < cost.science; i++){
-                                                        scienceTicks.push(
-                                                            <View key={i}
-                                                                style={{
-                                                                    width: '100%',
-                                                                    borderRadius: 15, 
-                                                                    backgroundColor: 'rgb(150, 150, 150)',
-                                                                }}
-                                                            ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
-                                                        );
-                                                    }
-                                                }
-
-                                                if(cost.influence > 0){
-                                                    for(let i = 0; i < cost.influence; i++){
-                                                        influenceTicks.push(
-                                                            <View key={i}
-                                                                style={{
-                                                                    width: '100%',
-                                                                    borderRadius: 15, 
-                                                                    backgroundColor: 'rgb(150, 150, 150)',
-                                                                }}
-                                                            ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
-                                                        );
-                                                    }
-                                                }
-
-                                                return (
-                                                    <View key={i} style={styles.flagContainer}> 
-                                                        <Image 
-                                                            source={flagImage}
-                                                            resizeMode='contain'
-                                                            style={{
-                                                                position: 'absolute',
-                                                                height: 50,
-                                                                maxWidth: 75
-                                                            }}
-                                                        />
-
-                                                        {
-                                                            cost.gold > 0
-                                                            ? 
-                                                                <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
-                                                                    {goldTicks}
-                                                                    {
-                                                                        progress[flag]
-                                                                        ? 
-                                                                            <Animated.Image 
-                                                                                source={require('../../assets/symbols/actions/Gold.png')}
-                                                                                resizeMode='contain'
-                                                                                style={[{
-                                                                                    position: 'absolute', 
-                                                                                    width: 25,
-                                                                                    height: 25,
-                                                                                    borderRadius: 10,
-                                                                                    backgroundColor: '#f4f'
-                                                                                }, player.flag === flag && this.goldProgressAnimation 
-                                                                                    ? this.goldProgressAnimation.getLayout() 
-                                                                                    : {bottom: (progress[flag].gold === 1 ? 0 : progress[flag].gold * goldSpacing-30)}]}
-                                                                            />
-                                                                        : undefined
-                                                                    }
-                                                                </View>
-                                                            : undefined
+                                                    if(cost.gold > 0){
+                                                        for(let i = 0; i < cost.gold; i++){
+                                                            goldTicks.push(
+                                                                <View key={i}
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        borderRadius: 15,
+                                                                        backgroundColor: 'rgb(150, 150, 150)',
+                                                                    }}
+                                                                ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
+                                                            );
                                                         }
-
-                                                        {
-                                                            cost.science > 0
-                                                            ?   
-                                                                <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
-                                                                    {scienceTicks}
-                                                                    {
-                                                                        progress[flag]
-                                                                        ? 
-                                                                            <Animated.Image 
-                                                                                source={require('../../assets/symbols/actions/Science.png')}
-                                                                                resizeMode='contain'
-                                                                                style={[{
-                                                                                    position: 'absolute', 
-                                                                                    width: 25,
-                                                                                    height: 25,
-                                                                                    borderRadius: 10,
-                                                                                    backgroundColor: '#f4f'
-                                                                                }, player.flag === flag && this.scienceProgressAnimation
-                                                                                    ? this.scienceProgressAnimation.getLayout() 
-                                                                                    : {bottom: progress[flag].science === 1 ? 0 : progress[flag].science*scienceSpacing-30}]}
-                                                                            />
-                                                                        : undefined
-                                                                    }
-                                                                </View>
-                                                            : undefined
+                                                    }
+                                                    
+                                                    if(cost.science > 0){
+                                                        for(let i = 0; i < cost.science; i++){
+                                                            scienceTicks.push(
+                                                                <View key={i}
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        borderRadius: 15, 
+                                                                        backgroundColor: 'rgb(150, 150, 150)',
+                                                                    }}
+                                                                ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
+                                                            );
                                                         }
+                                                    }
 
-                                                        {
-                                                            cost.influence > 0
-                                                            ? 
-                                                                <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
-                                                                    {influenceTicks}
-                                                                    {
-                                                                        progress[flag]
-                                                                        ? 
-                                                                            <Animated.Image 
-                                                                                source={require('../../assets/symbols/actions/Influence.png')}
-                                                                                resizeMode='contain'
-                                                                                style={[{
-                                                                                    position: 'absolute', 
-                                                                                    width: 25,
-                                                                                    height: 25,
-                                                                                    borderRadius: 10,
-                                                                                    backgroundColor: '#f4f'
-                                                                                }, player.flag === flag && this.influenceProgressAnimation 
-                                                                                    ? this.influenceProgressAnimation.getLayout() 
-                                                                                    : {bottom: (progress[flag].influence === 1 ? 0 : progress[flag].influence*influenceSpacing-30)} ]}
-                                                                            />
-                                                                        : undefined
-                                                                    }
-                                                                </View>
-                                                            : undefined
+                                                    if(cost.influence > 0){
+                                                        for(let i = 0; i < cost.influence; i++){
+                                                            influenceTicks.push(
+                                                                <View key={i}
+                                                                    style={{
+                                                                        width: '100%',
+                                                                        borderRadius: 15, 
+                                                                        backgroundColor: 'rgb(150, 150, 150)',
+                                                                    }}
+                                                                ><Text style={{fontSize: 10, textAlign: 'center'}}>{i+1}</Text></View>
+                                                            );
                                                         }
-                                                        
-                                                    </View>
-                                                );
-                                            })}
+                                                    }
+
+                                                    return (
+                                                        <View key={i} style={styles.flagContainer}> 
+                                                            <Image 
+                                                                source={flagImage}
+                                                                resizeMode='contain'
+                                                                style={{
+                                                                    position: 'absolute',
+                                                                    height: 50,
+                                                                    maxWidth: 75
+                                                                }}
+                                                            />
+
+                                                            {
+                                                                cost.gold > 0
+                                                                ? 
+                                                                    <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
+                                                                        {goldTicks}
+                                                                        {
+                                                                            progress[flag]
+                                                                            ? 
+                                                                                <Animated.Image 
+                                                                                    source={require('../../assets/symbols/actions/Gold.png')}
+                                                                                    resizeMode='contain'
+                                                                                    style={[{
+                                                                                        position: 'absolute', 
+                                                                                        width: 25,
+                                                                                        height: 25,
+                                                                                        borderRadius: 10,
+                                                                                        backgroundColor: '#f4f'
+                                                                                    }, player.flag === flag && this.goldProgressAnimation 
+                                                                                        ? this.goldProgressAnimation.getLayout() 
+                                                                                        : {bottom: (progress[flag].gold === 1 ? 0 : progress[flag].gold * goldSpacing-30)}]}
+                                                                                />
+                                                                            : undefined
+                                                                        }
+                                                                    </View>
+                                                                : undefined
+                                                            }
+
+                                                            {
+                                                                cost.science > 0
+                                                                ?   
+                                                                    <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
+                                                                        {scienceTicks}
+                                                                        {
+                                                                            progress[flag]
+                                                                            ? 
+                                                                                <Animated.Image 
+                                                                                    source={require('../../assets/symbols/actions/Science.png')}
+                                                                                    resizeMode='contain'
+                                                                                    style={[{
+                                                                                        position: 'absolute', 
+                                                                                        width: 25,
+                                                                                        height: 25,
+                                                                                        borderRadius: 10,
+                                                                                        backgroundColor: '#f4f'
+                                                                                    }, player.flag === flag && this.scienceProgressAnimation
+                                                                                        ? this.scienceProgressAnimation.getLayout() 
+                                                                                        : {bottom: progress[flag].science === 1 ? 0 : progress[flag].science*scienceSpacing-30}]}
+                                                                                />
+                                                                            : undefined
+                                                                        }
+                                                                    </View>
+                                                                : undefined
+                                                            }
+
+                                                            {
+                                                                cost.influence > 0
+                                                                ? 
+                                                                    <View style={[{height: cardHeight-50}, styles.progressBarCon]}>
+                                                                        {influenceTicks}
+                                                                        {
+                                                                            progress[flag]
+                                                                            ? 
+                                                                                <Animated.Image 
+                                                                                    source={require('../../assets/symbols/actions/Influence.png')}
+                                                                                    resizeMode='contain'
+                                                                                    style={[{
+                                                                                        position: 'absolute', 
+                                                                                        width: 25,
+                                                                                        height: 25,
+                                                                                        borderRadius: 10,
+                                                                                        backgroundColor: '#f4f'
+                                                                                    }, player.flag === flag && this.influenceProgressAnimation 
+                                                                                        ? this.influenceProgressAnimation.getLayout() 
+                                                                                        : {bottom: (progress[flag].influence === 1 ? 0 : progress[flag].influence*influenceSpacing-30)} ]}
+                                                                                />
+                                                                            : undefined
+                                                                        }
+                                                                    </View>
+                                                                : undefined
+                                                            }
+                                                            
+                                                        </View>
+                                                    );
+                                                })}
+                                            </View>
                                         </View>
-                                    </View>
-                                : undefined
-                            }
+                                    : undefined
+                                }
+                            </View>
                         </View>
                     </View>
                 </View>
@@ -725,9 +757,6 @@ class ExpandedCards1 extends React.Component {
 
 const styles = StyleSheet.create({
     containerCon: {
-        backgroundColor: '#000', 
-        position:'absolute', 
-        left: 15,
         alignItems: 'center', 
         justifyContent: 'center',
     },
@@ -745,7 +774,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center', 
         alignItems: 'center',
 		padding: 8,
-		alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
 	},
 	sideBubblesCon: {
         marginBottom: 10,
@@ -755,7 +784,7 @@ const styles = StyleSheet.create({
     sideBubblesLabel: {
         color: '#f06', 
         fontWeight: 'bold', 
-        fontSize: 30, 
+        fontSize: 24, 
         textShadowColor:'#000',
         textShadowOffset:{
             width: 1,

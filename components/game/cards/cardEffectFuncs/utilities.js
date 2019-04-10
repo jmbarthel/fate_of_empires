@@ -309,7 +309,7 @@ export const validatePickedCard = (card, validationOptions, playerNumber, state)
 
 }
 
-export const pickACard = (fromOptions, callbacksArray, playerNumber, state) => {
+export const pickACard = (fromOptions, callbackArray, playerNumber, state) => {
     // THEORY OF EVOLUTION: You may exile this or a card you played this turn 
     // To buy a card from the supply area that shares the same type
     // fromOptions: this or played cards

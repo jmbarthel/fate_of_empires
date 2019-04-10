@@ -1187,6 +1187,27 @@ class NewGame1 extends React.Component {
 		}
 	}
 
+	confirmAddToWonder = (playerNumber, resources) => {
+		console.log(resources);
+		this.setState(prevState => {
+
+			return {
+				...prevState, 
+				players: {
+					...prevState.players,
+					[playerNumber]: {
+						...prevState.players[playerNumber],
+						resources: {
+							...prevState.players[playerNumber].resources, 
+							
+						}
+					}
+				}
+			}
+		})
+
+	}
+
 	render(){
 		let screenHeight = Dimensions.get('window').height;
 		let cardHeight = screenHeight - 50;
@@ -1330,6 +1351,8 @@ EXPANDED CARDS
 							unExpandHandCard={this.unExpandHandCard.bind(this)}
 							unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
 							unExpandWonderCard={this.unExpandWonderCard.bind(this)}
+
+							confirmAddToWonder={this.confirmAddToWonder.bind(this)}
 						/>
 					{/* : undefined
 				} */}
