@@ -33,6 +33,9 @@ export default DwightDEisenhower = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return DwightDEisenhower(props)
         }
     }
     

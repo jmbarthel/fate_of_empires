@@ -35,6 +35,9 @@ export default AugustusCaesar = (props) => {
             //     },
             //     draw: 1
             // }
+        },
+        returnCard: (props) => {
+            return AugustusCaesar(props)
         }
     }
     

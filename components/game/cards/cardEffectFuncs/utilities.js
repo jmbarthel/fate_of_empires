@@ -2,9 +2,9 @@ import { shuffle } from '../../../utils/utilities.js';
 import { countTypeInHand } from '../../../utils/utilities.js';
 import { State } from 'react-native-gesture-handler';
 
-// ALL Functions here should have playerNumber, state as the last two arguments, so that proper binding of arguments can occur
+// ALL Functions here should have card, playerNumber, state as the last two arguments, so that proper binding of arguments can occur
 
-export const gainResources = (resourceObj, playerNumber, state) => {
+export const gainResources = (resourceObj, card, playerNumber, state) => {
     /*
         This function takes the state, adds the requisite resources to the player resources, then returns the state
 
@@ -47,7 +47,7 @@ export const gainResources = (resourceObj, playerNumber, state) => {
         }
     });
 
-    return {
+    return playCard(card, playerNumber, {
         ...state, 
         players: {
             ...state.players, 
@@ -111,10 +111,10 @@ export const gainResources = (resourceObj, playerNumber, state) => {
                 }
             }
         }
-    }
+    })
 }
 
-export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerNumber, state) => {
+export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, card, playerNumber, state) => {
     /*
         This function multiplies the resources produced by the number of items fulfilling the perWhat
 
@@ -161,7 +161,7 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerN
         resource = numResourcesPer * countTypeInHand(perWhat, state.players[playerNumber].hand);
     }
 
-    return {
+    return playCard(card, playerNumber, {
         ...state, 
         players: {
             ...state.players, 
@@ -173,14 +173,14 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, playerN
                 }
             }
         }
-    }
+    })
 }
 
-export const gainResourcesCondition = (typeOfCard, whereIsCard, resourceObj, playerNumber, state) => {
+export const gainResourcesCondition = (typeOfCard, whereIsCard, resourceObj, card, playerNumber, state) => {
     // Cleopatra: 'person', 'inHand', {gold: 1})
     if(whereIsCard === 'inHand'){
         if(countTypeInHand(typeOfCard, state.player[playerNumber].hand) > 0){
-            return {
+            return playCard(card, playerNumber, {
                 ...state, 
                 players: {
                     ...state.players, 
@@ -194,7 +194,7 @@ export const gainResourcesCondition = (typeOfCard, whereIsCard, resourceObj, pla
                         }
                     }
                 }
-            }
+            })
         }
         // HuaMulan
     } else if(whereIsCard === 'srinivasa'){
@@ -206,7 +206,7 @@ export const gainResourcesCondition = (typeOfCard, whereIsCard, resourceObj, pla
 
 }
 
-export const drawCard = (playerNumber, state) => {
+export const drawCard = (card, playerNumber, state) => {
     /*
         This function draws a card from the designated player's deck and adds it to their hand.
 
@@ -245,21 +245,21 @@ export const drawCard = (playerNumber, state) => {
     }
 }
 
-export const advanceTime = (numberOfAdvanceTimes, playerNumber, state) => {
+export const advanceTime = (numberOfAdvanceTimes, card, playerNumber, state) => {
     return {
         ...state, 
         advanceTimeInProgress: playerNumber, 
     }
 }
 
-export const revealFromTopandDrawOne = (playerNumber, state) => {
+export const revealFromTopandDrawOne = (card, playerNumber, state) => {
     // astronomy - draw a card, reveal the top card you may buy it for 4 less anymix
     return {
         ...state, 
     }
 }
 
-export const exileCard = (location, numOfCards, playerNumber, callbackArray, state) => {
+export const exileCard = (location, numOfCards, callbackArray, card, playerNumber, state) => {
     if(location === 'thisCard'){
         // ANASTASIA +10 inf and exile her
 
@@ -284,19 +284,86 @@ export const exileCard = (location, numOfCards, playerNumber, callbackArray, sta
     
 }
 
-export const placeOnCapital = (playerNumber, state) => {
+const removeCardFromHandAndAddToPlayedCards = (card, playerNumber, state) => {
 
-    // GEORGE WASHINGTON
-    console.log(this);
-    // state.players[playerNumber].capital.other.push(this);
+    let played_cards = state.players[playerNumber].played_cards.concat(state.players[playerNumber].hand.splice(card.props.props.num, 1));
 
     return {
-        ...state
+        ...state, 
+        players: {
+            ...state.players, 
+            [playerNumber]: {
+                ...state.players[playerNumber],
+                played_cards: played_cards, 
+            }
+        }
     }
+}
+
+const removeCardFromCapitalAndAddToPlayedCards = (card, playerNumber, state) => {
+    let played_cards; 
+
+    if(card.props.props.type === 'worker'){
+        played_cards = state.players[playerNumber].played_cards.concat(state.players[playerNumber].capital.workers.splice(card.props.props.num, 1));
+    } else if(card.props.props.type === 'army'){
+        played_cards = state.players[playerNumber].played_cards.concat(state.players[playerNumber].capital.armies.splice(card.props.props.num, 1));
+    } else{
+        played_cards = state.players[playerNumber].played_cards.concat(state.players[playerNumber].capital.other.splice(card.props.props.num, 1));
+    }
+
+    return {
+        ...state, 
+        players: {
+            ...state.players, 
+            [playerNumber]: {
+                ...state.players[playerNumber],
+                played_cards: played_cards, 
+            }
+        }
+    }
+}
+
+export const playCard = (card, playerNumber, state) => {
+    if(!card.props.props.capital){
+        return removeCardFromHandAndAddToPlayedCards(card, playerNumber, state);
+    } else {
+        return removeCardFromCapitalAndAddToPlayedCards(card, playerNumber, state);
+    }
+}
+
+const removeCardFromHand = (card, playerNumber, state) => {
+    state.players[playerNumber].hand.splice(card.props.props.num, 1);
+
+    return state;
+}
+
+export const placeOnCapital = (card, playerNumber, state) => {
+
+    // GEORGE WASHINGTON
+
+    // if already on capital, don't allow
+    if(card.props.props.capital){
+        alert('Already on capital.');
+        return state;
+    }
+
+    return removeCardFromHand(card, playerNumber, {
+        ...state, 
+        players: {
+            ...state.players, 
+            [playerNumber]: {
+                ...state.players[playerNumber],
+                capital: {
+                    ...state.players[playerNumber].capital,
+                    other: state.players[playerNumber].capital.other.concat([card])
+                }
+            }
+        }
+    })
     
 }
 
-export const reduceCost = (type, resource, amount, playerNumber, state) => {
+export const reduceCost = (type, resource, amount, card, playerNumber, state) => {
 
     // Aristotle
 
@@ -304,12 +371,12 @@ export const reduceCost = (type, resource, amount, playerNumber, state) => {
 
 }
 
-export const validatePickedCard = (card, validationOptions, playerNumber, state) => {
+export const validatePickedCard = (validationOptions, card, playerNumber, state) => {
 
 
 }
 
-export const pickACard = (fromOptions, callbackArray, playerNumber, state) => {
+export const pickACard = (fromOptions, callbackArray, card, playerNumber, state) => {
     // THEORY OF EVOLUTION: You may exile this or a card you played this turn 
     // To buy a card from the supply area that shares the same type
     // fromOptions: this or played cards
@@ -328,6 +395,6 @@ export const pickACard = (fromOptions, callbackArray, playerNumber, state) => {
     // callbacks: [pickacard(supplyarea, [swap])]
 }
 
-export const spendAsAny = (type, playerNumber, state) => {
+export const spendAsAny = (type, card, playerNumber, state) => {
     // Queen Victoria
 }

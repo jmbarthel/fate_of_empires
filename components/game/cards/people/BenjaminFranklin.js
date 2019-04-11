@@ -32,6 +32,9 @@ export default BenjaminFranklin = (props) => {
 			// 		}
             //     },
             // }
+        },
+        returnCard: (props) => {
+            return BenjaminFranklin(props)
         }
     }
     

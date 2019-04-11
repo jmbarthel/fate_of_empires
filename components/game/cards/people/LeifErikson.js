@@ -32,6 +32,9 @@ export default LeifErikson = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return LeifErikson(props)
         }
     }
     

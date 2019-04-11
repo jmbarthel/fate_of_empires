@@ -30,6 +30,9 @@ export default FlorenceNightingale = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return FlorenceNightingale(props)
         }
     }
     

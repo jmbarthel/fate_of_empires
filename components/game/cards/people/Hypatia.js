@@ -32,6 +32,9 @@ export default Hypatia = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Hypatia(props)
         }
     }
     

@@ -28,6 +28,9 @@ export default QueenElizabethI = (props) => {
             //         gold: 3
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return QueenElizabethI(props)
         }
     }
       

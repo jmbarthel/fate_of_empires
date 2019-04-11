@@ -32,6 +32,9 @@ export default Boudica = (props) => {
 			// 		}
             //     },
             // }
+        },
+        returnCard: (props) => {
+            return Boudica(props)
         }
     }
     

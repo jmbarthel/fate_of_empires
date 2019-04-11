@@ -54,6 +54,13 @@ class ExpandedCapital1 extends React.Component {
         // }).start();
     }
 
+    returnCard = (card, obj) => {
+        for(let prop in obj){
+            card.props.props[prop] = obj[prop];
+        }
+        return card.props.props.returnCard(card.props.props);
+    }
+
 	render(){
 		return (
 			<TouchableOpacity style={styles.container} onPress={this.props.closeCapital}>
@@ -64,7 +71,7 @@ class ExpandedCapital1 extends React.Component {
                         this.props.capital.workers.length > 0 
                         ? 
                             this.props.capital.workers.map((card, i) => {
-                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
+                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(typeof card === 'function' ? card({num: i, expanded: true, capital: true}) : this.returnCard(card, card, {num: i, expanded: true, capital: true}))} style={styles.card}>{typeof card === 'function' ? card({hand: true}) : this.returnCard(card, {expanded: false, hand: true})}</TouchableOpacity>;
                             })
 
                         : <Text style={{color: '#fff', alignSelf: 'center', fontWeight: 'bold'}}>There are no workers on your capital.</Text>
@@ -77,7 +84,7 @@ class ExpandedCapital1 extends React.Component {
                         this.props.capital.armies.length > 0
                         ? 
                             this.props.capital.armies.map((card, i) => {
-                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
+                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(typeof card === 'function' ? card({num: i, expanded: true, capital: true}) : this.returnCard(card, {num: i, expanded: true, capital: true}))} style={styles.card}>{typeof card === 'function' ? card({hand: true}) : this.returnCard(card, {expanded: false, hand: true})}</TouchableOpacity>;
                             })
 
                         : <Text style={{color: '#fff', alignSelf: 'center', fontWeight: 'bold'}}>There are no armies on your capital.</Text>
@@ -92,7 +99,7 @@ class ExpandedCapital1 extends React.Component {
                             <Text style={styles.labelText}>Other:</Text>
                             
                             {this.props.capital.other.map((card, i) => {
-                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(card({num: i, expanded: true, capital: true}))} style={styles.card}>{card({hand: true})}</TouchableOpacity>;
+                                return <TouchableOpacity key={i} onPress={() => this.props.expandHandCard(typeof card === 'function' ? card({num: i, expanded: true, capital: true}) : this.returnCard(card, {num: i, expanded: true, capital: true}))} style={styles.card}>{typeof card === 'function' ? card({hand: true}) : this.returnCard(card, {expanded: false, hand: true})}</TouchableOpacity>;
                             })}
 
                         </View>

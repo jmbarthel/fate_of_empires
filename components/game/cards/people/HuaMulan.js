@@ -32,6 +32,9 @@ export default HuaMulan = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return HuaMulan(props)
         }
     }
     

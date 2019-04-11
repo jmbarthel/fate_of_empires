@@ -30,6 +30,9 @@ export default JohannSebastianBach = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return JohannSebastianBach(props)
         }
     }
     

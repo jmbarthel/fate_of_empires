@@ -32,6 +32,9 @@ export default SunTzu = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return SunTzu(props)
         }
     }
     

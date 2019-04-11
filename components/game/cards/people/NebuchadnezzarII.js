@@ -28,6 +28,9 @@ export default NebuchadnezzarII = (props) => {
             //         influence: 3
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return NebuchadnezzarII(props)
         }
     }
     

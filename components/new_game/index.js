@@ -20,6 +20,7 @@ import assembleSupplyDeck from '../utils/assemble_supply_cards.js';
 import assembleWonderDeck from '../utils/assemble_wonder_cards.js';
 
 import { shuffle } from '../utils/utilities.js';
+import GeorgeWashington from '../game/cards/people/GeorgeWashington.js';
 
 const mapStateToProps = state => {
     return { 
@@ -177,11 +178,14 @@ class NewGame1 extends React.Component {
 			}
 		}
 
-		for(let i = 0; i < setUpDraws['1'].draw; i++){
-			playerHand.push(playerDeck.pop());
-		}
-
-		playerHand = shuffle(playerHand);
+		// for(let i = 0; i < setUpDraws['1'].draw; i++){
+		// playerHand.push(playerDeck.pop());
+		// }
+		playerHand.push(GeorgeWashington);
+		playerHand.push(GeorgeWashington);
+		playerHand.push(GeorgeWashington);
+		playerHand.push(Peasant);
+		playerHand.push(Peasant);
 
 		let idx = 2;
 
@@ -579,10 +583,10 @@ class NewGame1 extends React.Component {
 		this.setState({expandedCapital: false});
 	}
 
-	chooseOption(choice, card, player, callbackArray){
+	chooseOption(choice, card, player){
 		let { choiceCount, choices } = card.props.props;
 
-		console.log('you chose: ', choice, 'choicecount: ', choiceCount);
+		console.log('you ', player, 'chose: ', choice, 'choicecount: ', choiceCount);
 
 		if(choiceCount === 1){
 			choice = 1;
@@ -601,24 +605,7 @@ class NewGame1 extends React.Component {
 			for(let i = 0; i < num; i++){
 				let func = chosenOption[i];
 
-				prevState = func(player, prevState);
-			}
-			
-			// Remove the card from your hand
-			let played_cards;
-
-			if(!card.props.props.capital){
-				// Playing from your hand
-				played_cards = prevState.players[player].played_cards.concat(prevState.players[player].hand.splice(card.props.props.num, 1));
-			} else{
-				// Playing from the capital
-				if(card.props.props.type === 'worker'){
-					played_cards = prevState.players[player].played_cards.concat(prevState.players[player].capital.workers.splice(card.props.props.num, 1));
-				} else if(card.props.props.type === 'army'){
-					played_cards = prevState.players[player].played_cards.concat(prevState.players[player].capital.armies.splice(card.props.props.num, 1));
-				} else{
-					played_cards = prevState.players[player].played_cards.concat(prevState.players[player].capital.other.splice(card.props.props.num, 1));
-				}
+				prevState = func(card, player, prevState);
 			}
 
 			return {
@@ -629,10 +616,11 @@ class NewGame1 extends React.Component {
 					...prevState.players, 
 					[player]: {
 						...prevState.players[player], 
-						played_cards
 					}
 				}
 			}
+		}, () => {
+			this.checkForEffects();
 		})
 	}
 
@@ -887,8 +875,6 @@ class NewGame1 extends React.Component {
 
 	putOnCapital(card, player){
 
-		console.log('putting on capital', card.props.props);
-
 		if(
 			(
 				card.props.props.type === 'worker' 
@@ -973,6 +959,12 @@ class NewGame1 extends React.Component {
 		return card.props.props.cost;
 	}
 
+	checkForEffects = () => {
+		// Check for cost reduction effects
+		// Check for reveal effects
+		console.log('checking for effects');
+
+	}
 	checkStartOfTurn(){
 		// This is called at the start of each turn, and places cost reductions/other static card effects into state
 		this.setState(prevState => {
@@ -1199,7 +1191,6 @@ class NewGame1 extends React.Component {
 						...prevState.players[playerNumber],
 						resources: {
 							...prevState.players[playerNumber].resources, 
-							
 						}
 					}
 				}

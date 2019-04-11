@@ -35,6 +35,9 @@ export default KarlMarx = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return KarlMarx(props)
         }
     }
     

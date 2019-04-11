@@ -32,6 +32,9 @@ export default WuZetian = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return WuZetian(props)
         }
     }
     

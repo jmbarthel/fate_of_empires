@@ -43,6 +43,9 @@ export default CleopatraVII = (props) => {
             //         },
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return CleopatraVII(props)
         }
     }
     

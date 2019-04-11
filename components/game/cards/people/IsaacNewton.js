@@ -26,6 +26,9 @@ export default IsaacNewton = (props) => {
             // 2: {
             //     spendAsAny: 'science'
             // }
+        },
+        returnCard: (props) => {
+            return IsaacNewton(props)
         }
     }
     

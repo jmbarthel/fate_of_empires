@@ -16,7 +16,7 @@ export default GeorgeWashington = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: [gainResources.bind(this, {influence: 5})],
+            1: [gainResources.bind(this, {influence: 4})],
             2: [placeOnCapital.bind(this)]
             // 1: {
             //     produceResource: {
@@ -34,9 +34,12 @@ export default GeorgeWashington = (props) => {
                 },
             }
         },
-        removableFromCapital: false
+        removableFromCapital: false,
+        returnCard: (props) => {
+            return GeorgeWashington(props)
+        }
     }
-    
+
     if(props.expanded){
         return <Image style={{width: '100%', height: '100%'}} props={props} source={require('../../../../assets/people/GeorgeWashington.jpg')} />
     } else{

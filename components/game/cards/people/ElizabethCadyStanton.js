@@ -34,6 +34,9 @@ export default ElizabethCadyStanton = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return ElizabethCadyStanton(props)
         }
     }
     

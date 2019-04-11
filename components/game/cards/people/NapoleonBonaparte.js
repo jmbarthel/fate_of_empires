@@ -37,6 +37,9 @@ export default NapoleonBonaparte = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return NapoleonBonaparte(props)
         }
     }
     

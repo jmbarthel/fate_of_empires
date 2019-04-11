@@ -32,6 +32,9 @@ export default MahatmaGandhi = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return MahatmaGandhi(props)
         }
     }
     

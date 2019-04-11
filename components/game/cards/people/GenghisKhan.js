@@ -32,6 +32,9 @@ export default GenghisKhan = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return GenghisKhan(props)
         }
     }
     

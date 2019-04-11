@@ -34,6 +34,9 @@ export default Hatshepsut = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Hatshepsut(props)
         }
     }
     

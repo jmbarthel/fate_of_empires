@@ -30,6 +30,9 @@ export default MurasakiShikibu = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return MurasakiShikibu(props)
         }
     }
     

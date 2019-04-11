@@ -32,6 +32,9 @@ export default AlbertEinstein = (props) => {
 			// 		}
             //     },
             // }
+        },
+        returnCard: (props) => {
+            return AlbertEinstein(props)
         }
     }
     

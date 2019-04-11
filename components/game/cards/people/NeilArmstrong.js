@@ -31,6 +31,9 @@ export default NeilArmstrong = (props) => {
             //         any: 2
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return NeilArmstrong(props)
         }
     }
     

@@ -30,6 +30,9 @@ export default Pocahontas = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Pocahontas(props)
         }
     }
         

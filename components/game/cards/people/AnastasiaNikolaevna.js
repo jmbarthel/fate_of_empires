@@ -37,6 +37,9 @@ export default AnastasiaNikolaevna = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return AnastasiaNikolaevna(props)
         }
     }
     

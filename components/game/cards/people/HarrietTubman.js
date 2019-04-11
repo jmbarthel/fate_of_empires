@@ -32,6 +32,9 @@ export default HarrietTubman = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return HarrietTubman(props)
         }
     }
     

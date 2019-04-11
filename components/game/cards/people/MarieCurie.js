@@ -29,6 +29,9 @@ export default MarieCurie = (props) => {
             //     },
             //     draw: 1
             // }
+        },
+        returnCard: (props) => {
+            return MarieCurie(props)
         }
     }
     

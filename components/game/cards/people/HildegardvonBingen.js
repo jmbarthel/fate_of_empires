@@ -30,6 +30,9 @@ export default HildegardvonBingen = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return HildegardvonBingen(props)
         }
     }
     

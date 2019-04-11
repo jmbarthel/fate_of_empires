@@ -32,6 +32,9 @@ export default NelsonMandela = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return NelsonMandela(props)
         }
     }
     

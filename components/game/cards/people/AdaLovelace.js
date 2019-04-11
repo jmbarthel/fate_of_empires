@@ -31,6 +31,9 @@ export default AdaLovelace = (props) => {
             //         science: 'supply'
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return AdaLovelace(props)
         }
     }
     

@@ -11,7 +11,12 @@ class CapitalCard1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-    }
+		}
+		
+		returnCard(){
+				this.props.card.props.props.hand = 0; 
+				return this.props.card.props.props.returnCard(this.props.card.props.props);
+		}
     
     // onPress(){
     //     console.log('hi');
@@ -34,7 +39,7 @@ class CapitalCard1 extends React.Component {
 		return (
 			<View style={[styles.container, {top: 0-(this.props.num * 100)}]}>
 				<View>
-					{this.props.card({hand: 0})}
+					{typeof this.props.card === 'function' ? this.props.card({hand: 0}) : this.returnCard() }
 				</View>
 			</View>
 		);

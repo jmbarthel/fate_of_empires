@@ -33,6 +33,9 @@ export default Aristotle = (props) => {
             //         },
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Aristotle(props)
         }
     }
     

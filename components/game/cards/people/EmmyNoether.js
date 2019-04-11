@@ -36,6 +36,9 @@ export default EmmyNoether = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return EmmyNoether(props)
         }
     }
     

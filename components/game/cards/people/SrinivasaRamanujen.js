@@ -34,6 +34,9 @@ export default SrinivasaRamanujen = (props) => {
             //     // This case will need to be handled on a case by case basis
             //     srinivasaramanujen: true
             // }
+        },
+        returnCard: (props) => {
+            return SrinivasaRamanujen(props)
         }
     }
     

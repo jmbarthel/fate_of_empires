@@ -30,6 +30,9 @@ export default Sappho = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Sappho(props)
         }
     }
     

@@ -29,6 +29,9 @@ export default QueenVictoria = (props) => {
             // 2: {
             //     spendAsAny: 'influence'
             // }
+        },
+        returnCard: (props) => {
+            return QueenVictoria(props)
         }
     }
     

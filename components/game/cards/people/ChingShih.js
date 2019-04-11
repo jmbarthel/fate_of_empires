@@ -32,6 +32,9 @@ export default ChingShih = (props) => {
 			// 		}
             //     },
             // }
+        },
+        returnCard: (props) => {
+            return ChingShih(props)
         }
     }
     

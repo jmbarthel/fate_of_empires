@@ -26,6 +26,9 @@ export default MansaMusa = (props) => {
             // 2: {
             //     spendAsAny: 'gold'
             // }
+        },
+        returnCard: (props) => {
+            return MansaMusa(props)
         }
     }
     

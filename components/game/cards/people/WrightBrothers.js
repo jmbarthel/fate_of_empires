@@ -35,6 +35,9 @@ export default WrightBrothers = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return WrightBrothers(props)
         }
     }
     
