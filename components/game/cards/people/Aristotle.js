@@ -18,21 +18,6 @@ export default Aristotle = (props) => {
         choices: {
             1: [gainResources.bind(this, {science: 4})],
             2: [reduceCost.bind('city', 'gold', 3)]
-            // 1: {
-            //     produceResource: {
-            //         gold: 0,
-            //         science: 4, 
-            //         influence: 0,
-            //         any: 0,
-            //     }
-            // },
-            // 2: {
-            //     reduceCost: {
-            //         city: {
-            //             gold: 3, 
-            //         },
-            //     }
-            // }
         },
         returnCard: (props) => {
             return Aristotle(props)

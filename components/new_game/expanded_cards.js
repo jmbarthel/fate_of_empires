@@ -150,7 +150,7 @@ class ExpandedCards1 extends React.Component {
         }
     }
 
-    addResourceToWonder(resource){
+    addResourceToWonder = (resource) => {
         console.log('ADDING TO RESOURCE', resource);
         
         if(this.props.player.resources[resource] - this['temp'+resource] - 1 < 0){
@@ -184,13 +184,96 @@ class ExpandedCards1 extends React.Component {
         });
     }
 
-    confirmResourceAdd(){
+    confirmResourceAdd = () => {
         console.log('Confirming');
         this.props.confirmAddToWonder(this.props.playerNumber, {
             science: this.tempscience,
             influence: this.tempinfluence,
             gold: this.tempgold,
         });
+    }
+    
+    calculateSupplyCost = (type) => {
+        let cardCost = this.props.expandedSupplyCard.props.props.cost[type];
+        let cardType = this.props.expandedSupplyCard.props.props.type;
+        let cardRegion = this.props.expandedSupplyCard.props.props.region;
+        let playerRegion = this.props.player.region;
+
+        if(cardType === 'person'){
+            return cardCost 
+                - parseInteger((this.props.permanent_cost_reductions['person']||{})[type]) 
+                - parseInteger((this.props.temporary_cost_reductions['person']||{})[type])
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+            ;
+
+        } else if(cardType === 'city'){
+            return cardCost 
+                - parseInteger((this.props.permanent_cost_reductions['city']||{})[type]) 
+                - parseInteger((this.props.temporary_cost_reductions['city']||{})[type])
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+            ;
+
+        } else if(cardType === 'technology'){
+            return cardCost 
+                - parseInteger((this.props.permanent_cost_reductions['technology']||{})[type]) 
+                - parseInteger((this.props.temporary_cost_reductions['technology']||{})[type])
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+            ;
+
+        } else if(cardType === 'worker'){
+            return cardCost 
+                - parseInteger((this.props.permanent_cost_reductions['worker']||{})[type]) 
+                - parseInteger((this.props.temporary_cost_reductions['worker']||{})[type])
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+            ;
+
+        } else if(cardType === 'army'){
+            return cardCost 
+                - parseInteger((this.props.permanent_cost_reductions['army']||{})[type]) 
+                - parseInteger((this.props.temporary_cost_reductions['army']||{})[type])
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+            ;
+
+        } else{
+            return cardCost;
+        }
+
+    }
+
+    calculateWonderCost = (type) => {
+        let cardCost = this.props.expandedWonderCard.props.props.cost[type];
+        let cardType = this.props.expandedWonderCard.props.props.type;
+        let cardRegion = this.props.expandedWonderCard.props.props.region;
+        let playerRegion = this.props.player.region;
+
+        if(cardType === 'ancient_wonder'){
+            return cardCost 
+                - parseInteger((this.props.permanent_cost_reductions['A_Wonders']||{})[type]) 
+                - parseInteger((this.props.permanent_cost_reductions['A_M_Wonders']||{})[type]) 
+                - parseInteger((this.props.temporary_cost_reductions['A_Wonders']||{})[type])
+                - parseInteger((this.props.temporary_cost_reductions['A_M_Wonders']||{})[type])
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+            ;
+
+        } else if(cardType === 'modern_wonder'){
+            return cardCost 
+                - parseInteger((this.props.permanent_cost_reductions['M_Wonders']||{})[type]) 
+                - parseInteger((this.props.permanent_cost_reductions['AllWonders']||{})[type]) 
+                - parseInteger((this.props.temporary_cost_reductions['M_Wonders']||{})[type])
+                - parseInteger((this.props.temporary_cost_reductions['AllWonders']||{})[type])
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+                - parseInteger((cardRegion === playerRegion) ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]) : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]))
+            ;
+
+        } else{
+            return cardCost;
+        }
     }
 
 	render() {
@@ -202,7 +285,12 @@ class ExpandedCards1 extends React.Component {
         
         if(this.props.expandSupplyCard){
             // SUPPLY CARD
-            return <View pointerEvents='box-none' style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, right: 15}}>
+            return <View pointerEvents='box-none' style={{
+                backgroundColor: '#000', 
+                position:'absolute', 
+                width: cardWidth, 
+                height: cardHeight, right: 15
+                }}>
                         {this.props.expandedSupplyCard}
                         <TouchableOpacity 
                             onPress={this.props.unExpandSupplyCard}
@@ -374,7 +462,7 @@ class ExpandedCards1 extends React.Component {
                                                         position: 'absolute',
                                                     }} 
                                                 />
-                                                <Text style={styles.sideBubblesLabel}>{this.props.player.resources.gold - this.tempgold}</Text>
+                                                <Text style={styles.sideBubblesLabel}>{this.calculateWonderCost('gold') - this.tempgold}</Text>
                                             </View>
                                             
                                             {
@@ -424,7 +512,7 @@ class ExpandedCards1 extends React.Component {
                                                         position: 'absolute',
                                                     }} 
                                                 />
-                                                <Text style={styles.sideBubblesLabel}>{this.props.player.resources.science - this.tempscience}</Text>
+                                                <Text style={styles.sideBubblesLabel}>{this.calculateWonderCost('science') - this.tempscience}</Text>
                                             </View>
                                             
                                             {
@@ -473,7 +561,7 @@ class ExpandedCards1 extends React.Component {
                                                 position: 'absolute',
                                             }} 
                                         />
-                                        <Text style={styles.sideBubblesLabel}>{this.props.player.resources.influence - this.tempinfluence}</Text>
+                                        <Text style={styles.sideBubblesLabel}>{this.calculateWonderCost('influence') - this.tempinfluence}</Text>
                                     </View>
 
                                     {
@@ -672,7 +760,14 @@ class ExpandedCards1 extends React.Component {
         } else if(this.props.expandHandCard){
             // HAND CARD
             return <View pointerEvents='box-none' style={{width: '100%', height: '100%', position: 'absolute'}}>
-                <View style={{backgroundColor: '#000', position:'absolute', width: cardWidth, height: cardHeight, left: ((screenWidth/2) - (cardWidth/2)), top: 25}}>
+                <View style={{
+                    backgroundColor: '#000', 
+                    position:'absolute', 
+                    width: cardWidth, 
+                    height: cardHeight, 
+                    left: ((screenWidth/2) - (cardWidth/2)),
+                    top: 25}}
+                >
                     {this.props.expandedHandCard}
                     <TouchableOpacity 
                         style={{

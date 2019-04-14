@@ -1,6 +1,5 @@
 import { shuffle } from '../../../utils/utilities.js';
 import { countTypeInHand } from '../../../utils/utilities.js';
-import { State } from 'react-native-gesture-handler';
 
 // ALL Functions here should have card, playerNumber, state as the last two arguments, so that proper binding of arguments can occur
 
@@ -364,11 +363,22 @@ export const placeOnCapital = (card, playerNumber, state) => {
 }
 
 export const reduceCost = (type, resource, amount, card, playerNumber, state) => {
+    // Aristotle 'city', 'gold', 3
+    // Pocahontas 'city', 'gold', 3
 
-    // Aristotle
-
-    // Pocahontas
-
+    return {
+        ...state, 
+        temporary_cost_reductions: {
+            ...state.temporary_cost_reductions,
+            [playerNumber]: {
+                ...state.temporary_cost_reductions[playerNumber],
+                [type]: {
+                    ...state.temporary_cost_reductions[playerNumber].type,
+                    [resource]: ((state.temporary_cost_reductions[playerNumber][type]||{})[resource]||0) + amount, 
+                },
+            }
+        }
+    }
 }
 
 export const validatePickedCard = (validationOptions, card, playerNumber, state) => {

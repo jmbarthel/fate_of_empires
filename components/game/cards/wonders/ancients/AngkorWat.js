@@ -20,8 +20,9 @@ export default AngkorWat = (props) => {
             width: props.layout.width, 
             maxHeight: props.layout.height,
             ...props.style
-        }} 
-        resizeMode='contain'
-        props={props} source={require('../../../../../assets/wonders/ancients_sprites/AngkorWat.png')} />
+            }}
+            resizeMode='contain'
+            props={props} source={require('../../../../../assets/wonders/ancients_sprites/AngkorWat.png')}
+        />
     }
 }

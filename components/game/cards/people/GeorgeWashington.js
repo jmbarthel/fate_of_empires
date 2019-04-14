@@ -18,14 +18,6 @@ export default GeorgeWashington = (props) => {
         choices: {
             1: [gainResources.bind(this, {influence: 4})],
             2: [placeOnCapital.bind(this)]
-            // 1: {
-            //     produceResource: {
-            //         influence: 5
-            //     }
-            // },
-            // 2: {
-            //     placeOnCapital: true
-            // }
         },
         onCapital: {
             reduceCost: {
