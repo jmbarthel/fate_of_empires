@@ -12,9 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { changeTurn } from "../../actions/index.js";
 
 // Setup
-import setupInitialState from '../utils/utilities.js';
-
-import { shuffle } from '../utils/utilities.js';
+import { shuffle, setupInitialState } from '../utils/utilities.js';
 
 const mapStateToProps = state => {
     return { 
@@ -32,7 +30,7 @@ class NewGame1 extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = setupInitialState(props.num_of_players);
+		this.state = setupInitialState(this.props.num_of_players);
 
 		/*
 			Each player is an object as such: 
@@ -321,15 +319,15 @@ class NewGame1 extends React.Component {
 				...prevState, 
 				expandHandCard: false, 
 				expandedHandCard: false, 
-				players: {
-					...prevState.players, 
-					[player]: {
-						...prevState.players[player], 
-					}
-				}
+			
+				expandSupplyCard: false, 
+				expandedSupplyCard: false,
+
+				expandWonderCard: false, 
+				expandedWonderCard: false, 
 			}
 		}, () => {
-			this.checkForEffects();
+			this.checkForEffects(card, player);
 		})
 	}
 
@@ -668,12 +666,19 @@ class NewGame1 extends React.Component {
 		return card.props.props.cost;
 	}
 
-	checkForEffects = () => {
-		// Check for cost reduction effects
+	checkForEffects = (card, player) => {
+		// Check for 
 		// Check for reveal effects
-		console.log('checking for effects');
+
+		if(this.state.callbacks.length > 0){
+			let func = this.state.callbacks.shift();
+			this.setState(prevState => {
+				return func(card, player, prevState)
+			});
+		}
 
 	}
+
 	checkStartOfTurn(){
 		// This is called at the start of each turn, and places cost reductions/other static card effects into state
 		this.setState(prevState => {
@@ -923,7 +928,6 @@ class NewGame1 extends React.Component {
 
 		return (
 			<View style={styles.container}>
-
 				<View style={[styles.areasContainer, {height: '70%'}]}>
 					<SupplyArea 
 						supplyDeck={this.state.supplyDeck}
@@ -971,6 +975,7 @@ DECKS
 {/* 
 OPPONENTS
 */}
+				<View pointerEvents='box-none' style={{ height: '100%', width: '100%', color: 'rgba(150, 150, 0, 0.5)', position: 'absolute',}}></View>
 
 				<View style={this.state.dim ? [styles.opponentContainer, styles.opponentContainerExp, {top: 0, width: '85%', right: null}] : styles.opponentContainer}>
 					{	this.state.dim ? 

@@ -336,7 +336,7 @@ const removeCardFromHand = (card, playerNumber, state) => {
     return state;
 }
 
-export const placeOnCapital = (card, playerNumber, state) => {
+export const placeOnCapital = (callbacks, card, playerNumber, state) => {
 
     // GEORGE WASHINGTON
 
@@ -348,8 +348,9 @@ export const placeOnCapital = (card, playerNumber, state) => {
 
     return removeCardFromHand(card, playerNumber, {
         ...state, 
+        callbacks: state.callbacks.concat(callbacks),
         players: {
-            ...state.players, 
+            ...state.players,
             [playerNumber]: {
                 ...state.players[playerNumber],
                 capital: {
@@ -358,14 +359,13 @@ export const placeOnCapital = (card, playerNumber, state) => {
                 }
             }
         }
-    })
+    });
     
 }
 
 export const reduceCost = (type, resource, amount, card, playerNumber, state) => {
     // Aristotle 'city', 'gold', 3
     // Pocahontas 'city', 'gold', 3
-
     return {
         ...state, 
         temporary_cost_reductions: {

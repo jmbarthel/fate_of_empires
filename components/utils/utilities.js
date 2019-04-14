@@ -1,7 +1,6 @@
 // Setup
 import assembleSupplyDeck from '../utils/assemble_supply_cards.js';
 import assembleWonderDeck from '../utils/assemble_wonder_cards.js';
-import { shuffle } from '../utils/utilities.js';
 
 // Cards
 import Peasant from '../game/cards/starters/Peasant.js';
@@ -21,8 +20,6 @@ export const shuffle = a => {
 
 export const setupInitialState = (num_of_players) => {
     let enemyArr = {};
-
-		let num_of_players = num_of_players;
 
 		// SET ENEMIES
 		let num_of_enemies = num_of_players - 1;
@@ -215,6 +212,7 @@ export const setupInitialState = (num_of_players) => {
 
 			permanent_cost_reductions,
 			temporary_cost_reductions,
+            callbacks: [],
 
 			players: {
 				0: {
@@ -343,11 +341,11 @@ export const parseInteger = (value) => {
             return 0;
         case null: 
             return 0;
-        case isNaN(val):
+        case isNaN(value):
             return 0;
-        case isNaN(parseInt(val)): 
+        case isNaN(parseInt(value)): 
             return 0;
         default: 
-            return parseInt(val);
+            return parseInt(value);
     }
 }
