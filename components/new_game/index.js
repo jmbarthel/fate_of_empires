@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { changeTurn } from "../../actions/index.js";
 
 // Setup
-import { shuffle, setupInitialState } from '../utils/utilities.js';
+import { shuffle, setupInitialState, endOfTurnCleanup } from '../utils/utilities.js';
 
 const mapStateToProps = state => {
     return { 
@@ -690,172 +690,29 @@ class NewGame1 extends React.Component {
 	}
 
 	endTurn = (playerNum) => {
+		
 		if(this.props.turn === playerNum){
-			let player = this.state.players[playerNum],
-				hand = player.hand,
-				discard = player.discard, 
-				deck = player.deck
-				played_cards = player.played_cards;
 	
-			if(hand.length > 0){
-				played_cards = played_cards.concat(hand);
-				hand = [];
-			}
-	
-			discard = discard.concat(played_cards);
-			played_cards = [];
-	
-			if(deck.length >= 5){
-				hand.push(deck.pop());
-				hand.push(deck.pop());
-				hand.push(deck.pop());
-				hand.push(deck.pop());
-				hand.push(deck.pop());
-			} else{
-				let x = deck.length;
-	
-				for(let i = 0; i < x; i++){
-					hand.push(deck.pop());
-				}
-	
-				deck = deck.concat(discard);
-	
-				discard = [];
-	
-				deck = shuffle(deck);
-	
-				while(hand.length < 5){
-					hand.push(deck.pop());
-				}
-			}
-	
-			let x = this;
+			let _this = this;
 	
 			this.setState(prevState => {
-				let wondersRevealed, wonderSupply, ageOfEnlightenment, resolvingAgeOfEnlightenment;
+				return endOfTurnCleanup(_this.props.turn, playerNum, prevState);
 
-				if(prevState.governmentPurchased){
-					wondersRevealed = JSON.parse(JSON.stringify(prevState.wondersRevealed));
-					wonderSupply = JSON.parse(JSON.stringify(prevState.wonderSupply));
-
-					// cycle the wonders
-					let wonderToPopIdx;
-
-					for(let i = 0; i < prevState.wondersRevealed.length; i++){
-						if(Object.keys(prevState.wondersRevealed[i].claimedBy).length <= 0){
-							wonderToPopIdx = i;
-							break;
-						}
-					}
-
-					let newWonder = wonderSupply.pop();
-					if(newWonder.card.props.props.name === 'ageOfEnlightenment'){
-						ageOfEnlightenment = true;
-						resolvingAgeOfEnlightenment = true;
-					}
-	
-					wondersRevealed.splice(wonderToPopIdx, 1);
-					wondersRevealed.push(wonderSupply.pop());
-
-				} else{
-					wondersRevealed = prevState.wondersRevealed;
-					wonderSupply = prevState.wonderSupply;
-					ageOfEnlightenment = false;
-					resolvingAgeOfEnlightenment = false;
-				}
-
-				return {
-					...prevState, 
-					wondersRevealed, 
-					wonderSupply,
-					ageOfEnlightenment,
-					startOfTurnQueue: true,
-					expandedCapital: false,
-					expandHandCard: false,
-					expandedHandCard: false,
-					expandSupplyCard: false,
-					expandedSupplyCard: false,
-					expandWonderCard: false,
-					expandedWonderCard: false,
-					players: {
-						...prevState.players,
-						[playerNum]: {
-							...prevState.players[playerNum],
-							hand, 
-							deck, 
-							played_cards, 
-							discard, 
-							resources: {
-								gold: 0, 
-								science: 0, 
-								influence: 0,
-								any: 0,
-								toward: {
-									person: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									}, 
-									technology: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									}, 
-									city: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									}, 
-									A_M_wonders: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									}, 
-									N_wonders: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									}, 
-									allWonders: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									}, 
-									yourRegion: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									},
-									otherRegion: {
-										gold: 0, 
-										science: 0, 
-										influence: 0,
-										any: 0,
-									}
-								}
-							},
-						},
-					}
-				}
+				
 			}, () => {
 				// Close the sidebar
-				x._toggleSideBar();
+				_this._toggleSideBar();
 				// End the turn, advance to the next turn or roll back to zero if at max turn
-				x.props.changeTurn(11);
+				_this.props.changeTurn(11);
 				setTimeout(() => {
 					alert('Your turn.');
-					x.props.changeTurn(0);
+					_this.props.changeTurn(0);
 				}, 500);
 			});
+		} else{
+			// Trying to end the turn when it is not your turn.
+			alert('Not your turn');
 		}
-
 	}
 
 	undoLastAction = () => {

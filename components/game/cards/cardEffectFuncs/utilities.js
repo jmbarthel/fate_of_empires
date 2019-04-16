@@ -283,6 +283,9 @@ export const exileCard = (location, numOfCards, callbackArray, card, playerNumbe
     
 }
 
+/**
+ * Used by playCard
+ */
 const removeCardFromHandAndAddToPlayedCards = (card, playerNumber, state) => {
 
     let played_cards = state.players[playerNumber].played_cards.concat(state.players[playerNumber].hand.splice(card.props.props.num, 1));
@@ -299,6 +302,9 @@ const removeCardFromHandAndAddToPlayedCards = (card, playerNumber, state) => {
     }
 }
 
+/**
+ * Used by playCard
+ */
 const removeCardFromCapitalAndAddToPlayedCards = (card, playerNumber, state) => {
     let played_cards; 
 
@@ -322,7 +328,10 @@ const removeCardFromCapitalAndAddToPlayedCards = (card, playerNumber, state) => 
     }
 }
 
-export const playCard = (card, playerNumber, state) => {
+/**
+ * Removes a card from the relevant location and adds to the played cards
+ */
+const playCard = (card, playerNumber, state) => {
     if(!card.props.props.capital){
         return removeCardFromHandAndAddToPlayedCards(card, playerNumber, state);
     } else {
@@ -330,12 +339,18 @@ export const playCard = (card, playerNumber, state) => {
     }
 }
 
+/**
+ * Simply removes a card from the hand of the passed in players hand
+ */
 const removeCardFromHand = (card, playerNumber, state) => {
     state.players[playerNumber].hand.splice(card.props.props.num, 1);
 
     return state;
 }
 
+/**
+ * Places the card on the capital 
+ */
 export const placeOnCapital = (callbacks, card, playerNumber, state) => {
 
     // GEORGE WASHINGTON
@@ -364,9 +379,9 @@ export const placeOnCapital = (callbacks, card, playerNumber, state) => {
 }
 
 export const reduceCost = (type, resource, amount, card, playerNumber, state) => {
-    // Aristotle 'city', 'gold', 3
-    // Pocahontas 'city', 'gold', 3
-    return {
+    // Aristotle 'person', 'gold', 3
+    // Pocahontas 'person', 'gold', 3
+    return playCard(card, playerNumber, {
         ...state, 
         temporary_cost_reductions: {
             ...state.temporary_cost_reductions,
@@ -378,7 +393,7 @@ export const reduceCost = (type, resource, amount, card, playerNumber, state) =>
                 },
             }
         }
-    }
+    })
 }
 
 export const validatePickedCard = (validationOptions, card, playerNumber, state) => {

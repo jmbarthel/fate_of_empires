@@ -165,9 +165,9 @@ export const setupInitialState = (num_of_players) => {
 		// for(let i = 0; i < setUpDraws['1'].draw; i++){
 		// playerHand.push(playerDeck.pop());
 		// }
-		playerHand.push(GeorgeWashington);
-		playerHand.push(GeorgeWashington);
-		playerHand.push(GeorgeWashington);
+		playerHand.push(Aristotle);
+		playerHand.push(Aristotle);
+		playerHand.push(Aristotle);
 		playerHand.push(Peasant);
 		playerHand.push(Peasant);
 
@@ -212,6 +212,20 @@ export const setupInitialState = (num_of_players) => {
 
 			permanent_cost_reductions,
 			temporary_cost_reductions,
+
+			choosingACard: false,
+			choosingACardCallback: false,
+
+			revealedCards: [
+				// This should be an array of objects like such: 
+				/**
+				 {
+					 card: // a card object
+					 location: // the place it was revealed from
+				 }
+				 */
+			],
+
             callbacks: [],
 
 			players: {
@@ -322,6 +336,159 @@ export const setupInitialState = (num_of_players) => {
 
 		};
 
+}
+
+export const endOfTurnCleanup = (turn, playerNum, prevState) => {
+	let player = prevState.players[playerNum],
+		hand = player.hand,
+		discard = player.discard, 
+		deck = player.deck
+		played_cards = player.played_cards;
+
+	if(hand.length > 0){
+		played_cards = played_cards.concat(hand);
+		hand = [];
+	}
+
+	discard = discard.concat(played_cards);
+	played_cards = [];
+
+	if(deck.length >= 5){
+		hand.push(deck.pop());
+		hand.push(deck.pop());
+		hand.push(deck.pop());
+		hand.push(deck.pop());
+		hand.push(deck.pop());
+	} else{
+		let x = deck.length;
+
+		for(let i = 0; i < x; i++){
+			hand.push(deck.pop());
+		}
+
+		deck = deck.concat(discard);
+
+		discard = [];
+
+		deck = shuffle(deck);
+
+		while(hand.length < 5){
+			hand.push(deck.pop());
+		}
+	}
+
+	let wondersRevealed, wonderSupply, ageOfEnlightenment, resolvingAgeOfEnlightenment;
+
+	if(prevState.governmentPurchased){
+		wondersRevealed = JSON.parse(JSON.stringify(prevState.wondersRevealed));
+		wonderSupply = JSON.parse(JSON.stringify(prevState.wonderSupply));
+
+		// cycle the wonders
+		let wonderToPopIdx;
+
+		for(let i = 0; i < prevState.wondersRevealed.length; i++){
+			if(Object.keys(prevState.wondersRevealed[i].claimedBy).length <= 0){
+				wonderToPopIdx = i;
+				break;
+			}
+		}
+
+		let newWonder = wonderSupply.pop();
+		if(newWonder.card.props.props.name === 'ageOfEnlightenment'){
+			ageOfEnlightenment = true;
+			resolvingAgeOfEnlightenment = true;
+		}
+
+		wondersRevealed.splice(wonderToPopIdx, 1);
+		wondersRevealed.push(wonderSupply.pop());
+
+	} else{
+		wondersRevealed = prevState.wondersRevealed;
+		wonderSupply = prevState.wonderSupply;
+		ageOfEnlightenment = false;
+		resolvingAgeOfEnlightenment = false;
+	}
+
+	return {
+		...prevState, 
+		wondersRevealed, 
+		wonderSupply,
+		ageOfEnlightenment,
+		startOfTurnQueue: true,
+		expandedCapital: false,
+		expandHandCard: false,
+		expandedHandCard: false,
+		expandSupplyCard: false,
+		expandedSupplyCard: false,
+		expandWonderCard: false,
+		expandedWonderCard: false,
+		players: {
+			...prevState.players,
+			[playerNum]: {
+				...prevState.players[playerNum],
+				hand, 
+				deck, 
+				played_cards, 
+				discard, 
+				resources: {
+					gold: 0, 
+					science: 0, 
+					influence: 0,
+					any: 0,
+					toward: {
+						person: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						technology: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						city: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						A_M_wonders: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						N_wonders: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						allWonders: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}, 
+						yourRegion: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						},
+						otherRegion: {
+							gold: 0, 
+							science: 0, 
+							influence: 0,
+							any: 0,
+						}
+					}
+				},
+			},
+		}
+	}
 }
 
 export const countTypeInHand = (type, hand) => {

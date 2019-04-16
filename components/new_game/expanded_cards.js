@@ -372,6 +372,7 @@ class ExpandedCards1 extends React.Component {
                                                     height: '100%', 
                                                 }} 
                                             />
+                                            <Text>{this.calculateSupplyCost('gold')}</Text>
                                         </LinearGradient>
                                     </View>
                                 : undefined
@@ -391,6 +392,7 @@ class ExpandedCards1 extends React.Component {
                                                     height: '100%', 
                                                 }} 
                                             />
+                                            <Text>{this.calculateSupplyCost('science')}</Text>
                                         </LinearGradient>
                                     </View>
                                 : undefined
