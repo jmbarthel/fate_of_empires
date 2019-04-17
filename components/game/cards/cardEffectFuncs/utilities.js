@@ -130,7 +130,7 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, card, p
     //eachworkeroncapital
     if(perWhat === 'eachWorkerOnCapital'){
         console.log('produce resource per worker on capital')
-        resource = numResourcesPer * state.player[playerNumber].capital.workers.length;
+        resource = numResourcesPer * state.players[playerNumber].capital.workers.length;
     }
 
     //eachPersonInHand
@@ -178,7 +178,7 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, card, p
 export const gainResourcesCondition = (typeOfCard, whereIsCard, resourceObj, card, playerNumber, state) => {
     // Cleopatra: 'person', 'inHand', {gold: 1})
     if(whereIsCard === 'inHand'){
-        if(countTypeInHand(typeOfCard, state.player[playerNumber].hand) > 0){
+        if(countTypeInHand(typeOfCard, state.players[playerNumber].hand) > 0){
             return playCard(card, playerNumber, {
                 ...state, 
                 players: {

@@ -276,10 +276,12 @@ class ExpandedCards1 extends React.Component {
 
         if(cardType === 'ancient_wonder'){
             return cardCost 
-                - parseInteger((this.props.permanent_cost_reductions['A_Wonders']||{})[type]||0) 
-                - parseInteger((this.props.permanent_cost_reductions['A_M_Wonders']||{})[type]||0)
-                - parseInteger((this.props.temporary_cost_reductions['A_Wonders']||{})[type]||0)
-                - parseInteger((this.props.temporary_cost_reductions['A_M_Wonders']||{})[type]||0)
+                - parseInteger((this.props.permanent_cost_reductions['A_wonders']||{})[type]||0) 
+                - parseInteger((this.props.permanent_cost_reductions['A_M_wonders']||{})[type]||0)
+                - parseInteger((this.props.permanent_cost_reductions['allWonders']||{})[type]||0)
+                - parseInteger((this.props.temporary_cost_reductions['A_wonders']||{})[type]||0)
+                - parseInteger((this.props.temporary_cost_reductions['A_M_wonders']||{})[type]||0)
+                - parseInteger((this.props.temporary_cost_reductions['allWonders']||{})[type]||0)
                 - parseInteger((cardRegion === playerRegion) 
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
@@ -290,10 +292,10 @@ class ExpandedCards1 extends React.Component {
 
         } else if(cardType === 'modern_wonder'){
             return cardCost 
-                - parseInteger((this.props.permanent_cost_reductions['M_Wonders']||{})[type]||0) 
-                - parseInteger((this.props.permanent_cost_reductions['AllWonders']||{})[type]||0) 
-                - parseInteger((this.props.temporary_cost_reductions['M_Wonders']||{})[type]||0)
-                - parseInteger((this.props.temporary_cost_reductions['AllWonders']||{})[type]||0)
+                - parseInteger((this.props.permanent_cost_reductions['M_wonders']||{})[type]||0) 
+                - parseInteger((this.props.permanent_cost_reductions['allWonders']||{})[type]||0) 
+                - parseInteger((this.props.temporary_cost_reductions['M_wonders']||{})[type]||0)
+                - parseInteger((this.props.temporary_cost_reductions['allWonders']||{})[type]||0)
                 - parseInteger((cardRegion === playerRegion) 
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
@@ -466,7 +468,7 @@ class ExpandedCards1 extends React.Component {
                                                 padding: 20,
                                                 marginBottom: 5,
                                             }}
-                                            onPress={() => {this.props.placeFlag(this.props.expandedWonderCard)}}
+                                            onPress={() => {this.props.placeFlag(this.props.expandedWonderCard, this.props.playerNumber)}}
                                         >
                                             <Text>Place Your Flag</Text>
                                         </TouchableOpacity>

@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { changeTurn } from "../../actions/index.js";
 
 // Setup
-import { shuffle, setupInitialState, endOfTurnCleanup } from '../utils/utilities.js';
+import { shuffle, setupInitialState, endOfTurnCleanup, applyCostReduction } from '../utils/utilities.js';
 
 const mapStateToProps = state => {
     return { 
@@ -332,7 +332,7 @@ class NewGame1 extends React.Component {
 	}
 
 	buySupplyCard(card, player){
-		let { cost, type, region } = card.props.props;
+		let { type, region } = card.props.props;
 
 		let yourResources = { 
 			gold: this.state.players[player].resources.gold, 
@@ -349,6 +349,8 @@ class NewGame1 extends React.Component {
 		} else{
 			regionalTowards = 'otherRegion';
 		}
+
+		let cost = applyCostReduction(card, player, this.state);
 
 		let error = false;
 
@@ -659,11 +661,6 @@ class NewGame1 extends React.Component {
 				wondersRevealed
 			}
 		});
-	}
-
-	applyCostReduction(card){
-		// This takes a card and returns the cost of the card after all reductions are applied
-		return card.props.props.cost;
 	}
 
 	checkForEffects = (card, player) => {
