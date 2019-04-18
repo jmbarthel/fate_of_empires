@@ -17,7 +17,7 @@ export default Pocahontas = (props) => {
         choiceCount: 2, 
         choices: {
             1: [gainResources.bind(this, {any: 2})],
-            2: [reduceCost.bind(this, 'person', 'gold', 3)]
+            2: [reduceCost.bind(this, 'person', 'gold', 3, false)]
         },
         returnCard: (props) => {
             return Pocahontas(props)

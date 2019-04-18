@@ -18,7 +18,7 @@ export default GeorgeWashington = (props) => {
         onCapital: reduceCost.bind(this, 'city', 'influence', 2),
         choices: {
             1: [gainResources.bind(this, {influence: 4})],
-            2: [placeOnCapital.bind(this, [reduceCost.bind(this, 'city', 'influence', 2)])]
+            2: [placeOnCapital.bind(this, [reduceCost.bind(this, 'city', 'influence', 2, true)])]
         },
         removableFromCapital: false,
         returnCard: (props) => {

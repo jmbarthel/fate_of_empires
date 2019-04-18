@@ -16,7 +16,7 @@ export default KarlMarx = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: [gainResources.bind(this, {gold: 3}), reduceCost.bind('worker', 'any', 1)],
+            1: [gainResources.bind(this, {gold: 3}), reduceCost.bind('worker', 'any', 1, false)],
             2: [gainResourcesPer.bind(this, 1, 'any', 'eachWorkerOnCapital')]
             // 1: {
             //     produceResource: {

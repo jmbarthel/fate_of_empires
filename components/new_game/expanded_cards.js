@@ -208,13 +208,11 @@ class ExpandedCards1 extends React.Component {
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
                 - parseInteger((cardRegion === playerRegion) 
-                            ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
-                            : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
+                            ? ((this.props.permanent_cost_reductions['yourRegion']||{})[type]||0) 
+                            : ((this.props.permanent_cost_reductions['otherRegion']||{})[type]||0))
             ;
 
         } else if(cardType === 'city'){
-            alert('calculating cost for city');
-            alert(cardType);
             return cardCost 
                 - parseInteger((this.props.permanent_cost_reductions['city']||{})[type]||0) 
                 - parseInteger((this.props.temporary_cost_reductions['city']||{})[type]||0)
@@ -222,8 +220,8 @@ class ExpandedCards1 extends React.Component {
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
                 - parseInteger((cardRegion === playerRegion) 
-                            ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
-                            : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
+                            ? ((this.props.permanent_cost_reductions['yourRegion']||{})[type]||0) 
+                            : ((this.props.permanent_cost_reductions['otherRegion']||{})[type]||0))
             ;
 
         } else if(cardType === 'technology'){
@@ -234,8 +232,8 @@ class ExpandedCards1 extends React.Component {
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
                 - parseInteger((cardRegion === playerRegion) 
-                            ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
-                            : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
+                            ? ((this.props.permanent_cost_reductions['yourRegion']||{})[type]||0) 
+                            : ((this.props.permanent_cost_reductions['otherRegion']||{})[type]||0))
             ;
 
         } else if(cardType === 'worker'){
@@ -246,8 +244,8 @@ class ExpandedCards1 extends React.Component {
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
                 - parseInteger((cardRegion === playerRegion) 
-                            ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
-                            : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
+                            ? ((this.props.permanent_cost_reductions['yourRegion']||{})[type]||0) 
+                            : ((this.props.permanent_cost_reductions['otherRegion']||{})[type]||0))
             ;
 
         } else if(cardType === 'army'){
@@ -258,8 +256,8 @@ class ExpandedCards1 extends React.Component {
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
                 - parseInteger((cardRegion === playerRegion) 
-                            ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
-                            : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
+                            ? ((this.props.permanent_cost_reductions['yourRegion']||{})[type]||0) 
+                            : ((this.props.permanent_cost_reductions['otherRegion']||{})[type]||0))
             ;
 
         } else{
@@ -286,8 +284,8 @@ class ExpandedCards1 extends React.Component {
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
                 - parseInteger((cardRegion === playerRegion) 
-                            ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
-                            : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
+                            ? ((this.props.permanent_cost_reductions['yourRegion']||{})[type]||0) 
+                            : ((this.props.permanent_cost_reductions['otherRegion']||{})[type]||0))
             ;
 
         } else if(cardType === 'modern_wonder'){
@@ -300,8 +298,8 @@ class ExpandedCards1 extends React.Component {
                             ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
                             : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
                 - parseInteger((cardRegion === playerRegion) 
-                            ? ((this.props.temporary_cost_reductions['yourRegion']||{})[type]||0) 
-                            : ((this.props.temporary_cost_reductions['otherRegion']||{})[type]||0))
+                            ? ((this.props.permanent_cost_reductions['yourRegion']||{})[type]||0) 
+                            : ((this.props.permanent_cost_reductions['otherRegion']||{})[type]||0))
             ;
         } else{
             return cardCost;

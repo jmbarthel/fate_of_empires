@@ -378,22 +378,38 @@ export const placeOnCapital = (callbacks, card, playerNumber, state) => {
     
 }
 
-export const reduceCost = (type, resource, amount, card, playerNumber, state) => {
+export const reduceCost = (type, resource, amount, permanent, card, playerNumber, state) => {
     // Aristotle 'person', 'gold', 3
     // Pocahontas 'person', 'gold', 3
-    return playCard(card, playerNumber, {
-        ...state, 
-        temporary_cost_reductions: {
-            ...state.temporary_cost_reductions,
-            [playerNumber]: {
-                ...state.temporary_cost_reductions[playerNumber],
-                [type]: {
-                    ...state.temporary_cost_reductions[playerNumber].type,
-                    [resource]: ((state.temporary_cost_reductions[playerNumber][type]||{})[resource]||0) + amount, 
-                },
+    if(permanent){
+        return playCard(card, playerNumber, {
+            ...state, 
+            temporary_cost_reductions: {
+                ...state.temporary_cost_reductions,
+                [playerNumber]: {
+                    ...state.permanent_cost_reductions[playerNumber],
+                    [type]: {
+                        ...state.permanent_cost_reductions[playerNumber].type,
+                        [resource]: ((state.permanent_cost_reductions[playerNumber][type]||{})[resource]||0) + amount, 
+                    },
+                }
             }
-        }
-    })
+        })
+    } else{
+        return playCard(card, playerNumber, {
+            ...state, 
+            temporary_cost_reductions: {
+                ...state.temporary_cost_reductions,
+                [playerNumber]: {
+                    ...state.temporary_cost_reductions[playerNumber],
+                    [type]: {
+                        ...state.temporary_cost_reductions[playerNumber].type,
+                        [resource]: ((state.temporary_cost_reductions[playerNumber][type]||{})[resource]||0) + amount, 
+                    },
+                }
+            }
+        })
+    }
 }
 
 export const validatePickedCard = (validationOptions, card, playerNumber, state) => {

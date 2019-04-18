@@ -16,7 +16,7 @@ export default NapoleonBonaparte = (props) => {
         },
         choiceCount: 2, 
         choices: {
-            1: [gainResources.bind(this, {influence: 3}), reduceCost.bind(this, 'city', 'influence', 1)],
+            1: [gainResources.bind(this, {influence: 3}), reduceCost.bind(this, 'city', 'influence', 1, false)],
             2: [gainResources.bind(this, {toward: {yourRegion: {any: 3}}})]
             // 1: {
             //     produceResource: {

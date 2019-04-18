@@ -359,6 +359,7 @@ const recursiveObjectAdder = (object1, object2) => {
 		}
 	}
 
+
 	return resultObject;
 }
 
@@ -388,6 +389,9 @@ export const applyCostReduction = (card, player, state) => {
 	// 		}
 	// 	}
 	// }
+	if(!Array.isArray(type)){
+		type = [type];
+	}
 
 	// city, person, tech, worker
 	if(['city', 'person', 'technology', 'worker'].indexOf(type) > -1){
