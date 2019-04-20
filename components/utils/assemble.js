@@ -8,6 +8,8 @@ import assembleSupplyDeck from '../utils/assemble_supply_cards.js';
 import assembleWonderDeck from '../utils/assemble_wonder_cards.js';
 
 import { shuffle } from './utilities.js';
+import AdaLovelace from '../game/cards/people/AdaLovelace.js';
+import Transistors from '../game/cards/technology/Transistors.js';
 
 export const setupInitialState = (num_of_players) => {
     let enemyArr = {};
@@ -156,11 +158,11 @@ export const setupInitialState = (num_of_players) => {
     // for(let i = 0; i < setUpDraws['1'].draw; i++){
     // playerHand.push(playerDeck.pop());
     // }
-    playerHand.push(Aristotle);
-    playerHand.push(Aristotle);
-    playerHand.push(Aristotle);
-    playerHand.push(Peasant);
-    playerHand.push(Peasant);
+    playerHand.push(AdaLovelace);
+    playerHand.push(AdaLovelace);
+    playerHand.push(AdaLovelace);
+    playerHand.push(Transistors);
+    playerHand.push(Transistors);
 
     let idx = 2;
 
@@ -202,8 +204,12 @@ export const setupInitialState = (num_of_players) => {
         previousState: null,
 
         highlightSupply: false,
-        highlightHand: true,
-        highlightCapital: true,
+        highlightHand: false,
+        highlightCapital: false,
+        highlightWonder: false,
+        typeToChoose: null,
+        storedCard1: null, 
+        storedCard2: null,
 
         permanent_cost_reductions,
         temporary_cost_reductions,

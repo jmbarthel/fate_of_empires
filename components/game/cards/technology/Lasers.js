@@ -23,6 +23,9 @@ export default Lasers = (props) => {
             //         influence: 2
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Lasers(props)
         }
     }
     

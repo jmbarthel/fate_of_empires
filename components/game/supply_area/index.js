@@ -38,7 +38,8 @@ class SupplyArea1 extends React.Component {
 									real={true} 
 									card={card}
 									playerNumber={this.props.playerNumber}
-							/>
+									typeToChoose={this.props.typeToChoose}
+								/>
 						})
 					}
 				</View>

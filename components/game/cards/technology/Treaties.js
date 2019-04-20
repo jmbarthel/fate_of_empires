@@ -23,6 +23,9 @@ export default Treaties = (props) => {
             //         influence: 1
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Treaties(props)
         }
     }
     

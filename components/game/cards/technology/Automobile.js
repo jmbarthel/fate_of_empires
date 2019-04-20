@@ -25,6 +25,9 @@ export default Automobile = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Automobile(props)
         }
     }
     

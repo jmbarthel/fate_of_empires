@@ -23,6 +23,9 @@ export default Railroad = (props) => {
             //         gold: 2
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Railroad(props)
         }
     }
     

@@ -23,6 +23,9 @@ export default Pottery = (props) => {
             //         gold: 2
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Pottery(props)
         }
     }
     

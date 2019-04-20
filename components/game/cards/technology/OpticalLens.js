@@ -25,6 +25,9 @@ export default OpticalLens = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return OpticalLens(props)
         }
     }
     

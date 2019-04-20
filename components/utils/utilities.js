@@ -126,6 +126,8 @@ export const applyCostReduction = (card, player, state) => {
 			}
 		}
 	}
+	return resultCost;
+	
 }
 
 export const endOfTurnCleanup = (turn, playerNum, prevState) => {

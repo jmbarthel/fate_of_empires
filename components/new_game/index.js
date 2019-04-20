@@ -328,6 +328,7 @@ class NewGame1 extends React.Component {
 				expandedWonderCard: false, 
 			}
 		}, () => {
+			console.log('checking for effects');
 			this.checkForEffects(card, player);
 		})
 	}
@@ -360,7 +361,7 @@ class NewGame1 extends React.Component {
 		for(let index = 0; index < options.length; index++){
 			let resourceType = options[index];
 
-			if(cost[resourceType] > 0){
+			if(cost[resourceType] && cost[resourceType] > 0){
 				if((
 					yourResources.any + 
 					yourResources[resourceType] + 
@@ -669,7 +670,10 @@ class NewGame1 extends React.Component {
 		// Check for reveal effects
 
 		if(this.state.callbacks.length > 0){
+
+			console.log('calling a callback');
 			let func = this.state.callbacks.shift();
+
 			this.setState(prevState => {
 				return func(card, player, prevState)
 			});
@@ -768,6 +772,30 @@ class NewGame1 extends React.Component {
 
 	}
 
+	chooseCard = (card, player) => {
+			let func = () => {alert('returning true');return true;};
+		  this.setState(prevState => {
+				func = prevState.callbacks.shift();
+				if(prevState.storedCard1){
+					console.log('STORING CARD IN 2', card);
+					return {
+						...prevState, 
+						storedCard2: card,
+					}
+				} else{
+					console.log('STORING CARD IN 1');
+					return {
+						...prevState, 
+						storedCard1: card,
+					}
+				}
+			}, () => {
+				this.setState(prevState => {
+					return func(card, player, prevState);
+				});
+			});
+	}
+
 	render(){
 		let screenHeight = Dimensions.get('window').height;
 		let cardHeight = screenHeight - 50;
@@ -791,6 +819,7 @@ class NewGame1 extends React.Component {
 						unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
 						playerNumber={this.state.playerNumber}
 						highlight={this.state.highlightSupply}
+						typeToChoose={this.state.typeToChoose}
 					/>
 					<View style={{width: '50%', flexDirection: 'column'}}>
 						<View style={{height: '30%', width: '100%'}}>
@@ -825,7 +854,8 @@ DECKS
 						playerNumber={this.state.playerNumber}
 						highlightHand={this.state.highlightHand}
 						highlightCapital={this.state.highlightCapital}
-					/>
+						typeToChoose={this.state.typeToChoose}
+						/>
 				</View>
 
 				{this.state.dim ? <TouchableWithoutFeedback onPress={this.closeAllEnemies.bind(this)}><View style={styles.overlay}/></TouchableWithoutFeedback> : null}
@@ -906,6 +936,11 @@ EXPANDED CARDS
 							expandWonderCard={this.state.expandWonderCard}
 							expandedWonderCard={this.state.expandedWonderCard}
 							wondersRevealed={this.state.wondersRevealed}
+
+							higlightCapital={this.state.highlightCapital}
+							highlightHand={this.state.highlightHand}
+							highlightSupply={this.state.highlightSupply}
+							highlightWonder={this.state.highlightWonder}
 		
 							putOnCapital={this.putOnCapital.bind(this)}
 							placeFlag={this.placeFlag.bind(this)}
@@ -914,6 +949,8 @@ EXPANDED CARDS
 							unExpandHandCard={this.unExpandHandCard.bind(this)}
 							unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
 							unExpandWonderCard={this.unExpandWonderCard.bind(this)}
+							chooseCard={this.chooseCard.bind(this)}
+							typeToChoose={this.state.typeToChoose}
 
 							confirmAddToWonder={this.confirmAddToWonder.bind(this)}
 							

@@ -27,6 +27,9 @@ export default Refrigeration = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Refrigeration(props)
         }
     }
     

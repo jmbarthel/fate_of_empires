@@ -23,6 +23,9 @@ export default Transistors = (props) => {
             //         eachTechInHand: 1
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Transistors(props)
         }
     }
     

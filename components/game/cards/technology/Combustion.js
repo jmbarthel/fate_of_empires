@@ -26,6 +26,9 @@ export default Combustion = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Combustion(props)
         }
     }
     

@@ -23,6 +23,9 @@ export default Calendars = (props) => {
             //         science: 2
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Calendars(props)
         }
     }
     

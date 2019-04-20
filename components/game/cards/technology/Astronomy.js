@@ -17,6 +17,9 @@ export default Astronomy = (props) => {
         choiceCount: 2, 
         choices: {
             1: [drawCard, pickACard],
+        },
+        returnCard: (props) => {
+            return Astronomy(props)
         }
     }
     

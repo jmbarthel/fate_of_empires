@@ -23,6 +23,9 @@ export default Painting = (props) => {
             //         influence: 1
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Painting(props)
         }
     }
     

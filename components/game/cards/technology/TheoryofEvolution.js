@@ -21,6 +21,9 @@ export default TheoryofEvolution = (props) => {
             //     // You may exile this or a card you played this turn 
             //     // To buy a card from the supply area that shares the same type
             // }
+        },
+        returnCard: (props) => {
+            return TheoryofEvolution(props)
         }
     }
     

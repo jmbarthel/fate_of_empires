@@ -23,6 +23,9 @@ export default Explosives = (props) => {
             //     },
             //     // you may exile a card from your hand or capital
             // }
+        },
+        returnCard: (props) => {
+            return Explosives(props)
         }
     }
     

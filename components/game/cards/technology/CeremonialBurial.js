@@ -23,6 +23,9 @@ export default CeremonialBurial = (props) => {
             //         science: 2, 
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return CeremonialBurial(props)
         }
     }
     

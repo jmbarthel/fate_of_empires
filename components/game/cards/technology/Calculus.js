@@ -34,6 +34,9 @@ export default Calculus = (props) => {
             //         }
             //     }
             // },
+        },
+        returnCard: (props) => {
+            return Calculus(props)
         }
     }
     

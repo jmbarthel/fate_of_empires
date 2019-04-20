@@ -43,6 +43,7 @@ class Hand1 extends React.Component {
                     expandHandCard={this.props.expandHandCard}
                     playerNumber={this.props.playerNumber}
                     highlight={this.props.highlight}
+                    typeToChoose={this.props.typeToChoose}
                 />
             )
         }

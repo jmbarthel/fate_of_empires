@@ -20,7 +20,13 @@ class Card1 extends React.Component {
     enlarge = () => {
         console.log('this.props.turn', this.props.turn);
         if(this.props.turn === this.props.playerNumber){
-            this.props.expandHandCard(this.props.card({ num: this.props.num, expanded: true }));
+            if(typeof this.props.card === 'function'){
+				this.props.expandHandCard(this.props.card({num: this.props.num, expanded: true}));
+			} else{
+				this.props.card.props.props.num = this.props.num;
+				this.props.card.props.props.expanded = true;
+				this.props.expandHandCard(this.props.card);
+            }
         } else{
             alert('Not your turn.');
         }
@@ -62,21 +68,35 @@ class Card1 extends React.Component {
                 }).start();
 			},
         });
+
 	}
 
 	render() {
         const panStyle = { transform: this.state.pan.getTranslateTransform() }
-        panStyle.transform.push({rotate: '8deg'})
-
+        panStyle.transform.push({rotate: '8deg'});
+        
+        let type, card;
+        if(typeof this.props.card === 'function'){
+            card = this.props.card({num: this.props.num, hand: true});
+            type = card.props.props.type;
+        } else{
+            card = this.props.card.props.props.returnCard({...this.props.card.props.props, expanded: false, hand: true, num: this.props.num});
+            type = card.props.props.type;
+        }
         // Calculate the transform property and set it as a value for our style which we add below to the Animated.View component
         // let imageStyle = {transform: [{translateX}, {translateY}, {rotate}, {scale}]};
 		return (
             <Animated.View 
                 {...this.panResponder.panHandlers}
-                style={[panStyle, styles.card, {left: 0+(this.props.num * 60)}, (this.props.highlight ? styles.highlight : null)]}
+                style={[
+                    panStyle, 
+                    styles.card, 
+                    {left: 0+(this.props.num * 60)}, 
+                    (this.props.highlight && (this.props.typeToChoose === 'any' || this.props.typeToChoose === type) 
+                        ? styles.highlight : null)]}
             >
                 <TouchableOpacity onPress={this.enlarge.bind(this)}>
-                    {this.props.card({num: this.props.num, hand: true})} 
+                    {card}
                 </TouchableOpacity>
             </Animated.View>
 		);

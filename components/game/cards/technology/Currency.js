@@ -23,6 +23,9 @@ export default Currency = (props) => {
             //         science: 3
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Currency(props)
         }
     }
     

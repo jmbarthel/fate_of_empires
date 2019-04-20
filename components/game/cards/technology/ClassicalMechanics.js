@@ -36,6 +36,9 @@ export default ClassicalMechanics = (props) => {
                 //         }
                 //     }
                 // }
+        },
+        returnCard: (props) => {
+            return ClassicalMechanics(props)
         }
     }
     

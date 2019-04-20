@@ -23,6 +23,9 @@ export default Bifocals = (props) => {
             //         influence: 1,
             //     }
             // },
+        },
+        returnCard: (props) => {
+            return Bifocals(props)
         }
     }
 

@@ -23,6 +23,9 @@ export default Navigation = (props) => {
             //         science: 2, 
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Navigation(props)
         }
     }
     

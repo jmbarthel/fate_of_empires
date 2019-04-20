@@ -25,6 +25,9 @@ export default Pasteurization = (props) => {
             //         } 
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Pasteurization(props)
         }
     }
     

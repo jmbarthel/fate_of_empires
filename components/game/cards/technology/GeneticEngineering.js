@@ -23,6 +23,9 @@ export default GeneticEngineering = (props) => {
             //         science: 2,
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return GeneticEngineering(props)
         }
     }
     

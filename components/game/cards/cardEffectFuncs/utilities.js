@@ -137,27 +137,27 @@ export const gainResourcesPer = (numResourcesPer, typeResource, perWhat, card, p
     if(perWhat === 'eachPersonInHand'){
         console.log('evaluating each person in hand');
 
-        resource = numResourcesPer * countTypeInHand(perWhat, state.players[playerNumber].hand);
+        resource = numResourcesPer * countTypeInHand('person', state.players[playerNumber].hand);
     }
 
     //eachTechInHand
     if(perWhat === 'eachTechInHand'){
         console.log('evaluating each tech in hand');
-        resource = numResourcesPer * countTypeInHand(perWhat, state.players[playerNumber].hand);
+        resource = numResourcesPer * countTypeInHand('technology', state.players[playerNumber].hand);
     }
 
     //eachWorkerInHand
     if(perWhat === 'eachWorkerInHand'){
         console.log('evaluating each worker in hand');
 
-        resource = numResourcesPer * countTypeInHand(perWhat, state.players[playerNumber].hand);
+        resource = numResourcesPer * countTypeInHand('worker', state.players[playerNumber].hand);
     }
 
     //eachCityInHand
     if(perWhat === 'eachCityInHand'){
         console.log('evaluating each city in hand');
 
-        resource = numResourcesPer * countTypeInHand(perWhat, state.players[playerNumber].hand);
+        resource = numResourcesPer * countTypeInHand('city', state.players[playerNumber].hand);
     }
 
     return playCard(card, playerNumber, {
@@ -258,31 +258,6 @@ export const revealFromTopandDrawOne = (card, playerNumber, state) => {
     }
 }
 
-export const exileCard = (location, numOfCards, callbackArray, card, playerNumber, state) => {
-    if(location === 'thisCard'){
-        // ANASTASIA +10 inf and exile her
-
-    } else if(location === 'handOrCapital'){
-        if(numOfCards === 1){
-            // hARRIET TUBMAN - exile card from hand or capital to buy a worker for free
-
-            // Nelson Mandela - exile card from hand or capital to buy a worker for free
-        } else if(numOfCards > 1){
-            // Genghis KHAN  exile up to 2 cards from hand or capital and buy a worker for free
-
-        }
-    }
-
-    return {
-        ...state
-    };
-
-
-
-
-    
-}
-
 /**
  * Used by playCard
  */
@@ -331,7 +306,7 @@ const removeCardFromCapitalAndAddToPlayedCards = (card, playerNumber, state) => 
 /**
  * Removes a card from the relevant location and adds to the played cards
  */
-const playCard = (card, playerNumber, state) => {
+export const playCard = (card, playerNumber, state) => {
     if(!card.props.props.capital){
         return removeCardFromHandAndAddToPlayedCards(card, playerNumber, state);
     } else {
@@ -431,9 +406,288 @@ export const pickACard = (fromOptions, callbackArray, card, playerNumber, state)
     // fromOptions: hand, 
     // callbacks : [pick option (discard or exile)]
 
+}
+
+const getLocationFunc = (location) => {
+    switch(location){
+        case 'supply':
+            return highlightSupply;
+        case 'hand':
+            return highlightHand;
+        case 'wonder':
+            return highlightWonder;
+        case 'capital':
+            return highlightCapital;
+        case 'handOrCapital': 
+            return highlightHandOrCapital;
+    }
+
+}
+
+export const swapACardSetupFunc = (location1, location2, typeOfCard, card, playerNumber, state) => {
+    // basically we want to set up an array of callbacks that do the following: 
+    /*
+        1. highlight your hand
+        2. store the card you have chosen
+        3. highlight the location ('supply')
+        4. swap the card in the hand for the card you have chosen from the location ('supply')
+    */
+
     // ADA LOVELACE: swap a science in your hand for one in the supply
     // from options : hand
     // callbacks: [pickacard(supplyarea, [swap])]
+    let func1 = getLocationFunc(location1), 
+        func2 = getLocationFunc(location2);
+
+    return {
+        ...state, 
+        typeToChoose: typeOfCard,
+        callbacks: [
+            func1, 
+            func2, 
+            swapCard.bind(this, location1, location2)
+        ]
+    }
+}
+
+export const exileCardSetupFunc = (location1, location2, type1, type2, card, playerNumber, state) => {
+    // HARRIET TUBMAN: this, 'handOrCapital', 'supply', 'any', 'worker'
+    // Exile a card from your hand or capital to by a worker from the supply for free
+
+    let func1 = getLocationFunc(location1),
+        tempFunc2 = getLocationFunc(location2);
+        func2 = (card, player, state) => {
+            return tempFunc2({
+                ...state, 
+                typeToChoose: type2
+            })
+        }
+    
+    return playCard(card, playerNumber, {
+        ...state,
+        typeToChoose: type1, 
+        callbacks: [
+            func1, 
+            func2, 
+            exileToObtain.bind(this, location1, location2)
+        ]
+    });
+}
+
+const highlightSupply = (card, player, state) => {
+    console.log('highlightSupply')
+    return {
+        ...state, 
+        highlightSupply: true,
+        highlightHand: false,
+        highlightWonder: false,
+        highlightCapital: false,
+    }
+}
+const highlightHand = (card, player, state) => {
+    console.log('highlightHand')
+    return {
+        ...state, 
+        highlightSupply: false,
+        highlightHand: true,
+        highlightWonder: false,
+        highlightCapital: false,
+    }
+}
+const highlightWonder = (card, player, state) => {
+    console.log('highlightWonder')
+    return {
+        ...state, 
+        highlightSupply: false,
+        highlightHand: false,
+        highlightWonder: true,
+        highlightCapital: false,
+    }
+}
+const highlightCapital = (card, player, state) => {
+    console.log('highlightCapital')
+    return {
+        ...state, 
+        highlightSupply: false,
+        highlightHand: false,
+        highlightWonder: false,
+        highlightCapital: true,
+    }
+}
+const highlightHandOrCapital = (card, player, state) => {
+    console.log('highlightHandOrCapital')
+    return {
+        ...state, 
+        highlightSupply: false,
+        highlightHand: true,
+        highlightWonder: false,
+        highlightCapital: true,
+    }
+}
+
+export const swapCard = (location1, location2, card, playerNumber, state) => {
+    let keys = {
+        'supply' : 'supplyRevealed', 
+        'hand': ['players', playerNumber, 'hand'],
+        'wonders': 'wondersRevealed'
+    }
+    let card1 = state.storedCard1, card2 = state.storedCard2;
+
+    console.log('SWAPPING: ', card1.props.props.name, 'FOR: ', card2.props.props.name, 'FROM: ', location1, 'TO: ', location2);
+
+    if(card1.props.props.capital){
+        if(card1.props.props.type === 'worker'){
+            keys.capital = ['players', playerNumber, 'capital', 'workers'];
+        } else if(card1.props.props.type === 'army'){
+            keys.capital = ['players', playerNumber, 'capital', 'armies'];
+        } else{
+            keys.capital = ['players', playerNumber, 'capital', 'other']
+        }
+    } else if(card2.props.props.capital){
+        if(card2.props.props.type === 'worker'){
+            keys.capital = ['players', playerNumber, 'capital', 'workers'];
+        } else if (card2.props.props.type === 'army'){
+            keys.capital = ['players', playerNumber, 'capital', 'armies'];
+        } else{
+            keys.capital = ['players', playerNumber, 'capital', 'other']
+        }
+    }
+
+    let locationOne = state;
+    let locationTwo = state;
+
+    // Gets the proper locations of the arrays holding the cards to swap
+
+    if(!Array.isArray(keys[location1])){
+        locationOne = locationOne[keys[location1]];
+    } else{
+        while(keys[location1].length){
+            locationOne = locationOne[keys[location1].shift()];
+        }
+    }
+
+    if(!Array.isArray(keys[location2])){
+        locationTwo = locationTwo[keys[location2]];
+    } else{
+        while(keys[location2].length){
+            locationTwo = locationTwo[keys[location2].shift()];
+        }
+    }
+
+    locationOne.splice(card1.props.props.num, 1, card2);
+    locationTwo.splice(card2.props.props.num, 1, card1);
+
+    return {
+        ...state, 
+        typeToChoose: null,
+        storedCard1: null, 
+        storedCard2: null,
+        highlightCapital: false, 
+        highlightSupply: false, 
+        highlightHand: false, 
+        highlightWonders: false, 
+        
+        expandSupplyCard: false, 
+        expandedSupplyCard: false,
+        expandWonderCard: false, 
+        expandedWonderCard: false,
+        expandHandCard: false, 
+        expandedHandCard: false,
+
+        expandedCapital: false,
+    }
+}
+
+export const exileToObtain = (location1, location2, card, playerNumber, state) => {
+    // card 1 is the one being exiled, card2 is the one being purchased
+
+    let keys = {
+        'supply' : 'supplyRevealed', 
+        'hand': ['players', playerNumber, 'hand'],
+        'wonders': 'wondersRevealed',
+        'handOrCapital': ['players', playerNumber, 'playedCards']
+    }
+
+    let card1 = state.storedCard1, card2 = state.storedCard2;
+
+    console.log('Exiling: ', card1.props.props.name, 'FOR: ', card2.props.props.name, 'FROM: ', location1, 'TO: ', location2);
+
+    // Set up the location path for the first card (that we are exiling)
+    if(card1.props.props.capital){
+        if(card1.props.props.type === 'worker'){
+            keys.capital = ['players', playerNumber, 'capital', 'workers'];
+        } else if(card1.props.props.type === 'army'){
+            keys.capital = ['players', playerNumber, 'capital', 'armies'];
+        } else{
+            keys.capital = ['players', playerNumber, 'capital', 'other']
+        }
+    }
+
+    let locationOne = state;
+    let locationTwo = state;
+
+    // Gets the proper locations of the arrays holding the cards to swap
+    if(!Array.isArray(keys[location1])){
+        locationOne = locationOne[keys[location1]];
+    } else{
+        while(keys[location1].length){
+            locationOne = locationOne[keys[location1].shift()];
+        }
+    }
+
+    if(card2.props.props.type === 'worker'){
+        // If it is a worker, just add the card to the played cards
+        state.players[playerNumber].playedCards.push(
+            card2
+        ); // Place the card 2 into the players played cards for the turn  
+    } else{
+        // Otherwise, remove it from the present location and add it to the played cards
+        if(card2.props.props.capital){
+            if(card2.props.props.type === 'worker'){
+                keys.capital = ['players', playerNumber, 'capital', 'workers'];
+            } else if (card2.props.props.type === 'army'){
+                keys.capital = ['players', playerNumber, 'capital', 'armies'];
+            } else{
+                keys.capital = ['players', playerNumber, 'capital', 'other']
+            }
+
+        }
+
+        if(!Array.isArray(keys[location2])){
+            locationTwo = locationTwo[keys[location2]];
+        } else{
+            while(keys[location2].length){
+                locationTwo = locationTwo[keys[location2].shift()];
+            }
+        }
+
+        state.players[playerNumber].playedCards.push(
+            locationTwo.splice(card2.props.props.num, 1)
+        ); // Place the card 2 into the players played cards for the turn        
+    }
+
+    locationOne.splice(card1.props.props.num, 1); // exile the card (splice it out of existence)
+
+    return {
+        ...state, 
+        typeToChoose: null,
+        storedCard1: null, 
+        storedCard2: null,
+        highlightCapital: false, 
+        highlightSupply: false, 
+        highlightHand: false, 
+        highlightWonders: false, 
+        
+        expandSupplyCard: false, 
+        expandedSupplyCard: false,
+        expandWonderCard: false, 
+        expandedWonderCard: false,
+        expandHandCard: false, 
+        expandedHandCard: false,
+
+        expandedCapital: false,
+    }
+
 }
 
 export const spendAsAny = (type, card, playerNumber, state) => {

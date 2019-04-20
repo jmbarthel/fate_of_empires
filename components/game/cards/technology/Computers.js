@@ -26,6 +26,9 @@ export default Computers = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Computers(props)
         }
     }
     

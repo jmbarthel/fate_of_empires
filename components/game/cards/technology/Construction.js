@@ -34,6 +34,9 @@ export default Construction = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Construction(props)
         }
     }
     

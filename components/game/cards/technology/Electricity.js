@@ -25,6 +25,9 @@ export default Electricity = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Electricity(props)
         }
     }
     

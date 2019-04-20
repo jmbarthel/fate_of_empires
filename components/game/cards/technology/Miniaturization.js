@@ -23,6 +23,9 @@ export default Miniaturization = (props) => {
             //         influence: 3
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Miniaturization(props)
         }
     }
     

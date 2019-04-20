@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View, Text } from "react-native";
-import { gainResources, pickACard } from '../cardEffectFuncs/utilities';
+import { gainResources, swapACardSetupFunc } from '../cardEffectFuncs/utilities';
 
 export default AdaLovelace = (props) => {
     props = {
@@ -17,7 +17,7 @@ export default AdaLovelace = (props) => {
         choiceCount: 2, 
         choices: {
             1: [gainResources.bind(this, {science: 5})],
-            2: [pickACard.bind(this, ['supply'])]
+            2: [swapACardSetupFunc.bind(this, 'supply', 'hand', 'technology')]
         },
         returnCard: (props) => {
             return AdaLovelace(props)

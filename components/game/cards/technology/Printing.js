@@ -23,6 +23,9 @@ export default Printing = (props) => {
             //         science: 2, 
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Printing(props)
         }
     }
     

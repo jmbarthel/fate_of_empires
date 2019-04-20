@@ -23,6 +23,9 @@ export default Mathematics = (props) => {
             //         science: 1
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Mathematics(props)
         }
     }
     

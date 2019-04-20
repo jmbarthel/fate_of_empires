@@ -20,6 +20,9 @@ export default Sanitation = (props) => {
             // 1: {
             //     //discard or exile a card from hand or capital: 7 science
             // }
+        },
+        returnCard: (props) => {
+            return Sanitation(props)
         }
     }
     

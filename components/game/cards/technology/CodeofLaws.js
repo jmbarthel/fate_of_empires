@@ -24,6 +24,9 @@ export default CodeofLaws = (props) => {
             //         influence: 1,
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return CodeofLaws(props)
         }
     }
     

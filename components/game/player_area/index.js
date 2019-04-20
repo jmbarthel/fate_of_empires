@@ -57,6 +57,7 @@ class PlayerArea1 extends React.Component {
 					expandHandCard={this.props.expandHandCard} 
 					deck={this.props.player.deck}
 					discard={this.props.player.discard}
+					typeToChoose={this.props.typeToChoose}
 					playerNumber={this.props.playerNumber}
 				/>
 				<View style={{width: '10%', height: '100%', justifyContent: 'center', alignItems: 'center'}}>

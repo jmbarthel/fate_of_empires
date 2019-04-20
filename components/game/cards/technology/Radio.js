@@ -25,6 +25,9 @@ export default Radio = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Radio(props)
         }
     }
     

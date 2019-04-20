@@ -23,6 +23,9 @@ export default Timekeeping = (props) => {
             //         science: 2
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Timekeeping(props)
         }
     }
     

@@ -23,6 +23,9 @@ export default BronzeWorking = (props) => {
             //         science: 2, 
             //     }
             // },
+        },
+        returnCard: (props) => {
+            return BronzeWorking(props)
         }
     }
     

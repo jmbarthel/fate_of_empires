@@ -23,6 +23,9 @@ export default Engineering = (props) => {
             //         science: 1
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Engineering(props)
         }
     }
     

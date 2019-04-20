@@ -27,6 +27,9 @@ export default Medicine = (props) => {
             //         }
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Medicine(props)
         }
     }
     

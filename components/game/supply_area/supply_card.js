@@ -12,13 +12,20 @@ class SupplyCard1 extends React.Component {
 		super(props);
 		this.state = {};
 	}
+
+	componentWillMount(){
+		if(typeof this.props.card === 'object'){
+			this.props.card.props.props.hand = 0;
+			this.props.card.props.props.expanded = false;
+		}
+	}
     
 	onPress(){
 		if(this.props.turn === this.props.playerNumber){
-			if(this.props.real){
+			if(typeof this.props.card === 'function'){
 				this.props.expandSupplyCard(this.props.card({num: this.props.num, expanded: true}));
 			} else{
-				this.props.expandSupplyCard();
+				this.props.expandSupplyCard(this.props.card);
 			}
 		} else{
             alert('Not your turn.');
@@ -30,22 +37,27 @@ class SupplyCard1 extends React.Component {
 	}
 
 	render() {
-		if(this.props.real){
-			let Card = this.props.card();
+		let card;
+
+		if(typeof this.props.card === 'function'){
+			card = this.props.card({hand: 0, num: this.props.num})
+		} else{
+			card = this.props.card.props.props.returnCard({...this.props.card.props.props, hand: 0, num: this.props.num, expanded: false})
 		}
+		let type = card.props.props.type;
 
 		return (
-			(this.props.highlight ? (
+			(this.props.highlight && (this.props.typeToChoose === 'any' || type === this.props.typeToChoose) ? (
 				<View style={[styles.container, styles.highlight]}>
 					<TouchableOpacity onPress={this.onPress.bind(this)}>
-						{this.props.card({hand: 0})}
+						{card}
 					</TouchableOpacity>
 				</View>
 			
 			) : (
 				<View style={styles.container}>
 					<TouchableOpacity onPress={this.onPress.bind(this)}>
-						{this.props.card({hand: 0})}
+						{card}
 					</TouchableOpacity>
 				</View>
 			))

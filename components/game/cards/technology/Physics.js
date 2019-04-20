@@ -22,6 +22,9 @@ export default Physics = (props) => {
             //         science: 4, 
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Physics(props)
         }
     }
     

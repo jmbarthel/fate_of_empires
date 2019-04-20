@@ -23,6 +23,9 @@ export default Gunpowder = (props) => {
             //         influence: 3
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Gunpowder(props)
         }
     }
     

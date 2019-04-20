@@ -85,7 +85,7 @@ class ExpandedCards1 extends React.Component {
     }
 
     componentWillUpdate(nextProps){
-        console.log('willupdate', (nextProps && nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name)));
+        // console.log('willupdate', (nextProps && nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name)));
 
         if(nextProps.expandedWonderCard && (!this.props.expandedWonderCard || nextProps.expandedWonderCard.props.props.name != this.props.expandedWonderCard.props.props.name) && nextProps.expandedWonderCard.props.props.claimedBy[this.props.player.flag]){
             let card = nextProps.expandedWonderCard.props.props,
@@ -132,7 +132,7 @@ class ExpandedCards1 extends React.Component {
             return true;
         } else if(nextProps && (nextProps.expandHandCard || nextProps.expandSupplyCard || !nextProps.expandWonderCard)){
 
-            console.log('setting false');
+            // console.log('setting false');
 
             this.goldProgressAnimation = false;
             this.scienceProgressAnimation = false;
@@ -152,7 +152,7 @@ class ExpandedCards1 extends React.Component {
     }
 
     addResourceToWonder = (resource) => {
-        console.log('ADDING TO RESOURCE', resource);
+        // console.log('ADDING TO RESOURCE', resource);
         
         if(this.props.player.resources[resource] - this['temp'+resource] - 1 < 0){
             return false;
@@ -186,7 +186,7 @@ class ExpandedCards1 extends React.Component {
     }
 
     confirmResourceAdd = () => {
-        console.log('Confirming');
+        // console.log('Confirming');
         this.props.confirmAddToWonder(this.props.playerNumber, {
             science: this.tempscience,
             influence: this.tempinfluence,
@@ -307,7 +307,7 @@ class ExpandedCards1 extends React.Component {
     }
 
 	render() {
-        console.log('render');
+        // console.log('render');
         let screenHeight = this.props.screenHeight,
 		    cardHeight = this.props.cardHeight,
 		    screenWidth = this.props.screenWidth,
@@ -315,12 +315,12 @@ class ExpandedCards1 extends React.Component {
         
         if(this.props.expandSupplyCard){
             // SUPPLY CARD
-            return <View pointerEvents='box-none' style={{
+            return <View pointerEvents='box-none' style={[{
                 backgroundColor: '#000', 
                 position:'absolute', 
                 width: cardWidth, 
                 height: cardHeight, right: 15
-                }}>
+                }, (this.props.highlightSupply && this.props.expandedSupplyCard.props.props.type === this.props.typeToChoose ? styles.highlight : null)]}>
                         {this.props.expandedSupplyCard}
                         <TouchableOpacity 
                             onPress={this.props.unExpandSupplyCard}
@@ -358,7 +358,30 @@ class ExpandedCards1 extends React.Component {
                             } */}
                             
                             {
-                                this.props.expandedSupplyCard.props.props.cost.gold > 0 
+                                 this.props.highlightSupply 
+                                 && (this.props.typeToChoose === 'any' || this.props.expandedSupplyCard.props.props.type === this.props.typeToChoose)
+                                 ? (
+                                    
+                                    <TouchableOpacity 
+                                        style={{
+                                            // width: 150,
+                                            // height: 30,
+                                            alignSelf: 'flex-start',
+                                            backgroundColor: '#f0f',
+                                            borderRadius: 50,
+                                            padding: 20,
+                                        }}
+                                        onPress={() => {this.props.chooseCard(this.props.expandedSupplyCard, this.props.playerNumber)}}
+                                    >
+                                        <Text>Choose</Text>
+                                    </TouchableOpacity>
+                                 )
+                                 : (
+                                    undefined
+                                 )
+                            }
+                            {
+                                !this.props.highlightSupply && this.props.expandedSupplyCard.props.props.cost.gold > 0 
                                 ? 
                                     <View style={styles.sideBubblesCon}>
                                         <LinearGradient 
@@ -378,7 +401,7 @@ class ExpandedCards1 extends React.Component {
                                 : undefined
                             }
                             {
-                                this.props.expandedSupplyCard.props.props.cost.science > 0 
+                                !this.props.highlightSupply && this.props.expandedSupplyCard.props.props.cost.science > 0 
                                 ? 
                                     <View style={styles.sideBubblesCon}>
                                         <LinearGradient 
@@ -398,7 +421,7 @@ class ExpandedCards1 extends React.Component {
                                 : undefined
                             }
                             {
-                                this.props.expandedSupplyCard.props.props.cost.influence > 0 
+                                !this.props.highlightSupply && this.props.expandedSupplyCard.props.props.cost.influence > 0 
                                 ? 
                                     <View style={styles.sideBubblesCon}>
                                         <LinearGradient 
@@ -422,18 +445,18 @@ class ExpandedCards1 extends React.Component {
         } else if(this.props.expandWonderCard){
             // WONDER CARD
             return <View pointerEvents='box-none' style={{top: 25, left: 25, width: '100%', height: '100%', position: 'absolute'}} >
-                    <View style={[styles.containerCon, {width: cardWidth, height: cardHeight}]}>
-                    {this.props.expandedWonderCard}
-                    <TouchableOpacity 
-                        onPress={this.props.unExpandWonderCard}
-                        style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
-                    ></TouchableOpacity>
-                    <TouchableOpacity
-                        style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
-                    ></TouchableOpacity>
-                    <TouchableOpacity
-                        style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
-                    ></TouchableOpacity>
+                    <View style={[styles.containerCon, {width: cardWidth, height: cardHeight}, (this.props.highlightWonder ? styles.highlight : null)]}>
+                        {this.props.expandedWonderCard}
+                        <TouchableOpacity 
+                            onPress={this.props.unExpandWonderCard}
+                            style={{position: 'absolute', height: '70%', width: '100%', top: 0}}
+                        ></TouchableOpacity>
+                        <TouchableOpacity
+                            style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, left: 0 }}
+                        ></TouchableOpacity>
+                        <TouchableOpacity
+                            style={{position: 'absolute', height: '30%', width: '50%', bottom: 0, right: 0 }}
+                        ></TouchableOpacity>
 
                     {
                         this.tempgold > 0 || this.tempscience > 0 || this.tempinfluence > 0
@@ -793,13 +816,19 @@ class ExpandedCards1 extends React.Component {
         } else if(this.props.expandHandCard){
             // HAND CARD
             return <View pointerEvents='box-none' style={{width: '100%', height: '100%', position: 'absolute'}}>
-                <View style={{
-                    backgroundColor: '#000', 
-                    position:'absolute', 
-                    width: cardWidth, 
-                    height: cardHeight, 
-                    left: ((screenWidth/2) - (cardWidth/2)),
-                    top: 25}}
+                <View style={[
+                    {
+                        width: cardWidth, 
+                        height: cardHeight, 
+                        left: ((screenWidth/2) - (cardWidth/2))
+                    },
+                    styles.expandedHandCard,
+                    (this.props.highlightHand 
+                        && (this.props.typeToChoose === 'any' || this.props.expandedHandCard.props.props.type === this.props.typeToChoose) 
+                        ? styles.highlight : null)
+                ]
+                    
+                }
                 >
                     {this.props.expandedHandCard}
                     <TouchableOpacity 
@@ -835,21 +864,10 @@ class ExpandedCards1 extends React.Component {
                     />
                 </View>
                     
-                    {
-                        (
-                            (
-                                this.props.expandedHandCard.props.props.type === 'worker' 
-                                && 
-                                this.props.player.capital.workers.length < this.props.player.natural_wonders.length + 1
-                            )
-                        || 
-                            (
-                                this.props.expandedHandCard.props.props.type === 'army' 
-                                && 
-                                this.props.player.capital.armies.length < this.props.player.natural_wonders.length + 1
-                            ) 
-                        )
-                        ? 
+                    { 
+                        this.props.highlightHand 
+                        && this.props.expandedHandCard.props.props.type === this.props.typeToChoose
+                        ? (
                             <View style={{
                                 position: 'absolute', 
                                 right: -150,
@@ -857,7 +875,6 @@ class ExpandedCards1 extends React.Component {
                                 top: 30,
                                 justifyContent: 'flex-start',
                                 height: '100%',
-                                // backgroundColor: '#0f3'
                             }}>
                                 <TouchableOpacity 
                                     style={{
@@ -868,12 +885,53 @@ class ExpandedCards1 extends React.Component {
                                         borderRadius: 50,
                                         padding: 20,
                                     }}
-                                    onPress={() => {this.props.putOnCapital(this.props.expandedHandCard, this.props.playerNumber)}}
+                                    onPress={() => {this.props.chooseCard(this.props.expandedHandCard, this.props.playerNumber)}}
                                 >
-                                    <Text>Put on Capital</Text>
+                                    <Text>Choose</Text>
                                 </TouchableOpacity>
                             </View>
-                        : undefined
+
+                        ) 
+                        : (
+                            (
+                                (
+                                    this.props.expandedHandCard.props.props.type === 'worker' 
+                                    && 
+                                    this.props.player.capital.workers.length < this.props.player.natural_wonders.length + 1
+                                )
+                            || 
+                                (
+                                    this.props.expandedHandCard.props.props.type === 'army' 
+                                    && 
+                                    this.props.player.capital.armies.length < this.props.player.natural_wonders.length + 1
+                                ) 
+                            )
+                            ? 
+                                <View style={{
+                                    position: 'absolute', 
+                                    right: -150,
+                                    left: ((screenWidth/2) - (cardWidth/2) + cardWidth),
+                                    top: 30,
+                                    justifyContent: 'flex-start',
+                                    height: '100%',
+                                    // backgroundColor: '#0f3'
+                                }}>
+                                    <TouchableOpacity 
+                                        style={{
+                                            // width: 150,
+                                            // height: 30,
+                                            alignSelf: 'flex-start',
+                                            backgroundColor: '#f0f',
+                                            borderRadius: 50,
+                                            padding: 20,
+                                        }}
+                                        onPress={() => {this.props.putOnCapital(this.props.expandedHandCard, this.props.playerNumber)}}
+                                    >
+                                        <Text>Put on Capital</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            : undefined
+                        )
                     }
             </View>
         } else{
@@ -940,6 +998,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)', 
         justifyContent: 'space-between', 
         marginTop: 50
+    },
+    expandedHandCard: {
+        backgroundColor: '#000', 
+        position:'absolute', 
+        top: 25
+    },
+    highlight: {
+        padding: 2, 
+        backgroundColor: '#f00',
     }
 });
   

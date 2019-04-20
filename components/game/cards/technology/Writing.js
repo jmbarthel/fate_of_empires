@@ -23,6 +23,9 @@ export default Writing = (props) => {
             //         gold: 1,
             //     }
             // }
+        },
+        returnCard: (props) => {
+            return Writing(props)
         }
     }
     
