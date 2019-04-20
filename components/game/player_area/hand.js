@@ -42,6 +42,7 @@ class Hand1 extends React.Component {
                     card={this.props.hand[i]} 
                     expandHandCard={this.props.expandHandCard}
                     playerNumber={this.props.playerNumber}
+                    highlight={this.props.highlight}
                 />
             )
         }

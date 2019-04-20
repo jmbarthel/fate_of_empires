@@ -12,7 +12,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { changeTurn } from "../../actions/index.js";
 
 // Setup
-import { shuffle, setupInitialState, endOfTurnCleanup, applyCostReduction } from '../utils/utilities.js';
+import { shuffle, endOfTurnCleanup, applyCostReduction } from '../utils/utilities.js';
+import { setupInitialState } from '../utils/assemble.js';
 
 const mapStateToProps = state => {
     return { 
@@ -789,6 +790,7 @@ class NewGame1 extends React.Component {
 						expandSupplyCard={this.expandSupplyCard.bind(this)}
 						unExpandSupplyCard={this.unExpandSupplyCard.bind(this)}
 						playerNumber={this.state.playerNumber}
+						highlight={this.state.highlightSupply}
 					/>
 					<View style={{width: '50%', flexDirection: 'column'}}>
 						<View style={{height: '30%', width: '100%'}}>
@@ -821,6 +823,8 @@ DECKS
 						expandHandCard={this.expandHandCard.bind(this)}
 						expandCapital={this.expandCapital.bind(this)}
 						playerNumber={this.state.playerNumber}
+						highlightHand={this.state.highlightHand}
+						highlightCapital={this.state.highlightCapital}
 					/>
 				</View>
 
@@ -930,6 +934,7 @@ EXPANDED CAPITAL
 								chooseOption={this.chooseOption.bind(this)}
 								expandHandCard={this.expandHandCard.bind(this)}
 								closeCapital={this.closeCapital.bind(this)}
+								highlight={this.state.highlightCapital}
 							/>
 						)
 					: undefined

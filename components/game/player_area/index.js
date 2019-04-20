@@ -50,6 +50,7 @@ class PlayerArea1 extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Hand 
+					highlight={this.props.highlightHand}
 					style={styles.hand} 
 					hand={this.props.player.hand} 
 					toggleDim={this.props.toggleDim} 
@@ -65,6 +66,7 @@ class PlayerArea1 extends React.Component {
 					<View><Text style={{color: '#fff'}}><Image style={{width: 23, height: 23}} source={require('../../../assets/symbols/actions/Science.png')}/> {this.props.player.resources.science}</Text></View>
 				</View>
 				<Capital 
+					highlight={this.props.highlightCapital}
 					style={styles.capital}
 					capital={this.props.player.capital}
 					expandCapital={this.props.expandCapital}

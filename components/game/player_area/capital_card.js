@@ -11,33 +11,16 @@ class CapitalCard1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-		}
+	}
 		
-		returnCard(){
-				this.props.card.props.props.hand = 0; 
-				return this.props.card.props.props.returnCard(this.props.card.props.props);
-		}
-    
-    // onPress(){
-    //     console.log('hi');
-		// if(this.props.turn === 1){
-		// 	if(this.props.real){
-		// 		this.props.expandCapitalCard(this.props.card({num: this.props.num, expanded: true}));
-		// 	} else{
-		// 		this.props.expandCapitalCard();
-		// 	}
-		// } else{
-        //     alert('Not your turn.');
-        // }
-	// }
-	
-	// closeCard(){
-	// 	this.setState({expanded: false})
-	// }
+	returnCard(){
+		this.props.card.props.props.hand = 0; 
+		return this.props.card.props.props.returnCard(this.props.card.props.props);
+	}
 
 	render() {
 		return (
-			<View style={[styles.container, {top: 0-(this.props.num * 100)}]}>
+			<View style={[styles.container, {top: 0-(this.props.num * 100)}, (this.props.highlight ? styles.highlight : null)]}>
 				<View>
 					{typeof this.props.card === 'function' ? this.props.card({hand: 0}) : this.returnCard() }
 				</View>
@@ -48,14 +31,17 @@ class CapitalCard1 extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-		borderRadius: 5, 
-		borderColor: '#000',
-		borderWidth: 1,
-		width: '100%',
-		// height: '100%',
-		margin: 3,
-		backgroundColor: '#555'
-    },
+			borderRadius: 5, 
+			borderColor: '#000',
+			borderWidth: 1,
+			width: '100%',
+			// height: '100%',
+			margin: 3,
+		},
+		highlight: {
+			padding: 2, 
+			backgroundColor: '#f00'
+		}
 });
   
 export default CapitalCard = connect(mapStateToProps)(CapitalCard1);

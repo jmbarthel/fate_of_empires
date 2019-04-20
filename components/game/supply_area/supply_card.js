@@ -11,9 +11,9 @@ class SupplyCard1 extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {};
-    }
+	}
     
-    onPress(){
+	onPress(){
 		if(this.props.turn === this.props.playerNumber){
 			if(this.props.real){
 				this.props.expandSupplyCard(this.props.card({num: this.props.num, expanded: true}));
@@ -35,11 +35,20 @@ class SupplyCard1 extends React.Component {
 		}
 
 		return (
-			<View style={styles.container}>
-				<TouchableOpacity onPress={this.onPress.bind(this)}>
-					{this.props.card({hand: 0})}
-				</TouchableOpacity>
-			</View>
+			(this.props.highlight ? (
+				<View style={[styles.container, styles.highlight]}>
+					<TouchableOpacity onPress={this.onPress.bind(this)}>
+						{this.props.card({hand: 0})}
+					</TouchableOpacity>
+				</View>
+			
+			) : (
+				<View style={styles.container}>
+					<TouchableOpacity onPress={this.onPress.bind(this)}>
+						{this.props.card({hand: 0})}
+					</TouchableOpacity>
+				</View>
+			))
 		);
 	}
 }
@@ -53,7 +62,11 @@ const styles = StyleSheet.create({
 		height: '100%',
 		margin: 3,
 		backgroundColor: '#555'
-    },
+		},
+	highlight: {
+		backgroundColor: '#f00',
+		padding: 2,
+	}
 });
   
 export default SupplyCard = connect(mapStateToProps)(SupplyCard1);

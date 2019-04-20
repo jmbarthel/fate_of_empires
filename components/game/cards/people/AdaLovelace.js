@@ -18,19 +18,6 @@ export default AdaLovelace = (props) => {
         choices: {
             1: [gainResources.bind(this, {science: 5})],
             2: [pickACard.bind(this, ['supply'])]
-            // 1: {
-            //     produceResource: {
-            //         gold: 0,
-            //         science: 5, 
-            //         influence: 0,
-            //         any: 0,
-            //     }
-            // },
-            // 2: {
-            //     swap: {
-            //         science: 'supply'
-            //     }
-            // }
         },
         returnCard: (props) => {
             return AdaLovelace(props)

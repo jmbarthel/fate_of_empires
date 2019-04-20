@@ -73,7 +73,7 @@ class Card1 extends React.Component {
 		return (
             <Animated.View 
                 {...this.panResponder.panHandlers}
-                style={[panStyle, styles.card, {left: 0+(this.props.num * 60)}]}
+                style={[panStyle, styles.card, {left: 0+(this.props.num * 60)}, (this.props.highlight ? styles.highlight : null)]}
             >
                 <TouchableOpacity onPress={this.enlarge.bind(this)}>
                     {this.props.card({num: this.props.num, hand: true})} 
@@ -95,6 +95,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#555'
     },
+    highlight: {
+        padding: 2, 
+        backgroundColor: '#f00',
+    }
 });
   
 export default Card = connect(mapStateToProps)(Card1);

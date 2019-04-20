@@ -31,6 +31,7 @@ class SupplyArea1 extends React.Component {
 					{
 						this.props.supplyRevealed.map((card, i) => {
 							return <SupplyCard 
+									highlight={this.props.highlight}
 									key={i} 
 									num={i} 
 									expandSupplyCard={this.props.expandSupplyCard} 
