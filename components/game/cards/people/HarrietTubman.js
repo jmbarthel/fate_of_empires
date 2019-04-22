@@ -17,7 +17,7 @@ export default HarrietTubman = (props) => {
         choiceCount: 2, 
         choices: {
             1: [gainResources.bind(this, {influence: 4})],
-            2: [exileCardSetupFunc.bind(this, ['hand', 'capital'], 'supply', 'worker')]
+            2: [exileCardSetupFunc.bind(this, 'handOrCapital', 'supply', 'any', 'worker')]
         },
         returnCard: (props) => {
             return HarrietTubman(props)

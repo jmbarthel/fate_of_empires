@@ -315,11 +315,13 @@ class ExpandedCards1 extends React.Component {
         
         if(this.props.expandSupplyCard){
             // SUPPLY CARD
-            return <View pointerEvents='box-none' style={[{
-                backgroundColor: '#000', 
-                position:'absolute', 
-                width: cardWidth, 
-                height: cardHeight, right: 15
+            return <View pointerEvents='box-none' 
+                style={[{
+                    backgroundColor: '#000', 
+                    position:'absolute', 
+                    width: cardWidth, 
+                    height: cardHeight, 
+                    right: 15
                 }, (this.props.highlightSupply && this.props.expandedSupplyCard.props.props.type === this.props.typeToChoose ? styles.highlight : null)]}>
                         {this.props.expandedSupplyCard}
                         <TouchableOpacity 

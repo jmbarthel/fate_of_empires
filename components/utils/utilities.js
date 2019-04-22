@@ -127,7 +127,7 @@ export const applyCostReduction = (card, player, state) => {
 		}
 	}
 	return resultCost;
-	
+
 }
 
 export const endOfTurnCleanup = (turn, playerNum, prevState) => {
@@ -286,6 +286,7 @@ export const endOfTurnCleanup = (turn, playerNum, prevState) => {
 export const countTypeInHand = (type, hand) => {
     // @type = 'technology', 'city', 'person', 'army', 'worker'
     console.log('you have', hand.filter(card => {
+		
         return card().props.props.type === type;
     }).length, type, 'in hand');
 
